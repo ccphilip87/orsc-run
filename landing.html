@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>do nut run</title>
+<meta name="description" content="I do not run for something. — running brand">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0a;overflow:hidden}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;cursor:none;position:relative}
+#cursor{position:fixed;width:5px;height:5px;background:#fff;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:100;opacity:0;transition:opacity 0.3s}
+#noise{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.018}
+#hero{text-align:center;z-index:2;position:relative;padding:0 24px}
+#line1{font-size:11px;letter-spacing:3px;color:#3a3a3a;text-transform:lowercase;opacity:0;transform:translateY(8px);transition:opacity 0.8s,transform 0.8s}
+#line1 .cap{text-transform:uppercase}
+#line2{font-size:clamp(52px,10vw,92px);font-weight:800;color:#fff;line-height:1;letter-spacing:-3px;margin:28px 0 10px;opacity:0;transform:translateY(14px);transition:opacity 0.9s 0.3s,transform 0.9s 0.3s}
+#nut{display:inline-block}
+#period{color:#222}
+#line3{font-size:10px;letter-spacing:5px;color:#2a2a2a;text-transform:lowercase;opacity:0;transition:opacity 1s 0.9s}
+#divider{width:1px;height:0;background:#1c1c1c;margin:44px auto;transition:height 1.2s 1.1s}
+#sub{font-size:10px;letter-spacing:4px;color:#252525;text-transform:lowercase;opacity:0;transition:opacity 0.8s 2s;margin-bottom:32px}
+#form-area{opacity:0;transform:translateY(8px);transition:opacity 0.8s 2.2s,transform 0.8s 2.2s;width:100%;max-width:320px}
+#email-row{display:flex;width:100%}
+#email-input{flex:1;background:transparent;border:0.5px solid #1e1e1e;border-right:none;color:#fff;font-size:11px;letter-spacing:1.5px;padding:13px 16px;outline:none;font-family:inherit;transition:border-color 0.4s}
+#email-input::placeholder{color:#252525}
+#email-input:focus{border-color:#383838}
+#submit-btn{background:transparent;border:0.5px solid #1e1e1e;color:#333;font-size:9px;letter-spacing:3px;padding:13px 18px;cursor:pointer;font-family:inherit;transition:all 0.4s;white-space:nowrap}
+#submit-btn:hover{color:#fff;border-color:#555}
+#msg{font-size:9px;letter-spacing:2px;color:#2a2a2a;margin-top:14px;text-align:center;min-height:14px}
+#footer{position:fixed;bottom:28px;font-size:8px;letter-spacing:4px;color:#161616;text-transform:lowercase;opacity:0;transition:opacity 0.8s 3s;z-index:2}
+.glitch{animation:glitch 0.12s linear}
+@keyframes glitch{0%{transform:translateX(0) skewX(0)}25%{transform:translateX(4px) skewX(3deg)}50%{transform:translateX(-3px)}75%{transform:translateX(2px)}100%{transform:translateX(0)}}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<canvas id="noise"></canvas>
+<div id="hero">
+  <div id="line1"><span class="cap">I</span> do not run for something.</div>
+  <div id="line2">do <span id="nut">nut</span> run<span id="period">.</span></div>
+  <div id="line3">running brand</div>
+  <div id="divider"></div>
+  <div id="sub">coming soon</div>
+  <div id="form-area">
+    <div id="email-row">
+      <input id="email-input" type="email" placeholder="your@email.com" autocomplete="off">
+      <button id="submit-btn">notify me</button>
+    </div>
+    <div id="msg"></div>
+  </div>
+</div>
+<div id="footer">donut-run.com &nbsp;·&nbsp; running brand</div>
+
+<script>
+const cursor=document.getElementById('cursor');
+const period=document.getElementById('period');
+const nut=document.getElementById('nut');
+const msg=document.getElementById('msg');
+
+document.addEventListener('mousemove',e=>{
+  cursor.style.left=e.clientX+'px';
+  cursor.style.top=e.clientY+'px';
+});
+document.addEventListener('mouseover',()=>cursor.style.opacity='1');
+document.addEventListener('mouseleave',()=>cursor.style.opacity='0');
+
+const canvas=document.getElementById('noise');
+const ctx=canvas.getContext('2d');
+function drawNoise(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const img=ctx.createImageData(canvas.width,canvas.height);
+  for(let i=0;i<img.data.length;i+=4){
+    const v=Math.random()*255;
+    img.data[i]=img.data[i+1]=img.data[i+2]=v;
+    img.data[i+3]=15;
+  }
+  ctx.putImageData(img,0,0);
+  setTimeout(drawNoise,80);
+}
+drawNoise();
+
+setTimeout(()=>{document.getElementById('line1').style.opacity='1';document.getElementById('line1').style.transform='translateY(0)'},500);
+setTimeout(()=>{document.getElementById('line2').style.opacity='1';document.getElementById('line2').style.transform='translateY(0)'},800);
+setTimeout(()=>{document.getElementById('line3').style.opacity='1'},1300);
+setTimeout(()=>{document.getElementById('divider').style.height='44px'},1500);
+setTimeout(()=>{document.getElementById('sub').style.opacity='1'},2100);
+setTimeout(()=>{document.getElementById('form-area').style.opacity='1';document.getElementById('form-area').style.transform='translateY(0)'},2400);
+setTimeout(()=>{document.getElementById('footer').style.opacity='1'},3200);
+
+let periodOn=false;
+setInterval(()=>{
+  periodOn=!periodOn;
+  period.style.color=periodOn?'#fff':'#222';
+},3400);
+
+function randomGlitch(){
+  setTimeout(()=>{
+    nut.classList.add('glitch');
+    setTimeout(()=>nut.classList.remove('glitch'),120);
+    randomGlitch();
+  },5000+Math.random()*7000);
+}
+setTimeout(randomGlitch,4000);
+
+document.getElementById('submit-btn').addEventListener('click',()=>{
+  const val=document.getElementById('email-input').value.trim();
+  if(!val||!val.includes('@')){
+    msg.style.color='#383838';
+    msg.textContent='enter a valid email.';
+    return;
+  }
+  msg.style.color='#444';
+  msg.textContent="we'll run to you.";
+  document.getElementById('email-input').value='';
+});
+document.getElementById('email-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter')document.getElementById('submit-btn').click();
+});
+</script>
+</body>
+</html>
