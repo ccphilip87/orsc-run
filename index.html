@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>do nut run</title>
+<title>do nut run. — I do not run for something.</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5G4RER6G9"></script>
@@ -14,13 +14,46 @@
     gtag('config', 'G-W5G4RER6G9');
   </script>
 
+<!-- Favicon -->
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-  
-<meta name="description" content="I do not run for something. — running brand">
+
+<!-- SEO -->
+<meta name="description" content="I do not run for something. — Do nut Run is a running brand for amateur runners. Not for records. Not for competition. Just run. 기록이 아닌 태도를 위한 러닝 브랜드, 도낫런.">
+<meta name="keywords" content="do nut run, donut run, 도낫런, 도넛런, running brand, 러닝 브랜드, 러닝 웨어, 러닝 싱글렛, 싱글렛, 러닝 상의, 러닝복, running singlet, running apparel, running wear, 아마추어 러너, amateur running, 춘천 러닝, 러닝 크루, 국내 러닝 브랜드, 러닝 커뮤니티, 러닝 의류, 마라톤 옷, 마라톤 웨어">
+<meta name="author" content="Do nut Run">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://donut-run.com" />
+
+<!-- 한국어 SEO -->
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="naver-site-verification" content="">
+<!-- 네이버 서치어드바이저 인증 후 위 content 값 채울 것 -->
+
+<!-- Open Graph (SNS 링크 공유 카드) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://donut-run.com">
+<meta property="og:title" content="do nut run. — 기록이 아닌 태도를 위한 러닝 브랜드">
+<meta property="og:description" content="I do not run for something. 그냥 뛰자. 아마추어 러너를 위한 러닝 브랜드, 도낫런.">
+<meta property="og:site_name" content="Do nut Run">
+<!-- og:image 추가 예정 — 로고 업로드 후 아래 주석 해제
+<meta property="og:image" content="https://donut-run.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+-->
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ordinaryrunclub">
+<meta name="twitter:title" content="do nut run. — 기록이 아닌 태도를 위한 러닝 브랜드">
+<meta name="twitter:description" content="I do not run for something. 그냥 뛰자. 아마추어 러너를 위한 러닝 브랜드, 도낫런.">
+<!-- twitter:image 추가 예정 — 로고 업로드 후 아래 주석 해제
+<meta name="twitter:image" content="https://donut-run.com/og-image.png">
+-->
 <style>
 html,body{min-height:100%;background:#0a0a0a;margin:0;padding:0}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -48,6 +81,10 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 #social a{display:flex;align-items:center;justify-content:center;opacity:0.4;transition:opacity 0.3s}
 #social a:hover{opacity:1}
 #social svg{width:22px;height:22px;fill:#fff}
+#countdown{display:flex;gap:32px;justify-content:center;opacity:0;transition:opacity 0.8s 2s;margin-bottom:40px}
+.cd-block{display:flex;flex-direction:column;align-items:center;gap:8px}
+.cd-num{font-size:clamp(28px,6vw,48px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1}
+.cd-label{font-size:11px;letter-spacing:3px;color:#555;text-transform:lowercase}
 #cookie-notice{position:fixed;bottom:24px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:2px;color:#333;z-index:10;opacity:0;transition:opacity 0.8s 3.2s}
 .glitch{animation:glitch 0.12s linear}
 @keyframes glitch{0%{transform:translateX(0) skewX(0)}25%{transform:translateX(4px) skewX(3deg)}50%{transform:translateX(-3px)}75%{transform:translateX(2px)}100%{transform:translateX(0)}}
@@ -61,7 +98,12 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
   <div id="line2">do <span id="nut">nut</span> run<span id="period">.</span></div>
   <div id="line3">running brand</div>
   <div id="divider"></div>
-  <div id="sub">coming soon</div>
+  <div id="countdown">
+    <div class="cd-block"><span class="cd-num" id="cd-days">00</span><span class="cd-label">days</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">hours</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">mins</span></div>
+    <div class="cd-block"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">secs</span></div>
+  </div>
   <div id="form-area">
     <div id="email-row">
       <input id="email-input" type="email" placeholder="your@email.com" autocomplete="off">
@@ -127,7 +169,30 @@ setTimeout(()=>{document.getElementById('line1').style.opacity='1';document.getE
 setTimeout(()=>{document.getElementById('line2').style.opacity='1';document.getElementById('line2').style.transform='translateY(0)'},800);
 setTimeout(()=>{document.getElementById('line3').style.opacity='1'},1300);
 setTimeout(()=>{document.getElementById('divider').style.height='44px'},1500);
-setTimeout(()=>{document.getElementById('sub').style.opacity='1'},2100);
+setTimeout(()=>{document.getElementById('countdown').style.opacity='1'},2100);
+
+function updateCountdown(){
+  const target=new Date('2026-06-05T00:00:00+09:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){
+    document.getElementById('cd-days').textContent='00';
+    document.getElementById('cd-hours').textContent='00';
+    document.getElementById('cd-mins').textContent='00';
+    document.getElementById('cd-secs').textContent='00';
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
 setTimeout(()=>{document.getElementById('form-area').style.opacity='1';document.getElementById('form-area').style.transform='translateY(0)'},2400);
 setTimeout(()=>{document.getElementById('social').style.opacity='1'},2800);
 setTimeout(()=>{document.getElementById('cookie-notice').style.opacity='1'},3200);
