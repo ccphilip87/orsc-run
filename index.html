@@ -44,6 +44,7 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 #social a{display:flex;align-items:center;justify-content:center;opacity:0.4;transition:opacity 0.3s}
 #social a:hover{opacity:1}
 #social svg{width:22px;height:22px;fill:#fff}
+#cookie-notice{position:fixed;bottom:24px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:2px;color:#333;z-index:10;opacity:0;transition:opacity 0.8s 3.2s}
 .glitch{animation:glitch 0.12s linear}
 @keyframes glitch{0%{transform:translateX(0) skewX(0)}25%{transform:translateX(4px) skewX(3deg)}50%{transform:translateX(-3px)}75%{transform:translateX(2px)}100%{transform:translateX(0)}}
 </style>
@@ -76,6 +77,8 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
     </a>
   </div>
 </div>
+
+<div id="cookie-notice">this site uses cookies to understand how you run around here.</div>
 
 <!-- Mailchimp hidden form -->
 <form id="mc-form" action="https://donut-run.us18.list-manage.com/subscribe/post?u=cf2d3e785b9086fe96c78260b&id=e4660868de&f_id=0065b1e6f0" method="post" target="_blank" style="display:none">
@@ -123,6 +126,7 @@ setTimeout(()=>{document.getElementById('divider').style.height='44px'},1500);
 setTimeout(()=>{document.getElementById('sub').style.opacity='1'},2100);
 setTimeout(()=>{document.getElementById('form-area').style.opacity='1';document.getElementById('form-area').style.transform='translateY(0)'},2400);
 setTimeout(()=>{document.getElementById('social').style.opacity='1'},2800);
+setTimeout(()=>{document.getElementById('cookie-notice').style.opacity='1'},3200);
 
 let periodOn=false;
 setInterval(()=>{
