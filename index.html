@@ -5,6 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>do nut run.</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5G4RER6G9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    // ── 단축 ref 파라미터 → GA source/medium 자동 매핑 ──
+    // 예: orsc.run/?ref=ig  →  source: instagram, medium: bio
+    const refMap = {
+      ig:  { source: 'instagram', medium: 'bio' },
+      th:  { source: 'threads',   medium: 'bio' },
+      x:   { source: 'twitter',   medium: 'bio' },
+      yt:  { source: 'youtube',   medium: 'bio' },
+      tt:  { source: 'tiktok',    medium: 'bio' },
+      ka:  { source: 'kakao',     medium: 'channel' },
+      em:  { source: 'email',     medium: 'newsletter' },
+      qr:  { source: 'qr',        medium: 'offline' }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    const cfg = { page_location: window.location.href };
+
+    if (ref && refMap[ref]) {
+      cfg.campaign_source = refMap[ref].source;
+      cfg.campaign_medium = refMap[ref].medium;
+    }
+    gtag('config', 'G-W5G4RER6G9', cfg);
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
