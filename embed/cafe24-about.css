@@ -1,0 +1,87 @@
+/* donut-run.co.kr 회사소개(배너매니저 brand) 스타일 — 원본: donut-run-ops/web/cafe24_brand_banner.html */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+.df-bannermanager-brand .intro-img>img{display:none!important}
+.dnr-x{--bg:#fff;--fg:#171816;--dim:rgba(23,24,22,.72);--mid:rgba(23,24,22,.48);--line:rgba(23,24,22,.12);--card:#f6f5f2;
+  background:var(--bg);color:var(--fg);text-align:left;word-break:keep-all;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-weight:300;letter-spacing:-0.01em;
+  -webkit-font-smoothing:antialiased;margin:8px 0 40px}
+.dnr-x *{box-sizing:border-box;margin:0;padding:0}
+.dnr-x a{color:inherit;text-decoration:none}
+.dnr-x .serif{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-0.01em}
+.dnr-x .eb{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:22px}
+.dnr-x .sec{padding:72px 8px;border-top:1px solid var(--line)}
+
+/* hero */
+.dnr-x .hero{padding:110px 40px 96px;text-align:center;border-top:0}
+.dnr-x .hero .logo{width:240px;height:auto;margin:-30px auto -30px;display:block}
+.dnr-x .slogan{margin-top:36px;font-size:34px;font-style:italic;line-height:1.2}
+.dnr-x .hero .m{margin-top:16px;font-size:17px;line-height:1.75;color:var(--dim)}
+.dnr-x .up{opacity:0;animation:dnrUp 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+.dnr-x .d1{animation-delay:.15s}.dnr-x .d2{animation-delay:.32s}.dnr-x .d3{animation-delay:.5s}
+.dnr-x .pop{opacity:0;animation:dnrPop .9s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes dnrUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes dnrPop{0%{opacity:0;transform:scale(.6) rotate(-8deg)}60%{opacity:1;transform:scale(1.06) rotate(2deg)}100%{opacity:1;transform:none}}
+
+/* mission */
+.dnr-x .mission{font-size:30px;font-weight:600;line-height:1.4;letter-spacing:-0.03em}
+.dnr-x .mission em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+
+/* philosophy */
+.dnr-x .grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:48px}
+.dnr-x .big{font-size:40px;font-style:italic;line-height:1.08}
+.dnr-x .sub{margin-top:16px;font-size:16px;line-height:1.7;color:var(--dim)}
+.dnr-x .sub b,.dnr-x .prose b{color:var(--fg);font-weight:500}
+.dnr-x .prose p{font-size:17px;line-height:1.9;color:var(--dim)}
+.dnr-x .prose p+p{margin-top:1.3em}
+.dnr-x .prose .pull{margin:1.8em 0;padding-left:18px;border-left:2px solid var(--fg);color:var(--fg);font-size:19px;font-weight:400;line-height:1.7}
+
+/* team */
+.dnr-x .team{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.dnr-x .p{background:var(--card);border-color:transparent!important;border:1px solid var(--line);border-radius:16px;padding:28px}
+.dnr-x .av{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-family:'Instrument Serif',serif;font-size:22px;margin-bottom:22px}
+.dnr-x .nm{font-size:19px;font-weight:500}
+.dnr-x .nm small{font-size:13px;color:var(--mid);font-weight:300;margin-left:6px}
+.dnr-x .rl{margin-top:4px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid)}
+.dnr-x .bio{margin-top:16px;font-size:15.5px;line-height:1.8;color:var(--dim)}
+
+/* shop */
+.dnr-x .shops{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.dnr-x .shop{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:200px;padding:28px;border:1px solid var(--line);border-radius:16px;transition:background .25s,color .25s,border-color .25s}
+.dnr-x .shop:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.dnr-x .shop .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);transition:color .25s}
+.dnr-x .shop:hover .k{color:rgba(255,255,255,.6)}
+.dnr-x .shop .dm{font-family:'Instrument Serif',serif;font-size:34px;line-height:1.05;letter-spacing:-0.01em;overflow-wrap:anywhere}
+.dnr-x .shop .f{display:flex;justify-content:space-between;font-size:14px;font-weight:400}
+
+/* links */
+.dnr-x .ln{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.dnr-x .ln a{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:400;transition:border-color .2s,background .2s,color .2s}
+.dnr-x .ln a:hover{border-color:var(--fg)}
+.dnr-x .ln a.solid{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.dnr-x .ln a.solid:hover{background:transparent;color:var(--fg)}
+.dnr-x .end{padding:40px 8px 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:16px}
+.dnr-x .end .logo{width:60px;height:auto;margin:-12px}
+.dnr-x .end span{font-family:'Instrument Serif',serif;font-style:italic;color:var(--mid);font-size:16px}
+
+/* scroll reveal (supported browsers) */
+@supports (animation-timeline: view()){
+  .dnr-x .rv{animation:dnrUp linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+}
+
+@media(max-width:760px){
+  .dnr-x .sec{padding:56px 4px}
+  .dnr-x .hero{padding:80px 24px 72px}
+  .dnr-x .hero .logo{width:190px;margin:-24px auto}
+  .dnr-x .slogan{font-size:27px}
+  .dnr-x .mission{font-size:23px}
+  .dnr-x .grid,.dnr-x .team,.dnr-x .shops{grid-template-columns:1fr;gap:24px}
+  .dnr-x .big{font-size:32px}
+  .dnr-x .prose p{font-size:16px}
+  .dnr-x .shop{min-height:160px}
+  .dnr-x .shop .dm{font-size:28px}
+  .dnr-x .end{padding:32px 4px 40px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dnr-x .up,.dnr-x .pop,.dnr-x .rv{animation:none!important;opacity:1!important;transform:none!important}
+}
