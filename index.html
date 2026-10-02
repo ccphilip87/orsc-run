@@ -373,6 +373,53 @@
     .shop-domain { font-family: 'Instrument Serif', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.01em; overflow-wrap: anywhere; }
     .shop-foot { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
 
+    /* ── 편지 구독 ── */
+    .letter-form { max-width: 520px; }
+    .letter-lead { font-size: 1.02rem; line-height: 1.8; color: var(--fg-dim); margin: 20px 0 36px; }
+    .letter-row {
+      display: flex;
+      border-bottom: 1px solid var(--fg-mid);
+      transition: border-color 0.3s;
+    }
+    .letter-row:focus-within { border-color: var(--fg); }
+    .letter-row input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font: 300 1.05rem var(--sans);
+      padding: 14px 0;
+      caret-color: var(--fg);
+    }
+    .letter-row input::placeholder { color: rgba(240,237,232,0.32); }
+    .letter-row button {
+      background: none;
+      border: none;
+      color: var(--fg);
+      font: 400 0.85rem var(--sans);
+      letter-spacing: 0.04em;
+      padding: 14px 0 14px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .letter-row button:disabled { color: var(--fg-mid); cursor: default; }
+    .consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 18px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--fg-mid);
+      cursor: pointer;
+    }
+    .consent input { margin-top: 3px; accent-color: var(--fg); flex: none; }
+    .letter-status { min-height: 1.6em; margin-top: 16px; font-size: 0.9rem; }
+    .letter-status.ok { color: var(--fg); }
+    .letter-status.err { color: #ff8a7a; }
+
     /* ── 팔로우 ── */
     .socials { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
 
@@ -605,6 +652,32 @@
       </div>
     </section>
 
+    <!-- ── 편지 구독 (Klaviyo) ── -->
+    <section class="block reveal" id="letters">
+      <div class="wrap grid-2">
+        <div><p class="eyebrow">Letters</p></div>
+        <div>
+          <h2 lang="ko">가끔, 받고 싶은 편지를 보냅니다.</h2>
+          <h2 lang="en">Now and then, <em>a letter worth opening.</em></h2>
+          <p class="letter-lead" lang="ko">새 제품 소식과 빌드 일지, 달리다 생각난 이야기들. 한 달에 한 번이 넘지 않게 보냅니다.</p>
+          <p class="letter-lead" lang="en">New drops, build-log notes, and things we thought about on the run. Never more than once a month.</p>
+
+          <form class="letter-form" id="letter-form" novalidate>
+            <div class="letter-row">
+              <input type="email" name="email" autocomplete="email" required placeholder="your@email.com" aria-label="Email" />
+              <button type="submit"><span lang="ko">구독하기 →</span><span lang="en">Subscribe →</span></button>
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span lang="ko">(필수) 이메일 수집·이용 및 광고성 정보 수신에 동의합니다. 수집 항목: 이메일 / 목적: 뉴스레터·신제품 안내 / 보유 기간: 구독 해지 시까지. 언제든 메일 하단에서 해지할 수 있습니다.</span>
+              <span lang="en">I agree to receive marketing emails from do nut run. We only use your email to send our newsletter, and you can unsubscribe at any time.</span>
+            </label>
+            <p class="letter-status" id="letter-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <!-- ── 팔로우 ── -->
     <section class="block reveal" id="follow">
       <div class="wrap">
@@ -681,6 +754,57 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // 편지 구독 → Klaviyo "Email List" (client API, 공개 키만 사용)
+    const KLAVIYO_COMPANY_ID = 'SsrFvq';
+    const KLAVIYO_LIST_ID = 'SVnHvX';
+    const letterForm = document.getElementById('letter-form');
+    const letterStatus = document.getElementById('letter-status');
+    const letterMsg = {
+      ko: { email: '이메일 주소를 확인해 주세요.', consent: '수신 동의에 체크해 주세요.', ok: '구독됐어요. 첫 편지에서 만나요.', fail: '잠시 후 다시 시도해 주세요.' },
+      en: { email: 'Please check your email address.', consent: 'Please tick the consent box.', ok: "You're in. See you in the first letter.", fail: 'Something went wrong. Please try again.' }
+    };
+    const setStatus = (key, cls) => {
+      const lang = document.documentElement.dataset.lang;
+      letterStatus.textContent = letterMsg[lang][key];
+      letterStatus.className = 'letter-status ' + cls;
+    };
+
+    letterForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = letterForm.email.value.trim();
+      if (!letterForm.email.checkValidity() || !email) return setStatus('email', 'err');
+      if (!letterForm.consent.checked) return setStatus('consent', 'err');
+
+      const btn = letterForm.querySelector('button');
+      btn.disabled = true;
+      const lang = document.documentElement.dataset.lang;
+      try {
+        const res = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/vnd.api+json', revision: '2024-10-15' },
+          body: JSON.stringify({ data: {
+            type: 'subscription',
+            attributes: {
+              custom_source: 'orsc.run',
+              profile: { data: { type: 'profile', attributes: {
+                email,
+                properties: { signup_language: lang, signup_source: 'orsc.run' }
+              } } }
+            },
+            relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+          } })
+        });
+        if (res.status === 400) { setStatus('email', 'err'); btn.disabled = false; return; }
+        if (!res.ok) throw new Error(res.status);
+        setStatus('ok', 'ok');
+        letterForm.reset();
+        gtag('event', 'sign_up', { method: 'newsletter', language: lang });
+      } catch (err) {
+        setStatus('fail', 'err');
+        btn.disabled = false;
+      }
+    });
 
     // 외부 링크 클릭 추적
     document.querySelectorAll('a[target="_blank"]').forEach(a => {
