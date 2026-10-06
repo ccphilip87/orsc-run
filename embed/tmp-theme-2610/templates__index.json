@@ -1,0 +1,469 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_pmM8Xw": {
+      "type": "slideshow",
+      "blocks": {
+        "slideshow_item_qxmGpr": {
+          "type": "slideshow_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/fdff.webp",
+            "mobile_image": "shopify://shop_images/fdff.webp",
+            "color_scheme": "",
+            "subheading": "",
+            "heading": "Lighter than a sip of water 33g",
+            "heading_tag": "h2",
+            "text": "<h4>The soft violet of wildflowers by the river. Hairy Vetch.</h4><h4>ss26 ─ pre-order now open.<br/>Free crew socks (3 pairs) with every order.</h4>",
+            "button_label": "shop all",
+            "button_link": "shopify://collections/all",
+            "button_style": "primary",
+            "button_arrow": false,
+            "overlay_opacity": 20,
+            "article": ""
+          }
+        },
+        "slideshow_item_8E9GCG": {
+          "type": "slideshow_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/hairy_vetch.webp",
+            "mobile_image": "shopify://shop_images/AL_HV_Image01_1.webp",
+            "color_scheme": "",
+            "subheading": "",
+            "heading": "Lighter than a sip of water 33g",
+            "heading_tag": "h2",
+            "text": "<h4>The soft violet of wildflowers by the river. Hairy Vetch.</h4><h4>ss26 ─ pre-order now open.<br/>Free crew socks (3 pairs) with every order.</h4>",
+            "button_label": "shop all",
+            "button_link": "shopify://collections/all",
+            "button_style": "primary",
+            "button_arrow": false,
+            "overlay_opacity": 20,
+            "article": ""
+          }
+        },
+        "slideshow_item_HkxKe7": {
+          "type": "slideshow_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/AirSwift_W_concept_02.webp",
+            "mobile_image": "shopify://shop_images/AL_CS_Image01.webp",
+            "color_scheme": "",
+            "subheading": "",
+            "heading": "Lighter than a sip of water 33g",
+            "heading_tag": "h2",
+            "text": "<h4>Chosen together by runners. Clear Sky.</h4><h4>ss26 ─ pre-order now open.<br/>Free crew socks (3 pairs) with every order.</h4>",
+            "button_label": "shop all",
+            "button_link": "shopify://collections/all",
+            "button_style": "primary",
+            "button_arrow": false,
+            "overlay_opacity": 20,
+            "article": ""
+          }
+        },
+        "slideshow_item_bURG4d": {
+          "type": "slideshow_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/13244.png",
+            "color_scheme": "",
+            "subheading": "",
+            "heading": "시작한 이유는 달라도,",
+            "heading_tag": "h2",
+            "text": "<h4>결국 뛰는 것이 좋아져서,</h4>",
+            "button_label": "our story",
+            "button_link": "shopify://pages/about",
+            "button_style": "primary",
+            "button_arrow": false,
+            "overlay_opacity": 30,
+            "article": ""
+          }
+        },
+        "slideshow_item_M6CbCb": {
+          "type": "slideshow_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/hf_20260523_060914_cad511b1-d9bf-403c-9e77-dc24315a717a.png",
+            "color_scheme": "",
+            "subheading": "",
+            "heading": "시작한 이유는 달라도,",
+            "heading_tag": "h2",
+            "text": "<h4>결국 뛰는 것이 좋아져서,</h4>",
+            "button_label": "Our Story",
+            "button_link": "shopify://pages/about",
+            "button_style": "primary",
+            "button_arrow": false,
+            "overlay_opacity": 30,
+            "article": ""
+          }
+        }
+      },
+      "block_order": [
+        "slideshow_item_qxmGpr",
+        "slideshow_item_8E9GCG",
+        "slideshow_item_HkxKe7",
+        "slideshow_item_bURG4d",
+        "slideshow_item_M6CbCb"
+      ],
+      "settings": {
+        "section_header_type": "type1",
+        "enable_border_top": false,
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h3",
+        "description": "",
+        "button_label": "EXPLORE DROP 01",
+        "button_link": "",
+        "button_style": "primary",
+        "button_arrow": false,
+        "section_layout": "full",
+        "section_alignment": "center",
+        "vertical_alignment": "center",
+        "container_size": "large",
+        "image_size": "large",
+        "transition_effect": "slide",
+        "is_autoplay": true,
+        "show_pagination": true,
+        "slideshow_speed": 1.1,
+        "slideshow_delay": 4.7,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "dnr_hero_video_Tk9TUr": {
+      "type": "dnr_hero-video",
+      "name": "hero video",
+      "settings": {
+        "library_id": "704835",
+        "video_mobile": "372c35c1-a7ca-4859-ae87-79566455a346",
+        "video_desktop": "fae7b41b-719f-40cb-8a70-62e79375ab2f",
+        "video_alt": "do nut run singlet moving in the wind",
+        "pc_height": 82,
+        "eyebrow": "Racing singlets · sheerness and airflow,",
+        "title": "Which one is yours?",
+        "card1_name": "Air light",
+        "card1_desc": "Opaque, nothing shows",
+        "card1_cta": "Shop Air light",
+        "card1_link": "shopify://collections/air-light",
+        "card2_name": "Air swift",
+        "card2_desc": "Mesh, air moves through",
+        "card2_cta": "Shop Air swift",
+        "card2_link": "shopify://collections/air-swift",
+        "compare_text": "Air light or Air swift? →",
+        "compare_link": "shopify://pages/air-light-or-air-swift"
+      }
+    },
+    "products_grid_hUhf7c": {
+      "type": "products-grid",
+      "name": "t:sections.products-grid.name",
+      "settings": {
+        "collection": "air-swift",
+        "product_list": [
+          "dr-singlet-wine-copy",
+          "dr-singlet-light-purple_women-copy",
+          "dr-singlet-sky-blue_men",
+          "dr-singlet-light-purple_women-copy-1"
+        ],
+        "heading": "Air swift",
+        "heading_tag": "h2",
+        "product_card_heading_tag": "h3",
+        "description": "<p>39g. Mesh that moves air.</p>",
+        "alignment": "center",
+        "products_per_page": 8,
+        "sort": "alphabetical",
+        "show_two_cards": true,
+        "show_secondary_image": true,
+        "show_sku": false,
+        "show_vendor": false,
+        "show_desc": false,
+        "show_color_swatch": false,
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "padding_top": "l",
+        "padding_bottom": "l"
+      }
+    },
+    "products_grid_EdXPXb": {
+      "type": "products-grid",
+      "name": "t:sections.products-grid.name",
+      "settings": {
+        "collection": "air-light",
+        "product_list": [],
+        "heading": "Air light",
+        "heading_tag": "h2",
+        "product_card_heading_tag": "h3",
+        "description": "<p>33g. Thin, and still not sheer.</p>",
+        "alignment": "center",
+        "products_per_page": 8,
+        "sort": "alphabetical",
+        "show_two_cards": true,
+        "show_secondary_image": true,
+        "show_sku": false,
+        "show_vendor": false,
+        "show_desc": false,
+        "show_color_swatch": false,
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "padding_top": "l",
+        "padding_bottom": "l"
+      }
+    },
+    "ticker_UCQk6E": {
+      "type": "ticker",
+      "blocks": {
+        "media_block_VcNmzR": {
+          "type": "media_block",
+          "settings": {
+            "heading": "I do not run for something",
+            "ticker_link": "",
+            "social_icon": "none"
+          }
+        },
+        "media_block_Pcy9Py": {
+          "type": "media_block",
+          "settings": {
+            "heading": "I do nut run for something",
+            "ticker_link": "",
+            "social_icon": "none"
+          }
+        },
+        "media_block_JRgmDf": {
+          "type": "media_block",
+          "settings": {
+            "heading": "I do not run for something",
+            "ticker_link": "",
+            "social_icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "media_block_VcNmzR",
+        "media_block_Pcy9Py",
+        "media_block_JRgmDf"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "name": "t:sections.ticker.name",
+      "settings": {
+        "color_scheme": "scheme-be679513-8d5c-4af8-bd68-d8555b22fa8b",
+        "ticker_speed": 25,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent",
+        "padding_top": "xs",
+        "padding_bottom": "xs",
+        "enable_border_top": false,
+        "enable_border_bottom": false
+      }
+    },
+    "about_8WF6KY": {
+      "type": "about",
+      "disabled": true,
+      "name": "t:sections.about.name",
+      "settings": {
+        "color_scheme": "",
+        "heading": "I do not run for something",
+        "heading_tag": "h6",
+        "description": "<p>I do not run for something</p><p>I do not run for something</p>",
+        "description_secondary": "<p>I do not run for something</p><p>I do not run for something</p><p></p>",
+        "margin_top": "xs",
+        "margin_bottom": "xs",
+        "padding_top": "no-indent",
+        "padding_bottom": "m"
+      }
+    },
+    "multi_slider_JNibXY": {
+      "type": "multi-slider",
+      "blocks": {
+        "multi_slider_item_NUMhRV": {
+          "type": "multi-slider_item",
+          "settings": {
+            "ticker_text": "I do not run for something",
+            "image": "shopify://shop_images/donutrun_gobo_1000_1536x2048_53660ebf-41a6-4af7-903f-585c0d2e7f42.png",
+            "overlay_opacity": 50,
+            "description": "<h4>do nut run is clothing for people who just run.</h4>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "tertiary",
+            "button_arrow": true
+          }
+        },
+        "multi_slider_item_MRtdfV": {
+          "type": "multi-slider_item",
+          "settings": {
+            "ticker_text": "I do not run for something",
+            "image": "shopify://shop_images/donutrun_gobo_1000_1400x1990_1.png",
+            "overlay_opacity": 50,
+            "description": "<h4>not for something. not for glory. not for records.</h4>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "tertiary",
+            "button_arrow": true
+          }
+        },
+        "multi_slider_item_nCnRDP": {
+          "type": "multi-slider_item",
+          "settings": {
+            "ticker_text": "I do not run for something",
+            "image": "shopify://shop_images/hf_20260530_130650_86f9e665-012e-49a4-b3b6-bf0aa202f855.png",
+            "overlay_opacity": 30,
+            "description": "<h4>just because they want to.</h4>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "tertiary",
+            "button_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "multi_slider_item_NUMhRV",
+        "multi_slider_item_MRtdfV",
+        "multi_slider_item_nCnRDP"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "direction": "true",
+        "image_size": "small",
+        "is_autoplay": true,
+        "show_bullets": true,
+        "slideshow_delay": 4.6,
+        "ticker_speed": 8.8,
+        "margin_top": "l",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "1779429744fa2906c2": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17794299197a563969": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1779431788ea2b9717": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17794318205a7a0213": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1779790132589781d2": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_gACkjq": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "section_layout": "full",
+        "color_scheme": "background-2",
+        "image": "shopify://shop_images/web_image_07_15_2026_04.webp",
+        "mobile_image": "shopify://shop_images/web_image_07_15_2026_04.webp",
+        "image_size": "medium",
+        "overlay_opacity": 20,
+        "subheading": "",
+        "heading": "Run for yourself.",
+        "heading_tag": "h2",
+        "heading_second": "",
+        "heading_tag_second": "h2",
+        "heading_size": "h2",
+        "description": "<h4>Not for show.<br/>Just to be with yourself.<br/><br/>Your time.<br/>Your pace.<br/><br/>— do nut run</h4>",
+        "desc_size": "large-font",
+        "button_label": "About us",
+        "button_link": "shopify://pages/about",
+        "button_style": "primary",
+        "button_arrow": false,
+        "margin_top": "m",
+        "margin_bottom": "no-indent"
+      }
+    },
+    "split_screen_slideshow_TxFXBE": {
+      "type": "split-screen-slideshow",
+      "blocks": {
+        "slideshow_item_FCKKCn": {
+          "type": "slideshow_item",
+          "settings": {
+            "image": "shopify://shop_images/donutrun_gobo_1000_1400x1990_1.png",
+            "overlay_opacity": 0,
+            "heading": "I do not run for something",
+            "text": "<p>Use this space to share a brief, engaging message that highlights the focus of this slide. Let customers know what makes it special and why they should explore it.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true
+          }
+        },
+        "slideshow_item_rNGE3R": {
+          "type": "slideshow_item",
+          "settings": {
+            "overlay_opacity": 20,
+            "heading": "Slide Label",
+            "text": "<p>Use this space to share a brief, engaging message that highlights the focus of this slide. Let customers know what makes it special and why they should explore it.</p>",
+            "button_label": "Explore More",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true
+          }
+        },
+        "slideshow_item_arGd7z": {
+          "type": "slideshow_item",
+          "settings": {
+            "image": "shopify://shop_images/hf_20260523_060914_cad511b1-d9bf-403c-9e77-dc24315a717a.png",
+            "overlay_opacity": 20,
+            "heading": "I do not run for something",
+            "text": "<p>Use this space to share a brief, engaging message that highlights the focus of this slide. Let customers know what makes it special and why they should explore it.</p>",
+            "button_label": "Explore More",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "slideshow_item_FCKKCn",
+        "slideshow_item_rNGE3R",
+        "slideshow_item_arGd7z"
+      ],
+      "disabled": true,
+      "name": "t:sections.split_screen_slideshow.name",
+      "settings": {
+        "color_scheme": "background-2",
+        "subheading": "",
+        "image_size": "medium",
+        "is_autoplay": false,
+        "show_pagination": true,
+        "slideshow_speed": 1.1,
+        "slideshow_delay": 3,
+        "margin_top": "no-indent",
+        "margin_bottom": "no-indent"
+      }
+    }
+  },
+  "order": [
+    "slideshow_pmM8Xw",
+    "dnr_hero_video_Tk9TUr",
+    "products_grid_hUhf7c",
+    "products_grid_EdXPXb",
+    "ticker_UCQk6E",
+    "about_8WF6KY",
+    "multi_slider_JNibXY",
+    "1779429744fa2906c2",
+    "17794299197a563969",
+    "1779431788ea2b9717",
+    "17794318205a7a0213",
+    "1779790132589781d2",
+    "image_banner_gACkjq",
+    "split_screen_slideshow_TxFXBE"
+  ]
+}
