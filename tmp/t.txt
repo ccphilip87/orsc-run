@@ -38,6 +38,10 @@
     min-height: 240px; margin: 0 var(--main-padding, 20px); border-radius: 4px;
     background: #cfd8d2 url({{ cdn }}{{ bimg }}?width=2000) {{ bpos }} / cover no-repeat;
   }
+  {%- if cur == 'frontpage' or cur == 'running-singlets-men' -%}
+  /* 피팅컷: 인물을 오른쪽으로 보내고 왼쪽은 스튜디오 배경색으로 이어서 제목과 겹치지 않게 */
+  .collection-banner { background-color: rgb(222,223,219) !important; background-size: auto 150% !important; background-position: 88% 42% !important; }
+  {%- endif -%}
   {%- if btone == 'light' -%}
   .collection-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.08) 70%); }
   {%- else -%}
