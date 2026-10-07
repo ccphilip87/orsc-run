@@ -36,7 +36,7 @@
   .dnr-sib__label { font-size: 13px; margin-bottom: 8px; }
   .dnr-sib__label span { opacity: .6; margin-left: 6px; }
   .dnr-sib__dots { display: flex; gap: 10px; }
-  .dnr-sib__dot { width: 30px; height: 30px; border-radius: 50%; display: block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); outline: 1px solid transparent; outline-offset: 3px; }
+  .dnr-sib .dnr-sib__dot { width: 30px; height: 30px; border-radius: 50%; display: block !important; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); outline: 1px solid transparent; outline-offset: 3px; }
   .dnr-sib__dot.is-current { outline-color: #0c1921; }
   .dnr-sib__dot--clear-sky { background: linear-gradient(160deg, #e3f0f8 10%, #8fc3e6 90%); }
   .dnr-sib__dot--hairy-vetch { background: linear-gradient(160deg, #dfe6f3 10%, #b9a8db 90%); }
