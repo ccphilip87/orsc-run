@@ -40,7 +40,7 @@
 	.dnr-track { position: fixed; top: 0; left: 0; right: 0; height: 26px; z-index: 1000; pointer-events: none; }
 	.dnr-track__line { position: absolute; inset: 0 0 auto 0; height: 1px; background: rgba(12,25,33,.12); }
 	.dnr-track__done { position: absolute; left: 0; top: 0; height: 2px; width: 100%; background: #0c1921; transform-origin: 0 0; transform: scaleX(0); }
-	.dnr-track__runner { position: absolute; top: 3px; left: 12px; width: 18px; height: 20px; margin-left: -9px; }
+	.dnr-track__runner { position: absolute; top: 2px; left: 12px; width: 15px; height: 16px; margin-left: -7.5px; }
 	.dnr-track__runner svg { display: block; width: 100%; height: 100%; }
 	.dnr-track.is-moving .dnr-track__runner svg { animation: dnr-bob .32s ease-in-out infinite alternate; }
 	@keyframes dnr-bob { to { transform: translateY(-2px) rotate(-8deg); } }
