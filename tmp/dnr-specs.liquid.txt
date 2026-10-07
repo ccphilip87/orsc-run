@@ -1,7 +1,7 @@
 {%- comment -%}
   테크 스펙 (2026-10-07) — 밴딧 Tech specs 착안. 라인(Air Light / Air Swift)별로 값이 갈림.
   비침·통기 눈금은 실측값이 아니라 두 라인의 상대 위치. 무게는 Air Light만 (CREATIVE §2: 남 42g · 여 33g).
-  소재 혼용률은 확인 전이라 비워 둠. "심리스" 단독 클레임 금지(CREATIVE §2) → 등록 문장 "봉제선을 지우고, 힘 받는 곳만 남겼다"의 영문으로.
+  소재는 brand_arc §라인 스펙 기준 (Air Light 폴리 100% 80gsm / Air Swift 폴리 92%+스판 8% 메시). "심리스" 단독 클레임 금지(CREATIVE §2) → 등록 문장 "봉제선을 지우고, 힘 받는 곳만 남겼다"의 영문으로.
 {%- endcomment -%}
 {%- liquid
   assign parts = product.title | split: ' · '
@@ -32,6 +32,7 @@
       {%- if weight != '' -%}
       <div class="dnr-spec__row"><div class="k">Weight</div><div class="v">{{ weight }} <span class="mute">— lighter than a sip of water</span></div></div>
       {%- endif -%}
+      <div class="dnr-spec__row"><div class="k">Material</div><div class="v">{% if line_d == 'air light' %}100% polyester · 80gsm{% else %}92% polyester · 8% spandex · stretch mesh{% endif %}</div></div>
       <div class="dnr-spec__row"><div class="k">Sheerness<small>How much shows through</small></div>
         <div class="v"><div class="dnr-bar" style="--p:{{ sheer }}%"><i></i></div><div class="dnr-bar__ends"><span>Opaque</span><span>Sheer</span></div></div></div>
       <div class="dnr-spec__row"><div class="k">Airflow<small>Compared across our two lines</small></div>
