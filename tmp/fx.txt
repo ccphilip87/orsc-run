@@ -1,0 +1,120 @@
+{%- comment -%} 대소문자 정책(2026-10-06): 전체 대문자 표기 금지. 테마 기본 uppercase 해제 {%- endcomment -%}
+<style>
+	.footer-block__heading { text-transform: none !important; }
+
+	/* 상품 카드 리뉴얼 (2026-10-07): 연회색 누끼 카드 + 호버 시 크롭컷으로 페이드, 확대 없음 */
+	.dnr-card .media.media--portrait { padding-bottom: 125% !important; background: #f2f2f0; }
+	.dnr-card .media.media--hover-effect > img { transform: none !important; transition: opacity .35s ease !important; }
+	.dnr-card .media.media--hover-effect > img + img { opacity: 0; }
+	@media (hover: hover) {
+		.dnr-card:hover .media.media--hover-effect > img + img { opacity: 1; }
+		.dnr-card:hover .media.media--hover-effect > img:first-child:not(:only-of-type) { opacity: 0; }
+	}
+	.dnr-card .dnr-name { display: block; }
+	.dnr-card .dnr-sub { display: block; margin-top: .25em; font-size: .85em; opacity: .6; }
+
+	/* 폰트 (2026-10-07): Roboto Mono 전부 → Pretendard (카페24 한국몰과 통일) */
+	@font-face { font-family: 'Pretendard Variable'; src: url({{ 'PretendardVariable.woff2' | asset_url }}) format('woff2-variations'); font-weight: 45 920; font-display: swap; }
+	html:root {
+		--dnr-pretendard: 'Pretendard Variable', -apple-system, 'Helvetica Neue', sans-serif;
+		--font-header-menu-family: var(--dnr-pretendard);
+		--font-footer-menu-family: var(--dnr-pretendard);
+		--font-button-family: var(--dnr-pretendard);
+		--font-subtitle-family: var(--dnr-pretendard);
+		--font-badge-family: var(--dnr-pretendard);
+		--font-price-card-family: var(--dnr-pretendard);
+		--font-header-menu-letter-spacing: 0;
+	}
+	.dnr-local { font-family: var(--dnr-pretendard) !important; }
+
+	/* 가로 로고 (2026-10-07): 모바일 그리드 가운데 칸이 로고보다 좁아 로고가 오른쪽으로 삐져나가던 문제 → 칸을 로고 폭만큼 */
+	@media screen and (max-width: 1149px) {
+		.header-top .header-top__logo { display: flex; justify-content: center; min-width: max-content; }
+		/* 로고가 줄 높이(57px) 기준선에 앉아 6px가량 아래로 처져 보이던 것 → 가운데 맞춤 후 4px 끌어올림.
+		   햄버거 아이콘 오른쪽 여백이 Bag 쪽보다 넓어 보여 5px 왼쪽으로. 크기는 높이 +2px */
+		.header-top .header-top__logo .mobile-logos img.header__heading-logo { vertical-align: middle; width: 109px !important; height: auto; transform: translate(-5px, -4px); }
+	}
+
+	/* 스크롤 트랙 (2026-10-07): 화면 맨 위 1px 선 위를 원형 로고 도넛이 스크롤만큼 달림. 21.1km·42.195km 표시.
+	   지원 브라우저는 CSS 스크롤 연동, 나머지는 아래 스크립트가 위치를 맞춤. 클릭은 통과(pointer-events:none) */
+	.dnr-track { position: fixed; top: 0; left: 0; right: 0; height: 26px; z-index: 1000; pointer-events: none; }
+	.dnr-track__line { position: absolute; inset: 0 0 auto 0; height: 1px; background: rgba(12,25,33,.12); }
+	.dnr-track__done { position: absolute; left: 0; top: 0; height: 2px; width: 100%; background: #0c1921; transform-origin: 0 0; transform: scaleX(0); }
+	.dnr-track__runner { position: absolute; top: 3px; left: 12px; width: 18px; height: 20px; margin-left: -9px; }
+	.dnr-track__runner svg { display: block; width: 100%; height: 100%; }
+	.dnr-track.is-moving .dnr-track__runner svg { animation: dnr-bob .32s ease-in-out infinite alternate; }
+	@keyframes dnr-bob { to { transform: translateY(-2px) rotate(-8deg); } }
+	.dnr-track__km { position: absolute; top: 64px; font: 600 11px/1 var(--dnr-pretendard); background: #0c1921; color: #fff; border-radius: 10px; padding: 4px 8px; white-space: nowrap; opacity: 0; transition: opacity .4s; }
+	.dnr-track__km--half { left: 50%; transform: translateX(-50%); }
+	.dnr-track__km--fin { right: 12px; }
+	.dnr-track__km.is-on { opacity: 1; }
+	@supports (animation-timeline: scroll()) {
+		.dnr-track__done { animation: dnr-fill linear both; animation-timeline: scroll(root); }
+		.dnr-track__runner { animation: dnr-go linear both; animation-timeline: scroll(root); }
+		.dnr-track__km { transition: none; animation: linear both; animation-timeline: scroll(root); }
+		.dnr-track__km--half { animation-name: dnr-half; }
+		.dnr-track__km--fin { animation-name: dnr-fin; }
+	}
+	@keyframes dnr-fill { to { transform: scaleX(1); } }
+	@keyframes dnr-go { from { left: 12px; } to { left: calc(100% - 12px); } }
+	@keyframes dnr-half { 0%, 44% { opacity: 0; } 48%, 56% { opacity: 1; } 60%, 100% { opacity: 0; } }
+	@keyframes dnr-fin { 0%, 93% { opacity: 0; } 98%, 100% { opacity: 1; } }
+
+	/* 오로라 (2026-10-07): 컬렉션 상단 배너에만 제품 두 색(clear sky·hairy vetch)이 옅게 흐름. 상품 목록엔 없음 */
+	.dnr-aurora-host { position: relative; overflow: hidden; }
+	.dnr-aurora-host > *:not(.dnr-aurora) { position: relative; z-index: 1; }
+	.dnr-aurora { position: absolute; inset: -40% -10% -40% -10%; z-index: 0; pointer-events: none; }
+	.dnr-aurora i { position: absolute; border-radius: 50%; filter: blur(50px); }
+	.dnr-aurora i:nth-child(1) { width: 55%; height: 90%; left: 0; top: 0; background: rgba(127,184,224,.42); animation: dnr-a1 4s ease-in-out infinite alternate; }
+	.dnr-aurora i:nth-child(2) { width: 50%; height: 85%; right: 0; top: 10%; background: rgba(183,166,217,.42); animation: dnr-a2 5s ease-in-out infinite alternate; }
+	.dnr-aurora i:nth-child(3) { width: 40%; height: 70%; left: 30%; top: 20%; background: rgba(127,184,224,.24); animation: dnr-a3 6s ease-in-out infinite alternate; }
+	@keyframes dnr-a1 { to { transform: translate(45%, 10%) scale(1.2); } }
+	@keyframes dnr-a2 { to { transform: translate(-50%, -10%) scale(1.15); } }
+	@keyframes dnr-a3 { to { transform: translate(-30%, -20%) scale(.85); } }
+
+	@media (prefers-reduced-motion: reduce) {
+		.dnr-aurora i, .dnr-track__runner svg { animation: none !important; }
+	}
+</style>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var t = document.createElement('div');
+		t.className = 'dnr-track';
+		t.setAttribute('aria-hidden', 'true');
+		t.innerHTML = '<div class="dnr-track__line"></div><div class="dnr-track__done"></div>'
+			+ '<div class="dnr-track__runner"><svg aria-hidden="true" focusable="false" id="_레이어_3" data-name=" 레이어 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 55"> <g> <path d="M29.83,51.64c-4.12,1.43-8.94,1.64-13.12.39-1.73-.52-3.31-1.3-4.74-2.39-1.21-.93-2.15-2.07-2.85-3.43-.8-1.55-1.32-3.16-1.62-4.9-1.09-6.32.54-12.81,4.21-18.03,2.38-3.39,5.82-6.12,9.86-7.18,3.7-.97,7.12-1.01,10.76.22,3.64,1.23,6.44,3.71,8.18,7.02,1.84,3.48,2.73,7.31,2.13,11.24-.17,1.18-.49,2.26-.89,3.38-.93,2.63-2.16,5.16-3.75,7.46-2.01,2.9-4.85,5.06-8.18,6.22ZM22.15,28.48s.06.1.06.12l-.02.72c0,.41.22.68.65.7.6.02,1.24-.12,1.8-.37.38-.17.51-.61.34-.97-.53-1.07-.69-2.19-.6-3.38.1-1.41.3-2.76.57-4.14.07-.36.12-.72.12-1.09-.02-.51-.41-.87-.91-.83l-1.3.11c-.36.02-.71.19-1.01.36-.36.21-.44.58-.3.96.32.7.56,1.42.57,2.22,0,.05-.07.25-.12.22l-.22-.11c-.55-.61-1.29-.96-2.13-.93-2.31-.06-3.22,2-3.23,4.14,0,1.77.77,3.55,2.64,3.75.69.07,1.39,0,1.96-.41.62-.45.98-1.23,1.1-1.07l.02-.02ZM33.69,26.1c0-2.31-1.87-4.19-4.19-4.19s-4.19,1.87-4.19,4.19,1.87,4.19,4.19,4.19,4.19-1.87,4.19-4.19ZM34.39,35.94c-.56-.27-.19-1.77.02-2.57.04-.17.07-.48.26-.55.53-.22,1.25.05,1.57-.27.26-.26.31-.63.33-.98,0-.26-.18-.51-.46-.51h-.86c-.07,0-.19-.04-.24-.08-.03-.03-.07-.17-.06-.22l.25-1.09c.05-.23.03-.46-.11-.61-.12-.13-.32-.24-.52-.23-.36,0-.64.2-.83.48-.51.79-1.22,1.37-2.09,1.71-.56.22-.84.9-.58,1.45.14.29.69.09.88.3.06.06.09.26.07.33l-.49,1.71c-.17.6-.31,1.18-.32,1.81,0,.75.48,1.39,1.23,1.55.56.12,1.13.1,1.68-.03,1.39-.33,2.15-1.74,1.65-2.12-.3-.23-.83.18-1.38-.08v-.02ZM18.37,35.89c-.08.57-.17,1.12-.09,1.67.15,1.01,1.77,1.04,2.87.5.41-.21.57-.67.36-1.11-.25-.54-.42-1.09-.34-1.7l.22-1.67c.16-1.19-.17-2.28-1.32-2.7-1.33-.47-2.73.1-3.36,1.36-.08.06-.18.12-.24.14s-.15-.17-.15-.25l.06-.84c.07-.93-1.55-.72-2.46-.04-.31.23-.4.7-.22,1.04.5.99.61,2.05.38,3.13-.14.63-.41,1.19-.68,1.79-.14.32-.17.8.12,1.05.6.51,2.01.36,2.91.13.54-.13.91-.68.72-1.26-.32-.97-.47-1.95-.3-2.97.07-.4.19-.78.52-1.04.27-.21.72-.25.96.03.22.27.31.68.27,1.03l-.24,1.68v.02ZM29.7,34.82l.42-1.83c.09-.39.18-.78.17-1.18-.02-.37-.31-.67-.66-.7-.7-.07-1.41,0-2.05.22-.57.2-.8.77-.58,1.32.54,1.29.33,3.18-.7,3.45-.4.1-.78-.09-.89-.48-.08-.27-.15-.6-.09-.89l.33-1.51c.2-.89.41-2.02-.58-2.2-.84-.16-2.25-.12-2.58.57-.14.3-.07.6.07.89.33.66.32,1.42.19,2.15l-.31,1.71c-.08.83.37,1.62,1.18,1.87,1.36.42,2.75-.13,3.52-1.32.05-.08.29-.17.3-.09.1.62-.22,1.32.27,1.42.53.1,1.04-.02,1.54-.2.31-.11.62-.22.8-.51.36-.56-.61-1.46-.33-2.68v-.02ZM32.24,46.98c.68.27,1.48.16,2.08-.3.33-.26.36-.75.17-1.11-.29-.56-.45-1.12-.42-1.76l.1-2c.07-1.35-.44-2.6-1.84-2.67-.73-.03-1.38.22-1.81.82l-.58.84s-.15.12-.17.09-.07-.14-.07-.18l-.02-1.13c0-.22-.33-.39-.52-.37-.56.04-1.06.25-1.5.57-.38.29-.46.75-.26,1.17.5,1.06.64,2.2.31,3.32l-.35,1.25c-.18.29-.22.61-.07.94.39.71,1.62.74,2.44.57.66-.12.99-.72.8-1.38-.3-1.01-.47-2.03-.31-3.08.05-.35.16-.73.43-.94.2-.16.5-.18.71-.06.15.08.29.31.33.53.31,1.76-.91,4.29.55,4.86h0ZM19.64,45.32c.03.84.56,1.57,1.34,1.76,1,.24,1.96-.15,2.52-.98l.41-.61s.17-.09.19-.05c.02.03.06.13.06.17l-.03.79c0,.22.1.43.24.55.36.29,1.26-.07,1.79-.37.4-.22.58-.67.38-1.09-.62-1.28-.55-2.35-.29-3.71.19-.99.3-2.34-.66-2.41-.6-.04-1.2.07-1.73.36-.4.22-.6.65-.46,1.09l.21.66c.62,1.96-.12,3.65-.96,3.25-.75-.36-.54-1.89-.36-2.82s.28-2.24-.53-2.44c-.6-.15-1.23-.07-1.81.16-.5.2-.75.75-.51,1.24.39.81.52,1.66.35,2.55-.12.61-.18,1.23-.16,1.89v.02ZM13.7,47.22c1.04.21,2.72.17,3.02-.7.12-.34,0-.7-.18-1.01-.53-.87-.75-1.86-.52-2.86.07-.28.28-.57.54-.66.6-.22.81.94,1.54.61.85-.37,1.06-1.82.65-2.58-.24-.45-.76-.65-1.28-.56s-1.02.41-1.28.89l-.51.94s-.15.15-.18.11c-.02-.03-.09-.15-.08-.2l.03-.83c0-.22-.09-.45-.22-.56-.38-.31-1.21.04-1.75.36-.48.29-.57.82-.34,1.3.56,1.18.6,2.45.21,3.69l-.31.96c-.16.51.12.99.65,1.1h.02Z"/> <path d="M20.86,27.78c-.46.17-.96-.11-1.13-.55-.51-1.34-.2-3.25.94-3.21.32,0,.65.23.79.58.41,1.07.28,2.87-.6,3.17Z"/> <path d="M29.68,27.34c-.48.13-.87-.19-1.06-.6-.44-.99-.27-2.51.54-2.92.41-.21.87,0,1.1.39.6,1.03.5,2.85-.59,3.14h0Z"/> </g> </svg></div>'
+			+ '<div class="dnr-track__km dnr-track__km--half">21.1 km</div>'
+			+ '<div class="dnr-track__km dnr-track__km--fin">42.195 km · Finish</div>';
+		document.body.appendChild(t);
+
+		var cssLinked = window.CSS && CSS.supports('animation-timeline: scroll()');
+		var done = t.querySelector('.dnr-track__done'), run = t.querySelector('.dnr-track__runner');
+		var half = t.querySelector('.dnr-track__km--half'), fin = t.querySelector('.dnr-track__km--fin');
+		var stop, ticking = false;
+		function place() {
+			ticking = false;
+			var max = document.documentElement.scrollHeight - innerHeight;
+			var p = max > 0 ? Math.min(1, scrollY / max) : 0;
+			done.style.transform = 'scaleX(' + p + ')';
+			run.style.left = (12 + p * (innerWidth - 24)) + 'px';
+			half.classList.toggle('is-on', p > .47 && p < .58);
+			fin.classList.toggle('is-on', p > .97);
+		}
+		addEventListener('scroll', function () {
+			t.classList.add('is-moving');
+			clearTimeout(stop);
+			stop = setTimeout(function () { t.classList.remove('is-moving'); }, 180);
+			if (!cssLinked && !ticking) { ticking = true; requestAnimationFrame(place); }
+		}, { passive: true });
+		if (!cssLinked) { addEventListener('resize', place); place(); }
+
+		document.querySelectorAll('.collection-banner').forEach(function (b) {
+			var a = document.createElement('div');
+			a.className = 'dnr-aurora';
+			a.setAttribute('aria-hidden', 'true');
+			a.innerHTML = '<i></i><i></i><i></i>';
+			b.classList.add('dnr-aurora-host');
+			b.insertBefore(a, b.firstChild);
+		});
+	});
+</script>
