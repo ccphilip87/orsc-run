@@ -1,0 +1,76 @@
+{%- comment -%}
+  테크 스펙 (2026-10-07) — 밴딧 Tech specs 착안. 라인(Air Light / Air Swift)별로 값이 갈림.
+  비침·통기 눈금은 실측값이 아니라 두 라인의 상대 위치. 무게는 Air Light만 (CREATIVE §2: 남 42g · 여 33g).
+  소재는 brand_arc §라인 스펙 기준 (Air Light 폴리 100% 80gsm / Air Swift 폴리 92%+스판 8% 메시). "심리스" 단독 클레임 금지(CREATIVE §2) → 등록 문장 "봉제선을 지우고, 힘 받는 곳만 남겼다"의 영문으로.
+{%- endcomment -%}
+{%- liquid
+  assign parts = product.title | split: ' · '
+  assign line = parts[1]
+  assign line_d = line | downcase
+  assign gender = parts[2] | split: '(' | last | remove: ')'
+  if line_d == 'air light'
+    assign sheer = 12
+    assign air = 45
+    if gender == 'men'
+      assign weight = '42g'
+    else
+      assign weight = '33g'
+    endif
+  else
+    assign sheer = 72
+    assign air = 90
+    assign weight = ''
+  endif
+-%}
+{%- if parts.size == 3 -%}
+<section class="dnr-spec" aria-label="Tech specs">
+  <div class="dnr-spec__in">
+    <div class="dnr-spec__col">
+      <h2>Tech specs</h2>
+      <div class="dnr-spec__row"><div class="k">Line</div><div class="v">{{ line }} — racing singlet<br><span class="mute">{% if line_d == 'air light' %}Opaque, nothing shows.{% else %}Mesh, air moves through.{% endif %}</span></div></div>
+      <div class="dnr-spec__row"><div class="k">Fit<small>Asian fit</small></div><div class="v">Shorter body, closer through the chest.<br>No flapping at race pace.</div></div>
+      {%- if weight != '' -%}
+      <div class="dnr-spec__row"><div class="k">Weight</div><div class="v">{{ weight }} <span class="mute">— lighter than a sip of water</span></div></div>
+      {%- endif -%}
+      <div class="dnr-spec__row"><div class="k">Material</div><div class="v">{% if line_d == 'air light' %}100% polyester · 80gsm{% else %}92% polyester · 8% spandex · stretch mesh{% endif %}</div></div>
+      <div class="dnr-spec__row"><div class="k">Sheerness<small>How much shows through</small></div>
+        <div class="v"><div class="dnr-bar" style="--p:{{ sheer }}%"><i></i></div><div class="dnr-bar__ends"><span>Opaque</span><span>Sheer</span></div></div></div>
+      <div class="dnr-spec__row"><div class="k">Airflow<small>Compared across our two lines</small></div>
+        <div class="v"><div class="dnr-bar" style="--p:{{ air }}%"><i></i></div><div class="dnr-bar__ends"><span>Less</span><span>More</span></div></div></div>
+      <div class="dnr-spec__row"><div class="k">Care</div><div class="v">Hand wash cold · No bleach · Dry in shade · Iron on low heat<br><span class="mute">Machine wash: always use a laundry bag.</span></div></div>
+    </div>
+    <div class="dnr-spec__col">
+      <h2>Functionality</h2>
+      <div class="dnr-fn"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 6l-6 6 4 4v18h20V16l4-4-6-6c-2 3-5 4-8 4s-6-1-8-4z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 12l4 4M32 12l-4 4M10 30h20" stroke="currentColor" stroke-width="3"/></svg><div><b>Seams erased, strength kept</b><p>We erased the seams and kept strength only where it pulls — the shoulder and waist.</p></div></div>
+      {%- if line_d == 'air light' -%}
+      <div class="dnr-fn"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="8" width="24" height="24" rx="3" fill="currentColor" opacity=".85"/></svg><div><b>Nothing shows</b><p>Opaque knit. Nothing shows through, start to finish.</p></div></div>
+      {%- else -%}
+      <div class="dnr-fn"><svg viewBox="0 0 40 40" aria-hidden="true"><g fill="currentColor">{% for y in (0..4) %}{% for x in (0..4) %}<circle cx="{{ x | times: 6 | plus: 8 }}" cy="{{ y | times: 6 | plus: 8 }}" r="1.6"/>{% endfor %}{% endfor %}</g></svg><div><b>Air moves through</b><p>Open mesh knit. Air moves through, heat moves out.</p></div></div>
+      {%- endif -%}
+      <div class="dnr-fn"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 5v5M20 30v5M5 20h5M30 20h5M9 9l3.5 3.5M27.5 27.5L31 31M9 31l3.5-3.5M27.5 12.5L31 9" stroke="currentColor" stroke-width="1.5"/></svg><div><b>Reflective logo</b><p>A reflective chest logo, awake when headlights find it.</p></div></div>
+    </div>
+  </div>
+</section>
+<style>
+  .dnr-spec { background: #141414; color: #f2f2f0; padding: 56px 20px; }
+  .dnr-spec__in { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; }
+  .dnr-spec h2 { font: 500 28px/1.1 var(--font-heading-family); margin: 0 0 28px; color: #fff; }
+  .dnr-spec__row { display: grid; grid-template-columns: 180px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid rgba(255,255,255,.14); font-size: 14px; line-height: 1.5; }
+  .dnr-spec__row .k { font-weight: 600; }
+  .dnr-spec__row .k small { display: block; font-weight: 400; opacity: .55; font-size: 12px; margin-top: 2px; }
+  .dnr-spec .mute { opacity: .55; }
+  .dnr-bar { height: 18px; margin-top: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 1px, transparent 1px 7px); position: relative; }
+  .dnr-bar i { position: absolute; inset: 0 auto 0 0; width: var(--p); background: repeating-linear-gradient(90deg, #b9a8db 0 2px, transparent 2px 7px); }
+  .dnr-bar__ends { display: flex; justify-content: space-between; font-size: 12px; opacity: .55; margin-top: 6px; }
+  .dnr-fn { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: start; padding: 14px 0; }
+  .dnr-fn svg { width: 56px; height: 56px; padding: 8px; border-radius: 50%; background: rgba(255,255,255,.06); color: #f2f2f0; }
+  .dnr-fn b { display: block; font-size: 14px; margin: 6px 0 4px; }
+  .dnr-fn p { margin: 0; font-size: 14px; opacity: .7; line-height: 1.5; }
+  /* 테마 기본 p 색(#060606)이 검은 배경 위에 안 보이던 문제 → 섹션 안 글자는 전부 밝은 색 상속 */
+  .dnr-spec p, .dnr-spec b, .dnr-spec span, .dnr-spec div, .dnr-spec small { color: inherit !important; }
+  @media (max-width: 989px) {
+    .dnr-spec__in { grid-template-columns: 1fr; gap: 40px; }
+    .dnr-spec__row { grid-template-columns: 120px 1fr; }
+  }
+</style>
+{%- endif -%}
