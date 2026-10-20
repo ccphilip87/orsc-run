@@ -54,7 +54,7 @@
     .dnr-dense__item { height: calc(145svh - 52px); }
     .dnr-dense__field { margin-bottom: -110svh; }   /* 상품 줄을 10svh 위로 (items에 음수 margin-top을 주면 이 -100svh와 겹쳐 사라짐) */
     .dnr-dense__items, .dnr-dense__item, .dnr-dense__stage { pointer-events: none; }
-    .dnr-dense__obj { pointer-events: auto; }
+    .dnr-dense__obj, .dnr-dense__all { pointer-events: auto; }   /* 옷 링크·see all은 그대로 눌림 (설명은 .is-on일 때 따로 켜짐) */
   }
   .dnr-dense__stage { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; padding-top: 60px; box-sizing: border-box; }   /* 위에 떠 있는 헤더(60px)만큼 내림 */
   .dnr-dense__stage { --shift: 20vw; }
