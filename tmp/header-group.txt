@@ -1,0 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:sections.header.settings.header-group.label",
+  "sections": {
+    "countdown_timer_bar_fcH9kh": {
+      "type": "countdown-timer-bar",
+      "disabled": true,
+      "settings": {
+        "height": 40,
+        "height_mobile": 50,
+        "color_scheme": "background-2",
+        "promo_text": "6월 30일 오픈 · 도넛런 메일 받기 →",
+        "date_picker": "2026-06-30",
+        "time_picker": "00:00",
+        "countdown_block_font": "h5",
+        "completed_countdown": "show_text",
+        "countdown_heading": "DROP 01 Sold Out — DROP 02 9월 예정",
+        "button_label": "Explore more",
+        "button_link": "",
+        "button_style": "tertiary",
+        "button_arrow": true,
+        "overlay_mobile_link": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_collection_DgC6LC": {
+          "type": "mega_menu_collection",
+          "settings": {
+            "menu_trigger": "menu",
+            "first_promo_trigger": "",
+            "second_promo_trigger": "",
+            "third_promo_trigger": "",
+            "fourth_promo_trigger": "",
+            "fifth_promo_trigger": "",
+            "sixth_promo_trigger": "",
+            "seventh_promo_trigger": "",
+            "eighth_promo_trigger": "",
+            "ninth_promo_trigger": "",
+            "tenth_promo_trigger": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_collection_DgC6LC"
+      ],
+      "settings": {
+        "full_width": true,
+        "height": 60,
+        "color_scheme_bg": "background-1",
+        "header_enable_border_bottom": false,
+        "logo": "shopify://shop_images/dnr_logo_hop_3s.svg",
+        "logo_width": 140,
+        "logo_mobile": "shopify://shop_images/dnr_logo_hop_3s.svg",
+        "mobile_logo_width": 110,
+        "header_overlay": true,
+        "header_overlay_with_background": true,
+        "scroll_color": false,
+        "menu": "main-menu-about-first",
+        "color_scheme": "",
+        "enable_country_selector": false,
+        "show_country_flag": false,
+        "enable_language_selector": true,
+        "sticky_header_type": "always",
+        "logo_position": "center",
+        "button_type": "text",
+        "enable_search": false
+      }
+    }
+  },
+  "order": [
+    "countdown_timer_bar_fcH9kh",
+    "header"
+  ]
+}
