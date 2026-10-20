@@ -62,7 +62,7 @@
         "logo": "shopify://shop_images/dnr_logo_hop_3s.svg",
         "logo_width": 140,
         "logo_mobile": "shopify://shop_images/logo_toppadding2.svg",
-        "mobile_logo_width": 44,
+        "mobile_logo_width": 50,
         "header_overlay": true,
         "header_overlay_with_background": true,
         "scroll_color": false,
