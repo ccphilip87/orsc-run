@@ -52,10 +52,10 @@
     box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 22px 50px -18px rgba(60,40,10,.55); z-index: 2; }
   .mag-cover > a { position: absolute; inset: 0; display: block; color: inherit; text-decoration: none; }
   .mag-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .mag-cover--back { position: absolute; z-index: 1; transform: translate(34%, 2%) rotate(7deg); filter: brightness(.94); display: none; }
+  .mag-cover--back { position: absolute; z-index: 1; filter: brightness(.94); display: none; }
   @media (min-width: 900px) {
     .mag-cover { transform: rotate(-2.2deg); }
-    .mag-cover--back { display: block; }
+    .mag-cover--back { display: block; transform: translate(42%, 3%) rotate(6deg); }
   }
   .mag-mast { position: absolute; left: 0; right: 0; top: 0; padding: 3.2% 5% 0; z-index: 2; }
   .mag-mast__name { margin: 0; font: italic 900 clamp(58px, 19.5cqw, 140px)/.82 var(--disp); letter-spacing: -.035em; color: var(--red);
@@ -109,7 +109,6 @@
   .mag-copy h2 { margin: 0 0 14px; font: italic 900 clamp(44px, 7vw, 86px)/.92 var(--disp); letter-spacing: -.03em; }
   .mag-copy .deck { margin: 0 0 22px; font: italic 400 19px/1.45 var(--serif); padding-bottom: 18px; border-bottom: 3px double var(--ink); }
   .mag-copy .body { margin: 0 0 14px; font: 400 16.5px/1.65 var(--serif); }
-  @media (min-width: 1000px) { .mag-copy .cols { columns: 2; column-gap: 26px; } .mag-copy .body { break-inside: avoid-column; } }
   .mag-copy .drop::first-letter { float: left; font: 900 64px/.8 var(--disp); color: var(--red); margin: 6px 8px 0 0; }
   .mag-spec { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; margin-top: 22px; padding: 14px; border: 1.5px solid var(--ink); background:
     radial-gradient(rgba(29,26,22,.13) 1px, transparent 1.4px) 0 0 / 6px 6px, #fbf5e6; }
