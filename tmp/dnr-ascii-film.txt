@@ -1,0 +1,153 @@
+{%- comment -%}
+  아스키 필름 히어로 (2026-10-21) — 테마 "2026-10-21 아스키 필름 (test)"
+  - 정장 입은 남자의 밤(사무실·휴대폰·역·현관·터널) → 뛰기 → 새벽 다리. 36초, 끝나면 마지막 문장 2.5초 뒤 반복.
+  - 영상(Files: dnr_ascii_film_v5.mp4, 0.6MB, 3번은 계단을 등지고 어둠 쪽으로 천천히 걸어옴)을 브라우저가 실시간으로 글자로 바꿔 그림. 원본: web/ascii_film_2026-10-21/
+  - 밤: 검은 바탕에 밝은 곳만 글자 / 뛰기 시작(25초)부터 종이색으로 뒤집히고 듬성듬성 / 새벽(31초~) 하늘에만 파란 글자.
+  - 6번(뛰는 장면)은 아직 자리표시 영상. 실제 촬영으로 교체 예정.
+  - 이 섹션 아래 덴스 타이포 섹션의 원래 히어로(찢어진 종이·강물)는 숨김.
+{%- endcomment -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  .dnr-dense__hero { display: none; }
+  .dnr-film { position: relative; height: calc(100svh - 60px); background: #111214; cursor: pointer; overflow: hidden; }
+  .dnr-film canvas { display: block; width: 100%; height: 100%; }
+  .dnr-film video { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .dnr-film__end { position: absolute; left: 0; right: 0; bottom: 14%; display: grid; place-items: center; font: 600 clamp(15px, 2.2vw, 26px) 'IBM Plex Mono', ui-monospace, monospace;
+    color: #16191c; opacity: 0; transition: opacity 1.4s; pointer-events: none; }
+  .dnr-film__end span { background: #f2f2f0; padding: 6px 12px; }
+  .dnr-film__end.on { opacity: 1; }
+</style>
+<section class="dnr-film" id="dnrFilm" aria-label="정장 입은 사람이 밤새 혼자였다가 새벽에 뛰는 짧은 영상을 글자로 옮김">
+  <canvas id="dnrFilmArt"></canvas>
+  <video id="dnrFilmSrc" src="https://cdn.shopify.com/s/files/1/0829/4973/4621/files/dnr_ascii_film_v5.mp4?v=1792569581" crossorigin="anonymous" muted playsinline autoplay preload="auto"></video>
+  <div class="dnr-film__end" id="dnrFilmEnd"><span>i do nut run for something.</span></div>
+</section>
+<script>
+(function(){
+
+// 밤 장면(0~25초): 어두운 화면에 밝은 곳만 글자로 → 무겁고 답답함
+// 뛰기 시작(25초~): 종이색으로 뒤집히고 글자가 듬성듬성 → 숨통이 트임. 마지막 장면(31초~)에만 하늘에 파란 글자.
+const RUN_AT = 25, DAWN_AT = 31, END_AT = 33.5;
+const sec = document.getElementById('dnrFilm'), cv = document.getElementById('dnrFilmArt'), ctx = cv.getContext('2d');
+const vid = document.getElementById('dnrFilmSrc');
+let onScreen = true;
+new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(sec);
+const sm = document.createElement('canvas'), sx = sm.getContext('2d', { willReadFrequently: true });
+const BAYER = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map(v => (v + .5) / 16);
+const SX = 3, SY = 6, K = SX * SY;
+const SHAPES = ".,'`-_~\"|/\\()";
+let W, H, cols, rows, fs, cw, lh, dpr, glyphs = [], prev = null, lo = 0, hi = 255;
+
+function buildGlyphs() {
+  const s = 4, gc = document.createElement('canvas'), gx = gc.getContext('2d', { willReadFrequently: true });
+  gc.width = Math.round(cw * s); gc.height = Math.round(lh * s);
+  gx.font = `600 ${fs * s}px 'IBM Plex Mono', ui-monospace, Menlo, monospace`; gx.textBaseline = 'top';
+  glyphs = [];
+  for (const ch of SHAPES) {
+    gx.clearRect(0, 0, gc.width, gc.height); gx.fillStyle = '#000'; gx.fillText(ch, 0, 0);
+    const a = gx.getImageData(0, 0, gc.width, gc.height).data, v = new Float32Array(K);
+    for (let y = 0; y < gc.height; y++) for (let x = 0; x < gc.width; x++) {
+      const k = Math.min(SY - 1, Math.floor(y / gc.height * SY)) * SX + Math.min(SX - 1, Math.floor(x / gc.width * SX));
+      v[k] += a[(y * gc.width + x) * 4 + 3];
+    }
+    const mx = Math.max(...v); if (!mx) continue;
+    for (let k = 0; k < K; k++) v[k] /= mx;
+    glyphs.push([ch, v]);
+  }
+}
+
+function fit() {
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  cols = W < 600 ? 78 : W < 1100 ? 120 : 160;
+  cw = W / cols; fs = cw / 0.6; lh = fs * 0.98;
+  rows = Math.ceil(H / lh);
+  sm.width = cols * SX; sm.height = rows * SY; prev = null;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.font = `600 ${fs}px 'IBM Plex Mono', ui-monospace, Menlo, monospace`;
+  ctx.textBaseline = 'top';
+  buildGlyphs();
+}
+new ResizeObserver(fit).observe(cv);
+
+const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+const NIGHT_BG = [17, 18, 20], NIGHT_INK = [214, 216, 220], PAPER = [242, 242, 240], INK = [22, 25, 28];
+
+function frame() {
+  requestAnimationFrame(frame);
+  if (!onScreen || vid.readyState < 2 || !glyphs.length) return;
+  const t = vid.currentTime;
+  const day = Math.min(1, Math.max(0, (t - RUN_AT) / 1.2));         // 0 밤 → 1 종이
+  const bg = mix(NIGHT_BG, PAPER, day), ink = mix(NIGHT_INK, INK, day);
+  sec.style.background = rgb(bg);
+  document.getElementById('dnrFilmEnd').classList.toggle('on', t > END_AT);
+
+  const vw = vid.videoWidth, vh = vid.videoHeight, gridAspect = (cols * cw) / (rows * lh);
+  let cwid = vw, chei = vw / gridAspect;
+  if (chei > vh) { chei = vh; cwid = vh * gridAspect; }
+  sx.filter = 'blur(.6px)';
+  sx.drawImage(vid, (vw - cwid) / 2, (vh - chei) / 2, cwid, chei, 0, 0, sm.width, sm.height);
+  const d = sx.getImageData(0, 0, sm.width, sm.height).data, n = sm.width * sm.height;
+  const L = new Float32Array(n);
+  let flo = 255, fhi = 0;
+  for (let i = 0; i < n; i++) { const v = .3 * d[i*4] + .59 * d[i*4+1] + .11 * d[i*4+2]; L[i] = v; if (v < flo) flo = v; if (v > fhi) fhi = v; }
+  lo = lo * .85 + flo * .15; hi = hi * .85 + fhi * .15;
+  if (prev && prev.length === n) for (let i = 0; i < n; i++) L[i] = prev[i] * .45 + L[i] * .55;
+  prev = L;
+  const span = Math.max(30, hi - lo), sw = sm.width;
+  // 밤: 밝은 곳에 글자(빽빽하게) / 낮: 어두운 곳에 글자(듬성듬성)
+  const night = day < .5, gamma = night ? .8 : 2.1;
+  ctx.fillStyle = rgb(bg); ctx.fillRect(0, 0, W, H);
+  const accents = [], v = new Float32Array(K);
+  for (let r = 0; r < rows; r++) {
+    let line = '';
+    for (let c = 0; c < cols; c++) {
+      let mn = 1, mx = 0, mean = 0;
+      for (let y = 0; y < SY; y++) for (let x = 0; x < SX; x++) {
+        const b = Math.min(1, Math.max(0, (L[(r * SY + y) * sw + c * SX + x] - lo) / span));
+        const q = night ? Math.max(0, (b - .1) / .9) : 1 - b;   // 밤: 아주 어두운 바닥 노이즈는 버림
+        v[y * SX + x] = q; mean += q; if (q < mn) mn = q; if (q > mx) mx = q;
+      }
+      mean /= K;
+      let ch = ' ';
+      if (mx - mn > .32) {
+        const rg = mx - mn; let best = Infinity;
+        for (const [g, gv] of glyphs) {
+          let e = 0; for (let k = 0; k < K; k++) { const q = (v[k] - mn) / rg - gv[k]; e += q * q; }
+          if (e < best) { best = e; ch = g; }
+        }
+      } else {
+        const tt = Math.pow(mean, gamma);
+        if (tt > BAYER[(r & 3) * 4 + (c & 3)]) ch = tt > .9 ? '#' : tt > .55 ? '/' : tt > .3 ? '-' : '.';
+      }
+      if (t > DAWN_AT && ch !== ' ' && (r * 31 + c * 17) % 7 === 0) {
+        const pi = ((r * SY + 3) * sw + c * SX + 1) * 4, R = d[pi], G = d[pi+1], B = d[pi+2];
+        if (B > R + 18 && B >= G) { accents.push([c, r, ch]); ch = ' '; }
+      }
+      line += ch;
+    }
+    ctx.fillStyle = rgb(ink); ctx.fillText(line, 0, r * lh);
+  }
+  ctx.fillStyle = '#1f5fd0';
+  for (const [c, r, ch] of accents) ctx.fillText(ch, c * cw, r * lh);
+}
+
+document.fonts.ready.then(() => { fit(); vid.play().catch(() => {}); frame(); });
+// 끝나면 마지막 문장을 잠깐 보여준 뒤 처음부터 반복 (서버가 구간 요청을 못 받아도 되게 load()로 다시 시작)
+function restart() { prev = null; vid.load(); vid.play().catch(() => {}); }
+let holdTimer;
+vid.addEventListener('ended', () => { clearTimeout(holdTimer); holdTimer = setTimeout(restart, 2500); });
+sec.addEventListener('click', () => { clearTimeout(holdTimer); restart(); });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "아스키 필름",
+  "settings": [],
+  "presets": [{ "name": "아스키 필름" }]
+}
+{% endschema %}
