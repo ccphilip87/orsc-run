@@ -330,7 +330,7 @@
     ctx.drawImage(grain[gi = reduce ? 0 : 1 - gi], 0, 0);
   }
   new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
-  /* 글자 표지: 시간차를 두고 1~2개씩 타자로 찍힘. 다 찍힌 뒤에는 5~8초마다 1~2개를 지웠다 다시 찍음. 동작 줄이기면 처음부터 다 보임 */
+  /* 글자 표지: 1개 → 2개 → 1개 → 2개 번갈아 타자로 찍힘(사이 0.6~1.8초 랜덤). 다 찍힌 뒤에도 4~8초 랜덤 간격으로 1개·2개 번갈아 지웠다 다시 찍음. 동작 줄이기면 처음부터 다 보임 */
   {
     const labs = [...document.querySelectorAll('.dnr-lab')].map(el => { const full = el.innerHTML.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim(); el.textContent = ''; const tx = document.createElement('i'); tx.className = 'tx'; el.appendChild(tx); return { el, tx, full }; });
     const shown = () => labs.filter(l => getComputedStyle(l.el).display !== 'none');
@@ -341,9 +341,10 @@
     else (async () => {
       await wait(700);
       const order = shown().sort(() => Math.random() - .5);
-      while (order.length){ const g = order.splice(0, Math.random() < .5 ? 1 : 2); await Promise.all(g.map(type)); await wait(500 + Math.random()*700); }
-      for (;;){ await wait(5000 + Math.random()*3000); if (!visible) continue;
-        const pool = shown().sort(() => Math.random() - .5).slice(0, Math.random() < .5 ? 1 : 2);
+      let n = 1;                                                    // 1개 → 2개 → 1개 → 2개 … 번갈아, 사이는 0.6~1.8초 랜덤
+      while (order.length){ const g = order.splice(0, n); n = 3 - n; await Promise.all(g.map(type)); await wait(600 + Math.random()*1200); }
+      for (;;){ await wait(4000 + Math.random()*4000); if (!visible) continue;
+        const pool = shown().sort(() => Math.random() - .5).slice(0, n); n = 3 - n;
         await Promise.all(pool.map(async l => { await erase(l); await wait(250); await type(l); })); }
     })();
   }
