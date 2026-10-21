@@ -127,7 +127,7 @@
       <canvas id="dnrArt" role="img" aria-label="찢어진 종이 왼쪽으로 파란 강물이 반짝이고, 오른쪽 종이 위에는 언덕과 갈대, 흐르는 강이 글자로 그려져 있다"></canvas>
       <div class="dnr-collage" id="dnrCollage">
         {%- comment -%} 아래로 갈수록 위에 쌓임. --i = 붙는 순서, --d = 마우스 따라 움직이는 깊이(데스크톱만)
-          쌓임 규칙(혜선, 2026-10-21 저녁 갱신): 맨 위 모델(--z:5) → 검정 7% 레이어(.dnr-dim, z5, DOM에서 모델 앞) → 파란 슬로건(z4, 검정 레이어 바로 앞 = 다른 조각 위) → 나머지 조각(z ≤4, DOM에서 슬로건보다 앞) {%- endcomment -%}
+          쌓임 규칙(혜선, 2026-10-21 저녁 갱신): 맨 위 모델(--z:5) → 검정 7% 레이어(.dnr-dim, z5, DOM에서 모델 앞) → 파란 슬로건(z4, 조각 목록 맨 끝 = 같은 z4 조각들보다 위) → 나머지 조각(z ≤4). 검정 레이어(z5)가 슬로건·조각 전부를 덮음 {%- endcomment -%}
         <img class="dnr-pc" src="{{ 'dnr-collage-alpine.webp' | asset_url }}" alt="" width="900" height="1048" data-mobile="off" style="--i:0;--d:.15;--z:1;--x:69.5%;--y:27%;--w:11.5%;--r:-6deg;--mx:0;--my:0;--mw:0;--mr:0deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-map.webp' | asset_url }}" alt="" width="800" height="979" style="--i:1;--d:.2;--mz:1;--z:1;--x:52%;--y:48%;--w:20%;--r:6deg;--mx:58%;--my:38%;--mw:42%;--mr:6deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-checker.webp' | asset_url }}" alt="" width="1500" height="281" style="--i:2;--d:.2;--mz:1;--z:1;--x:10%;--y:59%;--w:52%;--r:-7deg;--mx:-12%;--my:50%;--mw:120%;--mr:-9deg">
@@ -140,12 +140,12 @@
         <img class="dnr-pc" src="{{ 'dnr-collage-footprints.webp' | asset_url }}" alt="" width="600" height="1297" style="--i:9;--d:.5;--mz:2;--z:2;--x:18.7%;--y:70.8%;--w:8.5%;--r:-100deg;--mx:85%;--my:56%;--mw:15%;--mr:14deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-badge.webp' | asset_url }}" alt="we run to run" width="631" height="658" style="--i:10;--d:.55;--z:3;--mz:3;--x:62.5%;--y:16%;--w:9.5%;--r:-10deg;--mx:-4%;--my:40%;--mw:25%;--mr:-9deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-neon.webp' | asset_url }}" alt="do nut run" width="1072" height="531" style="--i:11;--d:.35;--mz:3;--z:3;--x:3%;--y:9%;--w:19%;--r:-8deg;--mx:-2%;--my:10%;--mw:40%;--mr:-7deg">
-        <img class="dnr-pc" src="{{ 'dnr-collage-slogan-stack.webp' | asset_url }}" alt="i do nut run for something" width="1100" height="1082" style="--i:16;--d:.3;--z:4;--mz:4;--x:68%;--y:61.5%;--w:15%;--r:-3deg;--mx:45%;--my:63%;--mw:46%;--mr:3deg">
         <div class="dnr-dim" aria-hidden="true"></div>
         <img class="dnr-pc dnr-pc--person" src="{{ 'dnr-collage-person.webp' | asset_url }}" alt="A runner stretching in a clear sky singlet" width="945" height="2000" fetchpriority="high" style="--i:12;--d:.15;--z:5;--x:30.55%;--y:6%;--h:147%;--r:0deg;--mx:11%;--my:17%;--mh:116%;--mr:0deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-tagline.webp' | asset_url }}" alt="Running wear for people who just run" width="1100" height="156" style="--i:13;--d:.35;--mz:4;--z:4;--x:4%;--y:76%;--w:25%;--r:-4deg;--mx:8%;--my:1.5%;--mw:62%;--mr:-3deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-medal.webp' | asset_url }}" alt="" width="322" height="408" data-mobile="off" style="--i:14;--d:.7;--mz:3;--z:4;--x:71.5%;--y:-1.5%;--w:6.2%;--r:-8deg;--mx:0;--my:0;--mw:0;--mr:0deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-hare.webp' | asset_url }}" alt="" width="1100" height="613" style="--i:15;--d:.65;--mz:4;--z:4;--x:83.5%;--y:69%;--w:12.5%;--r:-8deg;--mx:62%;--my:66%;--mw:36%;--mr:-9deg">
+        <img class="dnr-pc" src="{{ 'dnr-collage-slogan-stack.webp' | asset_url }}" alt="i do nut run for something" width="1100" height="1082" style="--i:16;--d:.3;--z:4;--mz:4;--x:68%;--y:61.5%;--w:15%;--r:-3deg;--mx:45%;--my:63%;--mw:46%;--mr:3deg">
       </div>
     </div>
     <div class="dnr-dense__cap"><span>ss26</span><span>set in do nut run</span></div>
