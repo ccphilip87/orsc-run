@@ -1,0 +1,623 @@
+{%- comment -%}
+  픽셀 윤슬 히어로 (2026-10-21) — 콜라주 판(web/theme_collage_2026-10-20)에서 첫 화면만 다른 컨셉으로 바꿈. 상품 영역·스크롤 동작은 그대로.
+  - 2026-10-21 하루 사이클: 11시·노을·밤·새벽 그림을 12초에 한 바퀴 섞음, 해가 움직임, 낮 = 여자 모델 / 노을~밤 = 남자 모델. &dnr_tod=day|sunset|night 이면 멈춤
+  - 2026-10-21 3차: 배경을 혜선이 준 강가 사진(윤슬·라일락 들꽃)을 참고 이미지 색감으로 보정해 픽셀화한 것으로. 칸 = 2차의 절반. 물결 고리 모션 뺌 → 윤슬 반짝임. 글자는 1~2개씩 타자. 모델은 하늘하늘 부유
+  - 배경(1·2차): 정사각 칸 모자이크(참고 이미지 구도: 위 = 가로 물결 띠, 아래 = 세로 줄기) + 거친 입자. 색 = 참고 이미지(강가 사진 픽셀화) 분석 — 위 하늘·물 연한 하늘색, 가운데 윤슬 흰 띠, 아래 강가 풀 연두·초록, 드물게 라일락
+  - 움직임: 물결이 흐르며 칸 색이 계단식으로 바뀜(약 8fps), 밝은 칸이 윤슬처럼 반짝, 마우스·손가락 자리에서 물결 고리가 퍼짐, 입자 두 장 번갈아
+  - 글자 표지: About 페이지 문장에서 골라 ■ 표지와 함께 흩어 놓음(일부 세로). 대문자 전체 표기 금지 정책 → 소문자. 모두 모델 뒤
+  - 모델 사진(dnr-collage-person.webp)은 콜라주 판과 같은 자리·같은 움직임(떠다님, 클릭하면 흔들림). 콜라주 조각·검정 레이어는 뺌
+  - 콜라주 판 원본 = sections/dnr-dense-home.v0_from_collage.liquid
+{%- endcomment -%}
+{%- liquid
+  assign coll = collections[section.settings.collection]
+  if coll == blank
+    assign coll = collections['all']
+  endif
+-%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+<style>
+  body:has(.dnr-dense) { background: #f2f2f0; }
+  .dnr-dense { --paper:#f2f2f0; --ink:#16191c; --soft:#6b6f72; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; color: var(--ink); background: var(--paper); }
+  .dnr-dense__hero { position: relative; }
+  .dnr-dense__hero canvas { display: block; width: 100%; touch-action: pan-y; }
+  .dnr-dense__cap { display: flex; justify-content: space-between; padding: 10px 16px 0; font: 500 11px/1.4 var(--mono); color: var(--soft); }
+
+  /* ---------- 콜라주: 조각마다 데스크톱(--x --y --w --r)·모바일(--mx --my --mw --mr --mz) 좌표, 값은 첫 화면 가로·세로 % ---------- */
+  .dnr-dense__art { position: relative; overflow: hidden; }
+  .dnr-collage { position: absolute; inset: 0; pointer-events: none; }
+  .dnr-pc { --X: var(--x); --Y: var(--y); --W: var(--w); --R: var(--r);
+    position: absolute; left: var(--X); top: var(--Y); width: var(--W); height: auto; max-width: none; rotate: var(--R); z-index: var(--z);
+    translate: var(--px, 0px) var(--py, 0px); transition: translate .7s cubic-bezier(.2,.7,.2,1);
+    filter: drop-shadow(0 1px 1.5px rgba(30,22,12,.28)) drop-shadow(0 10px 16px rgba(30,22,12,.18)); user-select: none; -webkit-user-drag: none; will-change: transform; }
+  .dnr-dense .dnr-pc--person { animation: none !important; transition: none; }   /* 하루 사이클: 여자·남자 모델이 투명도로 바뀜(2026-10-21) */
+  .dnr-dense .dnr-pc--man { opacity: 0; }
+  .dnr-pc--person { width: auto; --H: var(--h); height: var(--H); filter: drop-shadow(0 2px 2px rgba(30,22,12,.3)) drop-shadow(0 18px 26px rgba(30,22,12,.22)); }
+  @media (max-width: 749px){
+    .dnr-pc { --X: var(--mx); --Y: var(--my); --W: var(--mw); --R: var(--mr); z-index: var(--mz, var(--z)); }
+    .dnr-pc--person { --H: var(--mh); }
+    .dnr-pc[data-mobile="off"] { display: none; }
+  }
+  /* ---------- 글자 표지(픽셀 윤슬 판): 데스크톱 --x --y, 모바일 --mx --my (첫 화면 가로·세로 %). .v = 세로(아래에서 위로 읽힘) ---------- */
+  .dnr-labs { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .dnr-lab { position: absolute; left: var(--x); top: var(--y); display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    font: 500 13px/1.25 var(--font-body-family, 'DM Sans', sans-serif); letter-spacing: .01em; color: var(--lab-ink, #16191c); }
+  .dnr-lab::before { content: ''; flex: none; width: 10px; height: 10px; background: var(--lab-ink, #16191c); }
+  .dnr-lab.v { writing-mode: vertical-rl; transform: rotate(180deg); }
+  .dnr-lab.two { white-space: normal; width: max-content; max-width: 22em; align-items: flex-start; }
+  .dnr-lab.two::before { margin-top: .2em; }
+  /* 타자: 차례가 오기 전에는 표지째 숨김. 찍는 동안·직후에는 글 끝에 검은 막대 커서 */
+  .dnr-lab:not(.on) { visibility: hidden; }
+  .dnr-lab .tx { font-style: normal; white-space: pre-line; }
+  .dnr-lab.typing::after, .dnr-lab.blink::after { content: ''; flex: none; width: .5em; height: 1.05em; margin-left: -4px; background: var(--lab-ink, #16191c); }
+  .dnr-lab.blink::after { animation: dnrBlink .5s steps(1) infinite; }
+  @media (max-width: 749px){
+    .dnr-lab { left: var(--mx); top: var(--my); font-size: 11px; gap: 6px; }
+    .dnr-lab::before { width: 8px; height: 8px; }
+    .dnr-lab[data-mobile="off"] { display: none; }
+  }
+  /* 붙여지듯 하나씩: 살짝 크고 더 기운 채로 내려앉음 */
+  .dnr-collage:not(.go) .dnr-pc { opacity: 0; }
+  .dnr-collage.go .dnr-pc { animation: dnrStick .75s cubic-bezier(.2,.85,.25,1.12) both; animation-delay: calc(var(--i) * 75ms + 120ms); }
+  @keyframes dnrStick { from { opacity: 0; scale: 1.07; rotate: calc(var(--R) + 5deg); } 40% { opacity: 1; } to { opacity: 1; scale: 1; rotate: var(--R); } }
+  @media (prefers-reduced-motion: reduce){ .dnr-collage.go .dnr-pc { animation: none; } .dnr-pc { transition: none; } }
+
+  .dnr-dense__field { position: sticky; top: 0; height: 100svh; margin-bottom: -100svh; pointer-events: none; }
+  .dnr-dense__field canvas { width: 100%; height: 100%; display: block; }
+  .dnr-dense__items { position: relative; }
+  /* 상품 한 벌 = 화면 1.7개 높이. 무대는 화면 가운데 고정, 내리는 동안 정면 → 착용샷(카드 호버 사진) */
+  .dnr-dense__item { height: calc(123svh - 44px); }   /* 2026-10-20 사진 위 타이틀 뺀 만큼(-52px) → 170svh → 145svh → 한 번 더 15%↓ (웹·모바일 같음) */
+  /* 모바일(2026-10-20): 첫 상품이 히어로에 10svh 더 가깝게.
+     위로 당긴 만큼 무대(빈 부분)가 히어로 아래쪽에 겹치므로 무대는 클릭을 통과시키고 옷·설명만 받음 */
+  @media (max-width: 749px) {
+    .dnr-dense__field { margin-bottom: -110svh; }   /* 상품 줄을 10svh 위로 (items에 음수 margin-top을 주면 이 -100svh와 겹쳐 사라짐) */
+    .dnr-dense__items, .dnr-dense__item, .dnr-dense__stage { pointer-events: none; }
+    .dnr-dense__obj, .dnr-dense__all { pointer-events: auto; }   /* 옷 링크·see all은 그대로 눌림 (설명은 .is-on일 때 따로 켜짐) */
+  }
+  .dnr-dense__stage { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; padding-top: 60px; box-sizing: border-box; }   /* 위에 떠 있는 헤더(60px)만큼 내림 */
+  .dnr-dense__stage { --shift: 20vw; }
+  @media (min-width: 750px) { .dnr-dense__stage { --shift: min(17vw, 250px); } }
+  /* 옷(+이름표)이 가운데 → 왼쪽으로. --m: 0~1 (스크롤 진행) */
+  .dnr-dense__obj { display: grid; justify-items: center; gap: 14px; text-decoration: none; color: var(--ink);
+    transform: translateX(calc(var(--m, 0) * -1 * var(--shift))) scale(calc(1 - var(--m, 0) * .16)); will-change: transform; }
+  .dnr-dense__obj .dnr-dense__label { opacity: calc(1 - var(--m, 0)); }
+  /* 오른쪽 설명: 터미널처럼 한 줄씩 찍힘 */
+  .dnr-dense__desc { position: absolute; top: 50%; left: calc(50% + var(--shift) * .25); transform: translateY(-50%); width: min(42vw, 330px);
+    font: 500 12px/1.75 var(--mono); color: var(--ink); opacity: var(--d, 0); pointer-events: none; }
+  @media (min-width: 750px) { .dnr-dense__desc { font-size: 14px; left: calc(50% + var(--shift) * .1); } }
+  .dnr-dense__desc.is-on { pointer-events: auto; }
+  .dnr-dense__desc p { margin: 0; white-space: pre-wrap; min-height: 1.75em; }
+  .dnr-dense__desc .h { font: 700 15px/1.4 var(--mono); margin-bottom: 6px; }
+  @media (min-width: 750px) { .dnr-dense__desc .h { font-size: 18px; } }
+  .dnr-dense__desc .cur { display: inline-block; width: .6em; height: 1.05em; background: #e3412b; vertical-align: -.15em; margin-left: 1px; }
+  .dnr-dense__desc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
+  .dnr-dense__pic { position: relative; width: min(77.4vw, 460px, calc((100svh - 160px) * .8));   /* 2026-10-20 두 번 10%씩 키움 (처음: 64vw, 380px) */ aspect-ratio: 4 / 5; max-width: 100%; }
+  /* 사진은 JS가 실루엣대로 오려 캔버스로 바꿔 끼움 → 사각 테두리 없이 누끼처럼 */
+  .dnr-dense__pic img, .dnr-dense__pic canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .dnr-dense__pic .p { opacity: calc(1 - var(--w, 0)); }
+  .dnr-dense__pic .w.full { inset: auto; left: 50%; top: 50%; width: 118%; height: min(172%, calc(100svh - 110px)); transform: translate(-50%, -50%); object-fit: contain;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 94%, transparent 100%) !important; mask-image: linear-gradient(to bottom, #000 0, #000 94%, transparent 100%) !important; }
+  .dnr-dense__pic .w { opacity: var(--w, 0); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%); }
+  .dnr-dense__label { text-align: center; font: 500 12px/1.5 var(--mono); background: var(--paper); padding: 4px 10px; }
+  .dnr-dense__label b { display: block; font: 600 14px/1.4 var(--dnr-pretendard, sans-serif); }
+  /* 이름표 타자: .tx를 왼쪽부터 --k(0~1)만큼만 보이게, 커서는 그 끝에 */
+  .dnr-dense__label .ty { display: block; }
+  .dnr-dense__label .tw { display: inline-block; position: relative; }
+  .dnr-dense__label .tx { display: inline-block; clip-path: inset(-2px calc((1 - var(--k, 1)) * 100%) -2px -2px); }
+  .dnr-dense__label .tw.typing::after, .dnr-dense__label .tw.blink::after { content: ''; position: absolute; left: calc(var(--k, 1) * 100%); top: 50%; width: .55em; height: 1.05em; transform: translateY(-50%); margin-left: 1px; background: #e3412b; }
+  .dnr-dense__label .tw.blink::after { animation: dnrBlink .5s steps(1) infinite; }
+  @keyframes dnrBlink { 50% { opacity: 0; } }
+  /* 맨 위로 (첫 화면을 지나면 나타남) */
+  .dnr-dense__top { position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 30; font: 600 12px/1 var(--mono); color: var(--ink);
+    background: var(--paper); border: 1px solid var(--ink); padding: 9px 11px; cursor: pointer; opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; pointer-events: none; }
+  .dnr-dense__top.is-on { opacity: 1; transform: none; pointer-events: auto; }
+  .dnr-dense__all { display: flex; justify-content: center; padding: 8px 16px 72px; position: relative; }
+  .dnr-dense__all a { font: 500 13px var(--mono); color: var(--ink); border: 1px solid var(--ink); padding: 10px 18px; text-decoration: none; background: var(--paper); }
+</style>
+
+<div class="dnr-dense">
+  <section class="dnr-dense__hero" aria-label="물빛 픽셀 위에서 싱글렛을 입고 스트레칭하는 러너">
+    <div class="dnr-dense__art" id="dnrStage">
+      <canvas id="dnrArt" aria-hidden="true"></canvas>
+      <div class="dnr-labs" id="dnrLabs" aria-hidden="true">
+        {%- comment -%} About 페이지 문장. 위치는 첫 화면 %, 모바일 값이 없으면 모바일에서 숨김 {%- endcomment -%}
+        <span class="dnr-lab" style="--x:4%;--y:11%;--mx:5%;--my:2.5%">i do nut run for something.</span>
+        <span class="dnr-lab" data-mobile="off" style="--x:71%;--y:11%">running wear for people who just run.</span>
+        <span class="dnr-lab" style="--x:20%;--y:30%;--mx:66%;--my:2.5%">we run to run.</span>
+        <span class="dnr-lab" style="--x:4%;--y:45%;--mx:5%;--my:9%">some run to feel the wind.</span>
+        <span class="dnr-lab" data-mobile="off" style="--x:73%;--y:34%">some run to move their body.</span>
+        <span class="dnr-lab v" style="--x:33%;--y:50%;--mx:3%;--my:36%">a hill worth climbing</span>
+        <span class="dnr-lab two" style="--x:72%;--y:55%;--mx:52%;--my:9%">sometimes having no reason<br>is reason enough to run.</span>
+        <span class="dnr-lab" data-mobile="off" style="--x:6%;--y:68%">for everyone who starts to run</span>
+        <span class="dnr-lab v" style="--x:93%;--y:66%;--mx:93%;--my:30%">at their own pace</span>
+        <span class="dnr-lab" data-mobile="off" style="--x:75%;--y:85%">today's run, out loud.</span>
+        <span class="dnr-lab v" data-mobile="off" style="--x:26%;--y:44%">for when you run, and when you don't.</span>
+        <span class="dnr-lab" data-mobile="off" style="--x:4%;--y:88%">some run just because.</span>
+      </div>
+      <div class="dnr-collage" id="dnrCollage">
+        <img class="dnr-pc dnr-pc--person dnr-pc--woman" src="{{ 'dnr-pixel-woman.webp' | asset_url }}" alt="A runner stretching in a lavender singlet" width="906" height="2000" fetchpriority="high" style="--i:12;--d:.15;--z:5;--x:33.3%;--y:9%;--h:132%;--r:0deg;--mx:16.5%;--my:21%;--mh:104%;--mr:0deg">
+        <img class="dnr-pc dnr-pc--person dnr-pc--man" src="{{ 'dnr-collage-person.webp' | asset_url }}" alt="A runner stretching in a clear sky singlet" width="945" height="2000" fetchpriority="high" style="--i:12;--d:.15;--z:5;--x:30.55%;--y:6%;--h:147%;--r:0deg;--mx:11%;--my:17%;--mh:116%;--mr:0deg">
+      </div>
+    </div>
+    <div class="dnr-dense__cap"><span>ss26</span><span>set in do nut run</span></div>
+  </section>
+
+  <div class="dnr-dense__field" aria-hidden="true"><canvas id="dnrField"></canvas></div>
+  <div class="dnr-dense__items">
+    {%- for pass in (1..2) -%}
+      {%- liquid
+        if pass == 1
+          assign want = 'air light'
+        else
+          assign want = 'air swift'
+        endif
+      -%}
+    {%- for product in coll.products limit: 50 -%}
+      {%- liquid
+        assign parts = product.title | split: ' · '
+        assign line_chk = parts[1] | downcase
+        if line_chk != want
+          continue
+        endif
+        assign pic = product.featured_image
+        assign worn = blank
+        for m in product.media
+          assign msrc = m.preview_image.src | append: ''
+          if msrc contains 'new_'
+            if msrc contains '_b115' or msrc contains '_b215'
+              assign pic = m.preview_image
+            elsif msrc contains '_108' or msrc contains '_208'
+              assign worn = m.preview_image
+            endif
+          endif
+        endfor
+        assign parts = product.title | split: ' · '
+        assign gender = parts[2] | split: '(' | last | remove: ')'
+        assign colour = parts[2] | split: ' (' | first
+        assign line_d = parts[1] | downcase
+        # 호버 사진(new_*_108/208)은 전신 사진을 잘라낸 것. 옆으로 비켜설 때는 같은 포즈의 전신 사진을 써서 위아래가 안 잘리게.
+        # 원본 번호(2026-10-15 사진 대조): 남 al_cs 101 · al_hv 107 · as_cs 106 · as_hv 105 / 여 al_cs·al_hv·as_hv 207 · as_cs 201
+        if line_d == 'air light'
+          assign lc = 'al'
+        else
+          assign lc = 'as'
+        endif
+        if colour contains 'clear'
+          assign cc = 'cs'
+        else
+          assign cc = 'hv'
+        endif
+        assign combo = lc | append: '_' | append: cc | append: '_' | append: gender
+        case combo
+          when 'al_cs_men'
+            assign idx = '101'
+          when 'al_hv_men'
+            assign idx = '107'
+          when 'as_cs_men'
+            assign idx = '106'
+          when 'as_hv_men'
+            assign idx = '105'
+          when 'as_cs_women'
+            assign idx = '201'
+          else
+            assign idx = '207'
+        endcase
+        assign fkey = 'files/' | append: lc | append: '_' | append: cc | append: '_' | append: idx
+        assign full = blank
+        for m in product.media
+          assign msrc = m.preview_image.src | append: ''
+          if msrc contains fkey
+            assign full = m.preview_image
+          endif
+        endfor
+        if full != blank
+          assign worn = full
+        endif
+      -%}
+      <div class="dnr-dense__item" data-line="{{ line_d }}" data-colour="{{ colour }}" data-gender="{{ gender }}">
+        <div class="dnr-dense__stage">
+          <a class="dnr-dense__obj" href="{{ product.url }}">
+            <span class="dnr-dense__pic">
+              <img class="p" crossorigin="anonymous" src="{{ pic | image_url: width: 900 }}" alt="{{ product.title | escape }}" loading="lazy" width="800" height="1000">
+              {%- if worn != blank -%}<img class="w{% if full != blank %} full{% endif %}" crossorigin="anonymous" src="{{ worn | image_url: width: 900 }}" alt="" loading="lazy" width="{{ worn.width }}" height="{{ worn.height }}">{%- endif -%}
+            </span>
+            <span class="dnr-dense__label"><b class="ty"><span class="tw"><span class="tx">{{ parts[1] }} · {{ colour }}</span></span></b><span class="ty"><span class="tw"><span class="tx">{{ gender }} · <span class="dnr-local-price">{{ product.price | money }}</span></span></span></span></span>
+          </a>
+          {%- liquid
+            if line_d == 'air light'
+              if gender == 'men'
+                assign wt = '42g'
+              else
+                assign wt = '33g'
+              endif
+              assign l1 = 'opaque. nothing shows.'
+              # 2026-10-20 gsm 표기 뺌 (전: 100% polyester · 80gsm)
+              assign l2 = '100% polyester'
+              assign l3 = wt | append: ' — lighter than a sip of water.'
+            else
+              assign l1 = 'mesh. air moves through.'
+              assign l2 = '92% polyester · 8% spandex'
+              assign l3 = 'open air, swift as breath.'
+            endif
+          -%}
+          <div class="dnr-dense__desc" aria-label="{{ product.title | escape }}">
+            <p class="h" data-t="{{ line_d }} — {{ colour }}"></p>{%- comment -%} 2026-10-20 제목에서 opaque/mesh 뺌 — 본문 첫 줄에 그대로 있음 {%- endcomment -%}
+            <p data-t="{{ gender }} · {{ product.price | money | strip_html }}"></p>
+            <p data-t="{{ l1 }}"></p>
+            <p data-t="{{ l2 }}"></p>
+            <p data-t="{{ l3 }}"></p>
+            <p data-t="seams erased, strength kept."></p>
+            <p data-t="&gt; view" data-href="{{ product.url }}"></p>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+    {%- endfor -%}
+    <div class="dnr-dense__all"><a href="/collections/all">see all</a></div>
+  </div>
+  <button type="button" class="dnr-dense__top" id="dnrTop" aria-label="맨 위로">↑ top</button>
+</div>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const INK = '#16191c', PAPER = '#f2f2f0', SHEET = '#f7f7f4', BLUE = '#1f5fd0', RED = '#e3412b';
+  const fontFor = (fs, w) => `${w || 600} ${fs}px "IBM Plex Mono", monospace`;
+  // 값 노이즈
+  const hash = (x, y) => { let h = (x*374761393 + y*668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
+  const lerp = (a, b, t) => a + (b-a)*t, sm = t => t*t*(3-2*t);
+  function vnoise(x, y){ const xi = Math.floor(x), yi = Math.floor(y), xf = x-xi, yf = y-yi;
+    return lerp(lerp(hash(xi,yi), hash(xi+1,yi), sm(xf)), lerp(hash(xi,yi+1), hash(xi+1,yi+1), sm(xf)), sm(yf)); }
+  const fbm = (x, y) => (vnoise(x,y)*.55 + vnoise(x*2.1,y*2.1)*.3 + vnoise(x*4.3,y*4.3)*.15);
+
+  /* ---------- 첫 화면: 픽셀 강기슭 (2026-10-21 3차) ----------
+     혜선이 준 강가 사진(윤슬·라일락 들꽃·풀)을 참고 이미지 색감으로 보정한 그림(assets/dnr-pixel-river-d.webp 가로, -m.webp 세로 자른 것)을
+     칸 수만큼 줄여 칸마다 색을 뽑음 → 칸끼리 색 차가 사진만큼 섬세함. 보정 스크립트 = web/theme_pixel_2026-10-21/source/grade.py
+     움직임: 물 칸 중 밝은 칸이 햇살 받은 윤슬처럼 제각기 다른 박자로 반짝(뾰족하게 밝아졌다 사라짐), 물에는 아주 옅은 물결 밝기가 옆으로 흘러감,
+     풀 칸은 바람 물결에 아주 살짝 밝아졌다 어두워짐. 위에 입자 두 장 번갈아. 동작 줄이기면 멈춘 그림 */
+  const cv = document.getElementById('dnrArt'), ctx = cv.getContext('2d');
+  let W, H, dpr, cell, cols, rows, visible = true, heroDirty = true, grain = [], lastDraw = -1e9, gi = 0, CELLS = null;
+  /* 하루 사이클(2026-10-21): 같은 장소 그림 셋(11시·노을·밤 야경)을 섞어 12초에 한 바퀴. 11시 → 노을 → 밤 → 동틀 녘(노을 빛) → 11시.
+     해가 움직임: 낮엔 하늘 위쪽에서 오른쪽으로 가다가 노을 때 강 건너 위로 내려앉아 지고, 동틀 녘 왼쪽에서 떠오름.
+     모델: 낮엔 여자 모델, 노을이 지면서 남자 모델로, 동이 트면서 다시 여자 모델로. 주소 끝 &dnr_tod=day|sunset|night 이면 그 시간대에 멈춤 */
+  const TOD_Q = new URLSearchParams(location.search).get('dnr_tod');
+  const CYCLE = 12;
+  const SCN = ['day', 'sunset', 'night', 'dawn'];
+  const SRCS = {
+    day:    { d: '{{ 'dnr-pixel-river-d.webp' | asset_url }}',  m: '{{ 'dnr-pixel-river-m.webp' | asset_url }}' },
+    sunset: { d: '{{ 'dnr-pixel-sunset-d.webp' | asset_url }}', m: '{{ 'dnr-pixel-sunset-m.webp' | asset_url }}' },
+    night:  { d: '{{ 'dnr-pixel-night-d.webp' | asset_url }}',  m: '{{ 'dnr-pixel-night-m.webp' | asset_url }}' },
+    dawn:   { d: '{{ 'dnr-pixel-dawn-d.webp' | asset_url }}',   m: '{{ 'dnr-pixel-dawn-m.webp' | asset_url }}' },
+  }, IMG = {};
+  const GLC = { day: [255, 255, 255], sunset: [255, 232, 178], night: [214, 216, 255], dawn: [255, 230, 236] };
+  // [위치 0~1, 낮, 노을, 밤, 새벽] — 사이 구간은 부드럽게 섞음
+  const MIX = [[0, 1, 0, 0, 0], [.25, 1, 0, 0, 0], [.37, 0, 1, 0, 0], [.47, 0, 1, 0, 0], [.59, 0, 0, 1, 0], [.76, 0, 0, 1, 0], [.86, 0, 0, 0, 1], [.91, 0, 0, 0, 1], [.98, 1, 0, 0, 0], [1, 1, 0, 0, 0]];
+  // 해 [위치, x, y(첫 화면 세로 비율), 세기] — 노을 그림 속 해 자리(데스크톱 64.5%·모바일 72%, 세로 8.5%)에 맞춰 내려앉음
+  const SUNP = [[0, .40, .02, .55], [.25, .52, .02, .55], [.37, .62, .06, .9], [.45, .645, .085, 1], [.52, .66, .125, 0], [.79, .22, .125, 0], [.87, .24, .085, 1], [.94, .30, .05, .8], [1, .40, .02, .55]];   // 새벽 그림 속 해 자리(데스크톱 24%·모바일 28%)에서 떠오름
+  const sm3 = t => t*t*(3 - 2*t);
+  function lerpKF(K, p){ let i = 0; while (i < K.length - 2 && p > K[i + 1][0]) i++; const A = K[i], B = K[i + 1], k = sm3(Math.min(1, Math.max(0, (p - A[0])/(B[0] - A[0])))); return A.map((v, j) => v + (B[j] - v)*k); }
+  const FIX = { day: 0, sunset: .42, night: .68, dawn: .885 }[TOD_Q];
+  const loadImg = u => IMG[u] || (IMG[u] = new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = u; }));
+  function sample(im, scene){
+    // 그림을 칸 수로 줄여 칸마다 색. 첫 화면 비율에 맞게 가운데를 채움. 칸 종류(불빛·비친 빛·물·풀)는 시간대마다 따로
+    const sc = Math.max(cols/im.naturalWidth, rows/im.naturalHeight), dw = im.naturalWidth*sc, dh = im.naturalHeight*sc;
+    const mid = document.createElement('canvas'); mid.width = cols*3; mid.height = rows*3; const mx = mid.getContext('2d'); mx.imageSmoothingQuality = 'high';
+    mx.drawImage(im, (cols - dw)/2*3, (rows - dh)/2*3, dw*3, dh*3);
+    const sm = document.createElement('canvas'); sm.width = cols; sm.height = rows; const sx = sm.getContext('2d'); sx.imageSmoothingQuality = 'high';
+    sx.drawImage(mid, 0, 0, cols, rows);
+    let d; try { d = sx.getImageData(0, 0, cols, rows).data; } catch (e) { return null; }
+    const SUN = scene === 'sunset' || scene === 'dawn', NIGHT = scene === 'night', out = [];
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
+      const i = (r*cols + c)*4, R = d[i], G = d[i+1], B = d[i+2], L = (R*.3 + G*.59 + B*.11)/255;
+      const light = NIGHT && r/rows < .2 && L > .58, refl = NIGHT && !light && r/rows >= .15 && r/rows < .6 && R > B - 30 && L > .38;
+      const wet = NIGHT ? (!light && !refl && r/rows < .6 && B > R + 20 && B > G + 20) : SUN ? (r/rows < .62 && R > G + 14 && B < G + 14 && L > .58) : (B > G + 4 && R < G);
+      let s = wet ? Math.max(0, Math.min(1, SUN ? (L - .62)/.14 : (L - .80)/.1)) : 0;
+      if (wet && hash(c*3 + 11, r*7 + 5) > .92) s = Math.max(s, .55);
+      if (NIGHT && wet) s = hash(c*7 + 3, r*11 + 1) > .94 ? .5 : 0;
+      out.push({ R, G, B, wet, light, refl, s, grass: NIGHT ? (r/rows > .4 && G > R + 6) : SUN ? (!wet && G > B + 4 && r/rows > .3) : (G > B + 6 && G > R) });
+    }
+    return out;
+  }
+  function build(){
+    const cssW = cv.clientWidth || document.documentElement.clientWidth; if (!cssW) return requestAnimationFrame(build);
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cssW; H = Math.round(W * (W < 750 ? 1.45 : .56));
+    cv.width = W*dpr; cv.height = H*dpr; cv.style.height = H + 'px';
+    cols = W < 750 ? 40 : W < 1100 ? 80 : 106; cell = W/cols; rows = Math.ceil(H/cell);
+    grain = [0, 1].map(() => { const c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; const x = c.getContext('2d');
+      const id = x.createImageData(c.width, c.height), d = id.data;
+      for (let i = 0; i < d.length; i += 4){ const v = Math.random(); const on = v > .5; d[i] = d[i+1] = d[i+2] = on ? 255 : 0; d[i+3] = (Math.abs(v - .5) * 2) * (on ? 34 : 12); }
+      x.putImageData(id, 0, 0); return c; });
+    CELLS = null; const want = cols, key = W < 750 ? 'm' : 'd';
+    Promise.all(SCN.map(s => loadImg(SRCS[s][key]))).then(ims => {
+      if (ims.some(im => !im) || cols !== want) return;
+      const S = ims.map((im, j) => sample(im, SCN[j])); if (S.some(x => !x)) return;
+      CELLS = S[0].map((_, i) => ({ c: i % cols, r: (i/cols)|0, sc: S.map(x => x[i]), ph: hash(i % cols, ((i/cols)|0)*3)*6.283, sp: 1.1 + hash((i % cols)*5, (i/cols)|0)*2.4,
+        nr: Math.exp(-Math.pow(((i % cols)/cols - (cols < 60 ? .72 : .645))/.2, 2)), nd: Math.exp(-Math.pow(((i % cols)/cols - (cols < 60 ? .28 : .24))/.2, 2)) }));
+      heroDirty = true; if (reduce) hero();
+    });
+  }
+  // 칸 하나를 한 시간대 규칙으로 움직인 색
+  function cellColor(k, j, t){
+    const q = k.sc[j]; let R = q.R, G = q.G, B = q.B; if (reduce) return [R, G, B];
+    if (q.light){ const f = .9 + .1*Math.sin(t*k.sp*.9 + k.ph) + .3*Math.pow(Math.max(0, Math.sin(t*k.sp*.5 + k.ph*2)), 30); return [R*f, G*f, B*f]; }
+    if (q.refl){ const f = .88 + .22*Math.max(0, Math.sin(k.r*1.7 - t*1.6 + k.c*.35)) + .06*Math.sin(t*.9 + k.ph); return [R*f, G*f, B*f]; }
+    if (q.wet){
+      const wave = Math.sin(k.c*.32 - t*.8 + k.r*.1)*.025, up = Math.max(0, wave)*4, dn = Math.min(0, wave);
+      R += (255 - R)*up + R*dn; G += (255 - G)*up + G*dn; B += (255 - B)*up + B*dn;
+      if (q.s){ let tw = Math.pow(Math.max(0, Math.sin(t*k.sp + k.ph)), 16)*q.s*.95;
+        if (j === 1 || j === 3){ const nn = j === 1 ? k.nr : k.nd, lane = Math.pow(.5 + .5*Math.sin(k.c*.21 - t*1.5 + (k.r % 4)*1.6), 5); tw = Math.min(1, tw*lane*(.35 + 1.4*nn) + lane*nn*q.s*.35); }
+        const gl = GLC[SCN[j]]; R += (gl[0] - R)*tw; G += (gl[1] - G)*tw; B += (gl[2] - B)*tw; }
+    } else if (q.grass){ const w = 1 + Math.sin(k.c*.16 + k.r*.04 - t*.6)*.03; R *= w; G *= w; B *= w; }
+    return [R, G, B];
+  }
+  const labsEl = document.getElementById('dnrLabs'), woman = document.querySelector('.dnr-pc--woman'), man = document.querySelector('.dnr-pc--man');
+  let inkNight = null;
+  function hero(now){
+    if (!CELLS || !grain.length) return; const t = (now || 0)/1000;
+    if (!reduce && now - lastDraw < 80 && !heroDirty) return;             // 약 12fps
+    lastDraw = now || 0; heroDirty = false;
+    const p = FIX !== undefined ? FIX : reduce ? 0 : (t/CYCLE) % 1;
+    const M = lerpKF(MIX, p), w = [M[1], M[2], M[3], M[4]];
+    // 글자: 밤이 반 넘으면 밝게. 모델: 낮(동틀 녘~오후) 여자, 노을~밤 남자
+    const night = w[2] > .5; if (night !== inkNight){ inkNight = night; labsEl.style.setProperty('--lab-ink', night ? '#f2f3fa' : '#16191c'); }
+    const wo = p < .3 ? 1 : p < .38 ? 1 - sm3((p - .3)/.08) : p < .84 ? 0 : p < .92 ? sm3((p - .84)/.08) : 1;
+    if (woman && man){ woman.style.opacity = wo.toFixed(3); man.style.opacity = (1 - wo).toFixed(3); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cw = Math.ceil(cell) + 1;
+    for (const k of CELLS){
+      let R = 0, G = 0, B = 0;
+      for (let j = 0; j < 4; j++){ if (w[j] < .002) continue; const cc = cellColor(k, j, t); R += cc[0]*w[j]; G += cc[1]*w[j]; B += cc[2]*w[j]; }
+      ctx.fillStyle = `rgb(${Math.min(255, R)|0},${Math.min(255, G)|0},${Math.min(255, B)|0})`; ctx.fillRect(Math.floor(k.c*cell), Math.floor(k.r*cell), cw, cw);
+    }
+    // 해: 칸 모양 그대로(둥근 칸 덩어리 + 옅은 빛무리). 노을 그림에 그려진 해가 있는 시간엔 그 자리로 모여 겹침
+    const SP = lerpKF(SUNP, p), sa = SP[3]*(1 - w[2]);
+    if (sa > .02){
+      const sxp = SP[1] + (cols < 60 ? (.72 - .645)*w[1] + (.28 - .24)*w[3] : 0);   // 모바일 그림은 해 자리가 조금 오른쪽
+      const scx = Math.round(sxp*cols), scy = Math.round(SP[2]*rows), warm = w[1] + w[3]*.6;
+      const core = [255, 252 - 30*warm, 236 - 90*warm], halo = [255, 240 - 40*warm, 200 - 80*warm];
+      for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++){
+        const dd = Math.hypot(dx, dy*1.1), x = (scx + dx)*cell, y = (scy + dy)*cell; if (y < 0) continue;
+        const a = dd <= 1.3 ? sa : dd <= 4 ? sa*.28*Math.pow(1 - (dd - 1.3)/2.7, 1.6) : 0; if (a <= .01) continue;
+        const col = dd <= 1.3 ? core : halo; ctx.fillStyle = `rgba(${col[0]|0},${col[1]|0},${col[2]|0},${a.toFixed(3)})`; ctx.fillRect(Math.floor(x), Math.floor(y), cw, cw);
+      }
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(grain[gi = reduce ? 0 : 1 - gi], 0, 0);
+  }
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
+  /* 글자 표지: 1개 → 2개 → 1개 → 2개 번갈아 타자로 찍힘(사이 0.6~1.8초 랜덤, 2개일 땐 둘째가 1초 늦게). 다 찍힌 뒤에도 1.5~4초 랜덤 간격으로 1개·2개 번갈아 지웠다 다시 찍음 — 계속 움직임. 동작 줄이기면 처음부터 다 보임 */
+  {
+    const labs = [...document.querySelectorAll('.dnr-lab')].map(el => { const full = el.innerHTML.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim(); el.textContent = ''; const tx = document.createElement('i'); tx.className = 'tx'; el.appendChild(tx); return { el, tx, full }; });
+    const shown = () => labs.filter(l => getComputedStyle(l.el).display !== 'none');
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    async function type(l){ l.el.classList.add('on', 'typing'); for (let i = 1; i <= l.full.length; i++){ l.tx.textContent = l.full.slice(0, i); await wait(38 + Math.random()*40); } l.el.classList.remove('typing'); l.el.classList.add('blink'); setTimeout(() => l.el.classList.remove('blink'), 1400); }
+    async function erase(l){ l.el.classList.add('typing'); for (let i = l.full.length; i >= 0; i--){ l.tx.textContent = l.full.slice(0, i); await wait(14); } }
+    if (reduce) labs.forEach(l => { l.tx.textContent = l.full; l.el.classList.add('on'); });
+    else (async () => {
+      const order = shown().sort(() => Math.random() - .5);
+      order.splice(0, Math.round(order.length*.7)).forEach(l => { l.tx.textContent = l.full; l.el.classList.add('on'); });   // 처음부터 70%는 찍혀 있음(2026-10-21)
+      await wait(700);
+      let n = 1;                                                    // 1개 → 2개 → 1개 → 2개 … 번갈아, 사이는 0.6~1.8초 랜덤
+      while (order.length){ const g = order.splice(0, n); n = 3 - n; await Promise.all(g.map((l, i) => wait(i*1000).then(() => type(l)))); await wait(600 + Math.random()*1200); }
+      for (;;){ await wait(1500 + Math.random()*2500); if (!visible) continue;
+        const pool = shown().sort(() => Math.random() - .5).slice(0, n); n = 3 - n;
+        await Promise.all(pool.map(async (l, i) => { await wait(i*1000); await erase(l); await wait(250); await type(l); })); }
+    })();
+  }
+
+  /* ---------- 콜라주: 조각이 다 준비되면 차례로 붙고, 데스크톱에서는 마우스를 따라 깊이별로 살짝 움직임 ---------- */
+  const col = document.getElementById('dnrCollage'), stageEl = document.getElementById('dnrStage'), pcs = [...col.querySelectorAll('.dnr-pc')];
+  Promise.all(pcs.map(im => im.decode ? im.decode().catch(() => {}) : Promise.resolve())).then(() => col.classList.add('go'));
+  // 따라 움직임: 데스크톱은 마우스, 휴대폰은 문지르는 손가락 위치. 깊이(--d)가 클수록 많이 움직임
+  let modelBusy = false;                                              // 모델이 클릭으로 흔들리는 동안 다른 조각은 멈춤
+  const setPar = (mx, my) => { if (!modelBusy) pcs.forEach(p => { const d = +p.style.getPropertyValue('--d') || 0; p.style.setProperty('--px', (-mx*18*d).toFixed(1) + 'px'); p.style.setProperty('--py', (-my*12*d).toFixed(1) + 'px'); }); };
+  const parAt = (x, y) => { const b = stageEl.getBoundingClientRect(); setPar((x - b.left)/b.width - .5, (y - b.top)/b.height - .5); };
+  if (!reduce){
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches){
+      stageEl.addEventListener('pointermove', e => parAt(e.clientX, e.clientY));
+      stageEl.addEventListener('pointerleave', () => setPar(0, 0));
+    } else {
+      stageEl.addEventListener('touchmove', e => { const t = e.touches[0]; if (t) parAt(t.clientX, t.clientY); }, {passive:true});
+      stageEl.addEventListener('touchend', () => setPar(0, 0), {passive:true});
+    }
+  }
+  /* 가만히 있을 때: 조각마다 다른 주기로 1~3px·1° 안쪽에서 떠다님(모델은 거의 그대로).
+     4~6초마다 모델이 아닌 조각 하나가 바람 맞은 듯 들렸다 내려앉음.
+     스크롤: 뒤쪽 조각일수록 늦게 따라와 깊이가 생김. 맨 앞 슬로건은 그대로(히어로 바닥에 붙어 있게)
+     히어로를 클릭(데스크톱)·탭(휴대폰)하면 모델이 같은 식으로 흔들리고, 그동안 다른 조각은 떠다님·마우스 따라감을 멈춤 */
+  if (!reduce){
+    const FL = pcs.map(p => {
+      const person = p.classList.contains('dnr-pc--person'), z = +p.style.getPropertyValue('--z') || 0, k = person ? .3 : 1, sg = () => Math.random() < .5 ? -1 : 1;
+      return { p, person, front: z >= 7, ax: (1 + Math.random()*2)*k*sg(), ay: (1.5 + Math.random()*1.5)*k*sg(), ar: (.3 + Math.random()*.6)*(person ? .25 : 1)*sg(),
+        tx: 5 + Math.random()*4, ty: 6 + Math.random()*4, tr: 7 + Math.random()*4, ph: Math.random()*6.283,
+        sd: z >= 7 ? 0 : person ? .035 : .06 + (4 - Math.min(z, 4))*.012 };                  // 스크롤 깊이(히어로 높이 대비)
+    });
+    /* 픽셀 판(2026-10-21): 모델이 물 위에 떠 있듯 하늘하늘 — 위아래 10~14px·옆 5~8px·기울기 0.6~1°, 느리고 서로 어긋난 주기 */
+    FL.forEach(f => { if (!f.person) return; const sg = () => Math.random() < .5 ? -1 : 1;
+      f.ax = (5 + Math.random()*3)*sg(); f.ay = (10 + Math.random()*4)*sg(); f.ar = (.6 + Math.random()*.4)*sg(); f.tx = 8 + Math.random()*2; f.ty = 5.5 + Math.random()*1.5; f.tr = 9 + Math.random()*2; });
+    const model = FL.find(f => f.person);
+    let heroOn = true, fl = null, nextFl = 2.5, tf = 0, tPrev = 0;          // tf = 떠다님 시계(모델이 흔들리는 동안 멈춰서 다시 움직일 때 튀지 않음)
+    stageEl.addEventListener('click', () => { if (!model) return; const t = performance.now()/1000; fl = { f: model, t0: t, solo: true }; nextFl = t + .6 + 4 + Math.random()*2; });
+    new IntersectionObserver(es => { heroOn = es[0].isIntersecting; }).observe(stageEl);
+    const anim = now => {
+      requestAnimationFrame(anim); const t = now/1000, dt = tPrev ? Math.min(.1, t - tPrev) : 0; tPrev = t; if (!heroOn) return;
+      const solo = !!(fl && fl.solo); modelBusy = solo; if (!solo) tf += dt;
+      const hh = stageEl.offsetHeight, s = Math.max(0, Math.min(1, -stageEl.getBoundingClientRect().top / hh));
+      if (!fl && t > nextFl){ const c = FL.filter(f => !f.person); if (c.length) fl = { f: c[Math.floor(Math.random()*c.length)], t0: t }; nextFl = t + 4 + Math.random()*2; }
+      for (const f of FL){
+        // 맨 앞 슬로건은 아래로만 흔들림 → 히어로 바닥에서 떨어지지 않음
+        const wy = Math.sin(tf*6.283/f.ty + f.ph*1.7), fy = f.front ? Math.abs(f.ay)*(.5 + .5*wy) : f.ay*wy;
+        let x = f.ax*Math.sin(tf*6.283/f.tx + f.ph), y = fy + f.sd*hh*s, r = f.ar*Math.sin(tf*6.283/f.tr + f.ph*.6), sc = 1;
+        if (fl && fl.f === f){ const u = (t - fl.t0)/(fl.solo ? .6 : 1.2);
+          if (u >= 1) fl = null; else { const e = Math.sin(Math.PI*u); r += Math.sin(u*6.283*(fl.solo ? 1.25 : 2.5))*(1 - u)*1.8; if (!f.front) y -= 4*e; sc = 1 + .025*e; } }
+        f.p.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${r.toFixed(3)}deg) scale(${sc.toFixed(4)})`;
+      }
+    };
+    requestAnimationFrame(anim);
+  }
+  /* ---------- 상품 영역: 터미널 타자 + 툭 튀어나오는 단어 ---------- */
+  const fv = document.getElementById('dnrField'), fx = fv.getContext('2d');
+  let FW, FH, ffs = 11, fcw, fvis = false;
+  const GW = 48, GH = 60;
+  function fieldSize(){ const d = Math.min(devicePixelRatio||1, 2); FW = fv.clientWidth; FH = fv.clientHeight; fv.width = FW*d; fv.height = FH*d; fx.setTransform(d,0,0,d,0,0);
+    ffs = FW < 600 ? 11 : 13; fx.font = fontFor(ffs); fcw = fx.measureText('M').width; }
+  new IntersectionObserver(es => { fvis = es[0].isIntersecting; }).observe(document.querySelector('.dnr-dense__items'));
+  // 사진 바탕색(모서리 평균)과 다른 칸 = 옷·사람. 한 칸씩 부풀려서 글자가 살짝 떨어지게
+  function silhouette(im){
+    const c = document.createElement('canvas'); c.width = GW; c.height = GH; const x = c.getContext('2d');
+    x.drawImage(im, 0, 0, GW, GH); let d; try { d = x.getImageData(0,0,GW,GH).data; } catch(e) { return null; }
+    const px = i => [d[i*4], d[i*4+1], d[i*4+2]];
+    const cs = [0, GW-1, (GH-1)*GW, GH*GW-1].map(px), bg = [0,1,2].map(k => cs.reduce((a,c) => a + c[k], 0)/4);
+    // 스튜디오 바탕은 밝고 색이 거의 없음(가운데가 더 밝은 조명 얼룩 있음) → 색이 있거나 바탕보다 확실히 어두우면 옷·사람
+    const bgL = (bg[0]+bg[1]+bg[2])/3, g = new Uint8Array(GW*GH);
+    for (let i=0;i<GW*GH;i++){ const [r,gg,b] = px(i); const sat = Math.max(r,gg,b) - Math.min(r,gg,b), L = (r+gg+b)/3; if (sat > 16 || L < bgL - 40) g[i] = 1; }
+    const seen = new Uint8Array(GW*GH), q = [];
+    for (let x2=0;x2<GW;x2++){ q.push(x2, (GH-1)*GW+x2); } for (let y2=0;y2<GH;y2++){ q.push(y2*GW, y2*GW+GW-1); }
+    while (q.length){ const i = q.pop(); if (seen[i] || g[i]) continue; seen[i] = 1; const x2 = i%GW, y2 = (i/GW)|0;
+      if (x2>0) q.push(i-1); if (x2<GW-1) q.push(i+1); if (y2>0) q.push(i-GW); if (y2<GH-1) q.push(i+GW); }
+    for (let i=0;i<GW*GH;i++) if (!seen[i]) g[i] = 1;
+    const out = new Uint8Array(GW*GH), R = 2;
+    for (let y=0;y<GH;y++) for (let xx=0;xx<GW;xx++){ let on = 0; for (let dy=-R;dy<=R && !on;dy++) for (let dx=-R;dx<=R;dx++){ const X = xx+dx, Y = y+dy; if (X>=0 && Y>=0 && X<GW && Y<GH && g[Y*GW+X]){ on = 1; break; } } out[y*GW+xx] = on; }
+    return out;
+  }
+  // 실루엣 모양으로 사진을 오려 캔버스로 바꿔 끼움 (사진 바탕이 네모로 글자를 가리지 않게)
+  function cutout(im, sg, worn){
+    const w = Math.min(im.naturalWidth, 900), h = Math.round(w * im.naturalHeight / im.naturalWidth);
+    const m = document.createElement('canvas'); m.width = GW; m.height = GH; const mx = m.getContext('2d'); const md = mx.createImageData(GW, GH);
+    for (let i=0;i<GW*GH;i++){ md.data[i*4+3] = sg[i] ? 255 : 0; } mx.putImageData(md, 0, 0);
+    const c = document.createElement('canvas'); c.width = w; c.height = h; c.className = im.className; c.setAttribute('aria-hidden', 'true');
+    const x = c.getContext('2d', { willReadFrequently: true }); if (worn) x.filter = 'brightness(1.1)'; x.drawImage(im, 0, 0, w, h); x.filter = 'none';
+    // 사진 바탕(회색 스튜디오)에 가까운 픽셀일수록 종이색으로 바꿈 → 오려낸 둘레에 회색 테두리가 안 남음
+    try {
+      const id = x.getImageData(0, 0, w, h), D = id.data, P = [242, 242, 240];
+      const k = (xx, yy) => { const i = (yy*w + xx)*4; return [D[i], D[i+1], D[i+2]]; };
+      const cs = [k(2,2), k(w-3,2), k(2,h-3), k(w-3,h-3), k(w>>1,2)], bg = [0,1,2].map(j => cs.reduce((a, c2) => a + c2[j], 0)/cs.length);
+      const bgL = (bg[0]+bg[1]+bg[2])/3, cl = v => v < 0 ? 0 : v > 1 ? 1 : v;
+      for (let i=0;i<D.length;i+=4){
+        const r = D[i], g = D[i+1], b = D[i+2], mx = Math.max(r,g,b), mn = Math.min(r,g,b), L = (r+g+b)/3;
+        const t = cl(1 - (mx - mn - 8)/18) * cl(1 - (bgL - L - 4)/26);       // 색이 없고 바탕만큼 밝을수록 1
+        if (t <= 0) continue;
+        D[i] = r + (P[0]-r)*t; D[i+1] = g + (P[1]-g)*t; D[i+2] = b + (P[2]-b)*t;
+      }
+      x.putImageData(id, 0, 0);
+    } catch (e) {}
+    x.globalCompositeOperation = 'destination-in'; x.imageSmoothingEnabled = true; x.filter = 'blur(6px)'; x.drawImage(m, 0, 0, w, h);
+    im.style.visibility = 'hidden'; im.after(c);
+  }
+  // 실루엣에서 얼마나 떨어졌는지(칸 단위). 사진 칸 바깥까지 넓게 계산해서 옷 둘레에 넉넉한 빈 종이를 만듦
+  const OX = 40, OY = 40, EW = GW + OX*2, EH = GH + OY*2;
+  function distField(sg){
+    const d = new Float32Array(EW*EH).fill(1e6);
+    for (let y=0;y<GH;y++) for (let x=0;x<GW;x++) if (sg[y*GW+x]) d[(y+OY)*EW + x+OX] = 0;
+    const D1 = 1, D2 = 1.414;
+    for (let y=0;y<EH;y++) for (let x=0;x<EW;x++){ const i = y*EW+x; let v = d[i];
+      if (x>0) v = Math.min(v, d[i-1]+D1); if (y>0){ v = Math.min(v, d[i-EW]+D1); if (x>0) v = Math.min(v, d[i-EW-1]+D2); if (x<EW-1) v = Math.min(v, d[i-EW+1]+D2); } d[i] = v; }
+    for (let y=EH-1;y>=0;y--) for (let x=EW-1;x>=0;x--){ const i = y*EW+x; let v = d[i];
+      if (x<EW-1) v = Math.min(v, d[i+1]+D1); if (y<EH-1){ v = Math.min(v, d[i+EW]+D1); if (x<EW-1) v = Math.min(v, d[i+EW+1]+D2); if (x>0) v = Math.min(v, d[i+EW-1]+D2); } d[i] = v; }
+    return d;
+  }
+  const items = [...document.querySelectorAll('.dnr-dense__item')].map(el => {
+    const it = { el, pic: el.querySelector('.dnr-dense__pic'), obj: el.querySelector('.dnr-dense__obj'), desc: el.querySelector('.dnr-dense__desc'), w: 0, m: -1, shown: -1 };
+    it.lines = it.desc ? [...it.desc.querySelectorAll('p')] : []; it.total = it.lines.reduce((a, p) => a + p.dataset.t.length, 0);
+    it.lab = [...el.querySelectorAll('.dnr-dense__label .tw')]; it.lOn = false;
+    const ims = [...el.querySelectorAll('.dnr-dense__pic img')];
+    it.sils = [null, null];
+    ims.forEach((i, k) => { i.loading = 'eager'; const go = () => { if (!i.naturalWidth) return; const sg = silhouette(i); if (!sg) return; it.sils[k] = distField(sg); cutout(i, sg, k === 1); }; if (i.complete) go(); else i.addEventListener('load', go); });
+    return it;
+  });
+  function progress(){
+    const vh = innerHeight;
+    items.forEach(it => { const r = it.el.getBoundingClientRect(); const p = Math.min(1, Math.max(0, -r.top / (r.height - vh)));
+      const ease = v => { v = Math.min(1, Math.max(0, v)); return v*v*(3-2*v); };
+      // 0~.18 가운데 정면 → .18~.36 왼쪽으로 → .36~.8 설명 타자 → 착용샷은 .45~.7
+      const m = ease((p - .18) / .18), ww = ease((p - .45) / .25), q = Math.min(1, Math.max(0, (p - .36) / .44));
+      if (Math.abs(ww - it.w) > .005){ it.w = ww; it.pic.style.setProperty('--w', ww.toFixed(3)); }
+      if (Math.abs(m - it.m) > .003){ it.m = m; it.obj && it.obj.style.setProperty('--m', m.toFixed(3)); it.desc && it.desc.style.setProperty('--d', Math.min(1, m*1.4).toFixed(3)); }
+      if (it.desc){ const n = Math.round(q * it.total); if (n !== it.shown){ it.shown = n; type(it, n); } it.desc.classList.toggle('is-on', q > .9); }
+      // 이름표·가격: 무대가 화면 가운데에 들어오면 타자로 찍히고, 화면 밖으로 나가면 지워져서 다시 올 때 또 찍힘
+      if (it.lab.length){ const on = r.top < vh*.45 && r.bottom > vh*.55, near = r.top < vh && r.bottom > 0;
+        if (on && !it.lOn){ it.lOn = true; labelRun(it); } else if (!near && it.lOn){ it.lOn = false; clearInterval(it.lt); labelSet(it, 0); } } });
+  }
+  // 스크롤 진행만큼 설명이 한 글자씩 찍힘 (위로 올리면 지워짐), 마지막 글자 뒤에 커서
+  function type(it, n){
+    let left = n, curSet = false;
+    for (const p of it.lines){
+      const t = p.dataset.t, k = Math.max(0, Math.min(t.length, left)); left -= t.length;
+      const txt = t.slice(0, k);
+      if (p.dataset.href && k === t.length){ p.innerHTML = ''; const a = document.createElement('a'); a.href = p.dataset.href; a.textContent = t; p.appendChild(a); }
+      else p.textContent = txt;
+      if (!curSet && (k < t.length || p === it.lines[it.lines.length-1])){ if (k > 0 || n === 0) { const c = document.createElement('span'); c.className = 'cur'; p.appendChild(c); } curSet = true; }
+    }
+  }
+  addEventListener('scroll', progress, {passive:true});
+  const topBtn = document.getElementById('dnrTop');
+  // 쇼피파이 미리보기 막대(하단)가 있으면 그 위로
+  setTimeout(() => { if (document.getElementById('preview-bar-iframe') || document.querySelector('iframe[id*="preview-bar"]')) topBtn.style.bottom = '84px'; }, 1500);
+  topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
+  addEventListener('scroll', () => topBtn.classList.toggle('is-on', scrollY > cv.offsetHeight * .8), {passive:true});
+
+  /* 사진 아래 이름표·가격: 글자를 지우지 않고 왼쪽부터 한 글자 폭씩 드러냄(가격은 현지 통화로 바뀌어도 그대로 따라감).
+     드러나는 끝에 빨간 커서, 다 찍히면 잠깐 깜빡이고 사라짐 */
+  const labLen = tw => Math.max(1, tw.textContent.trim().length);
+  function labelSet(it, n){                                            // n = 지금까지 찍힌 글자 수(두 줄 합)
+    let left = n, curSet = false;
+    for (const tw of it.lab){ const L = labLen(tw), k = Math.max(0, Math.min(L, left)); left -= L;
+      tw.style.setProperty('--k', (k/L).toFixed(4));
+      const typing = !curSet && n > 0 && k < L; tw.classList.toggle('typing', typing); if (typing) curSet = true; tw.classList.remove('blink'); }
+  }
+  function labelRun(it){
+    clearInterval(it.lt); const total = it.lab.reduce((a, tw) => a + labLen(tw), 0);
+    if (reduce){ labelSet(it, total); return; }
+    let n = 0; labelSet(it, 0);
+    it.lt = setInterval(() => { n++; labelSet(it, n);
+      if (n >= total){ clearInterval(it.lt); const last = it.lab[it.lab.length-1]; last.classList.add('blink'); setTimeout(() => last.classList.remove('blink'), 1600); } }, 45);
+  }
+  items.forEach(it => labelSet(it, reduce ? 1e9 : 0));
+  let PANELS = [];
+  function holesNow(){
+    const fr = fv.getBoundingClientRect();
+    return items.map(it => { const wEl = it.pic.querySelector('canvas.w') || it.pic.querySelector('img.w'); const useW = it.w > .5 && it.sils[1];
+      return { it, r: (useW && wEl ? wEl : it.pic).getBoundingClientRect(), s: useW ? it.sils[1] : (it.sils[0] || it.sils[1]) }; })
+      .filter(h => h.r.bottom > fr.top && h.r.top < fr.bottom)
+      .map(h => ({ it: h.it, x: h.r.left - fr.left, y: h.r.top - fr.top, w: h.r.width, h: h.r.height, s: h.s }));
+  }
+  // 옷·사람에서 GAP 안쪽이면 비워둘 자리
+  function blocked(holes, cx, cy){
+    for (const r of PANELS) if (cx > r.x - 18 && cx < r.x + r.w + 18 && cy > r.y - 18 && cy < r.y + r.h + 18) return true;
+    for (const h of holes){ const GAP = h.w*.62, cwx = h.w/GW, cwy = h.h/GH;
+      if (!h.s){ if (cx > h.x-GAP && cx < h.x+h.w+GAP && cy > h.y-GAP && cy < h.y+h.h+GAP) return true; continue; }
+      const gx = Math.floor((cx-h.x)/cwx) + OX, gy = Math.floor((cy-h.y)/cwy) + OY;
+      if (gx < 0 || gy < 0 || gx >= EW || gy >= EH) continue;
+      if (h.s[gy*EW+gx]*cwx < GAP) return true; }
+    return false;
+  }
+  function boxFree(holes, x, y, w, h){ for (let i=0;i<=4;i++) for (let j=0;j<=2;j++) if (blocked(holes, x + w*i/4, y + h*j/2)) return false; return x > 4 && y > 4 && x + w < FW - 4 && y + h < FH - 4; }
+  function field(t){
+    if (!fvis) return;
+    const tt = t/1000, holes = holesNow(), fr0 = fv.getBoundingClientRect();
+    const box = el => { const r = el.getBoundingClientRect(); return { x: r.left - fr0.left, y: r.top - fr0.top, w: r.width, h: r.height }; };
+    PANELS = [...items.filter(it => it.desc && it.m > .02).map(it => box(it.desc))];
+    fx.fillStyle = PAPER; fx.fillRect(0, 0, FW, FH); fx.textBaseline = 'top';
+    // 아주 옅은 점 격자(전광판 바탕)
+    fx.font = fontFor(ffs); fx.fillStyle = 'rgba(22,25,28,.09)';
+    const lh = ffs*1.5;
+    for (let y=8; y<FH; y+=lh) for (let x=6; x<FW; x+=fcw*2) if (!blocked(holes, x, y)) fx.fillText('.', x, y);
+  }
+
+  let last = 0;
+  function loop(t){ if (t - last > 45){ last = t; if (visible && (heroDirty || !reduce)){ heroDirty = false; hero(t); } field(t); } if (!reduce) requestAnimationFrame(loop); }
+  function start(){ build(); fieldSize(); progress(); if (reduce){ hero(); field(0); } else loop(0); }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(start);
+  let rt, lw = innerWidth; addEventListener('resize', () => { if (innerWidth === lw) return; lw = innerWidth; clearTimeout(rt); rt = setTimeout(() => { build(); fieldSize(); if (reduce) hero(); }, 200); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Dense type home",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Products from" }
+  ],
+  "presets": [{ "name": "Dense type home" }]
+}
+{% endschema %}
