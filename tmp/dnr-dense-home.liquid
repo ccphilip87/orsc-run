@@ -2,6 +2,7 @@
   트랙 콜라주 히어로 v5 (2026-10-20) — v4(덴스 타이포 메인 라인챕터) 복제본에서 첫 화면만 바꿈. 상품 영역은 v4 그대로.
   - 첫 화면 배경: 찢어진 종이 왼쪽 = 원근 트랙(빨간 우레탄 + 흰 레인 6개 + 잔디), 오른쪽 종이 = 같은 원근 레인을 글자로.
     트랙 구도는 참고 사진(트랙 곡선부)의 레인 선 위 점으로 맞춘 카메라 값(CAM). 강물·글자 러너는 뺌.
+  - 2026-10-21 (29차): 차례로 움직임 14초 주기 — 걷는 발자국 → 토끼(앞·뒷다리 모았다 뻗으며 두 번 뜀, 그림을 앞다리·몸·뒷다리로 잘라 돌림) → 세 명(하나 둘 번갈아 뜀, 사람마다 잘라 위아래·기울임). 전 = .v8_walk2.liquid
   - 2026-10-21 (28차): 걷는 발자국 그림을 비스듬한 회색 판(dnr-collage-footprints-walk.webp)으로 교체, 데스크톱 64.5%·62%·7.5%·6deg(기상도 건너 슬로건 something 밑으로), 모바일 84%·57%·11%·-14deg. 전 = .v7_walk_old_fp.liquid
   - 2026-10-21 (27차): 걷는 발자국을 9초마다 반복(나타남 → 머묾 → 먼저 찍힌 것부터 사라짐 → 다시). 전 = .v6_walk_once.liquid
   - 2026-10-21 (26차): 25차 발자국이 페이지 열리면 아래부터 하나씩 나타남(0.42초 간격, 1.6초 뒤 시작). 같은 그림 7장을 발자국마다 잘라 겹침(.dnr-walk). 전 = .v5_fp2.liquid
@@ -70,10 +71,28 @@
   .dnr-dim { position: absolute; inset: 0; background: rgba(0,0,0,.07); z-index: 5; pointer-events: none; }
   /* 걷는 발자국(2026-10-21): 발자국 그림을 일곱 번 겹쳐 놓고 하나씩만 보이게 잘라, 아래(출발)부터 하나씩 나타남 */
   .dnr-walk { position: absolute; }
-  .dnr-walk .dnr-step { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; opacity: 0; animation: dnrStep 9s ease-out infinite backwards; animation-delay: calc(var(--k) * .42s + 1.6s); }
+  .dnr-walk .dnr-step { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; opacity: 0; animation: dnrStep 14s ease-out infinite backwards; animation-delay: calc(var(--k) * .42s + 1.6s); }
   /* 9초마다 반복: 하나씩 나타나고(0.45초) → 머물다 → 먼저 찍힌 발자국부터 차례로 사라짐(걸어간 자국이 지워지듯) → 다시 걸음 */
-  @keyframes dnrStep { 0% { opacity: 0; transform: translateY(4%) scale(.96); } 5% { opacity: 1; transform: none; } 66% { opacity: 1; transform: none; } 76%, 100% { opacity: 0; transform: none; } }
+  @keyframes dnrStep { 0% { opacity: 0; transform: translateY(4%) scale(.96); } 3.21% { opacity: 1; transform: none; } 32.86% { opacity: 1; transform: none; } 39.29%, 100% { opacity: 0; transform: none; } }
   @media (prefers-reduced-motion: reduce){ .dnr-walk .dnr-step { animation: none; opacity: 1; } }
+  /* 차례로 움직임(2026-10-21): 14초 주기, 페이지 열고 1.6초 뒤부터. 발자국(0~5.5초) → 토끼 두 번 뜀(8.3~10.8초) → 세 명 하나 둘 뜀(11~13.6초) → 다시 */
+  .dnr-anim { position: absolute; }
+  .dnr-anim .pt { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+  .dnr-hare .hop { position: absolute; inset: 0; transform-origin: 50% 90%; animation: dnrHop 14s linear infinite; animation-delay: 1.6s; }
+  .dnr-hare .body { clip-path: polygon(0 0,100% 0,100% 60%,72% 60%,72% 100%,0 100%,0 77%,31% 77%,31% 41%,0 41%); }
+  .dnr-hare .fr { clip-path: polygon(0 41%,31% 41%,31% 77%,0 77%); transform-origin: 30% 55%; animation: dnrHareFr 14s linear infinite; animation-delay: 1.6s; }
+  .dnr-hare .hd { clip-path: polygon(72% 60%,100% 60%,100% 100%,72% 100%); transform-origin: 72% 68%; animation: dnrHareHd 14s linear infinite; animation-delay: 1.6s; }
+  @keyframes dnrHop { 0% { transform: translateY(0%) scaleY(1); } 59.29% { transform: translateY(0%) scaleY(1); } 61.0% { transform: translateY(2%) scaleY(0.96); } 63.21% { transform: translateY(-16%) scaleY(1.02); } 65.43% { transform: translateY(2%) scaleY(0.96); } 68.21% { transform: translateY(0%) scaleY(1); } 68.21% { transform: translateY(0%) scaleY(1); } 69.93% { transform: translateY(2%) scaleY(0.96); } 72.14% { transform: translateY(-16%) scaleY(1.02); } 74.36% { transform: translateY(2%) scaleY(0.96); } 77.14% { transform: translateY(0%) scaleY(1); } 100% { transform: translateY(0%) scaleY(1); } }
+  @keyframes dnrHareFr { 0% { transform: rotate(0deg); } 59.29% { transform: rotate(0deg); } 61.0% { transform: rotate(-48deg); } 63.21% { transform: rotate(6deg); } 65.43% { transform: rotate(-48deg); } 68.21% { transform: rotate(0deg); } 68.21% { transform: rotate(0deg); } 69.93% { transform: rotate(-48deg); } 72.14% { transform: rotate(6deg); } 74.36% { transform: rotate(-48deg); } 77.14% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
+  @keyframes dnrHareHd { 0% { transform: rotate(0deg); } 59.29% { transform: rotate(0deg); } 61.0% { transform: rotate(52deg); } 63.21% { transform: rotate(-8deg); } 65.43% { transform: rotate(52deg); } 68.21% { transform: rotate(0deg); } 68.21% { transform: rotate(0deg); } 69.93% { transform: rotate(52deg); } 72.14% { transform: rotate(-8deg); } 74.36% { transform: rotate(52deg); } 77.14% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
+  .dnr-runners .p1 { clip-path: inset(0 67.5% 0 0); }
+  .dnr-runners .p2 { clip-path: inset(0 41% 0 32.5%); }
+  .dnr-runners .p3 { clip-path: inset(0 0 0 59%); }
+  .dnr-runners .pt { transform-origin: 50% 95%; animation: dnrRunA 14s ease-in-out infinite; animation-delay: 1.6s; }
+  .dnr-runners .p2 { animation-name: dnrRunB; }
+  @keyframes dnrRunA { 0% { transform: none; } 78.57% { transform: none; } 79.71% { transform: translateY(-7%) rotate(-3deg); } 80.86% { transform: none; } 82.0% { transform: translateY(1%) rotate(2deg); } 83.14% { transform: none; } 84.29% { transform: translateY(-7%) rotate(-3deg); } 85.43% { transform: none; } 86.57% { transform: translateY(1%) rotate(2deg); } 87.71% { transform: none; } 88.86% { transform: translateY(-7%) rotate(-3deg); } 90.0% { transform: none; } 91.14% { transform: translateY(1%) rotate(2deg); } 92.29% { transform: none; } 93.43% { transform: translateY(-7%) rotate(-3deg); } 94.57% { transform: none; } 95.71% { transform: translateY(1%) rotate(2deg); } 96.86% { transform: none; } 100% { transform: none; } }
+  @keyframes dnrRunB { 0% { transform: none; } 78.57% { transform: none; } 79.71% { transform: translateY(1%) rotate(2deg); } 80.86% { transform: none; } 82.0% { transform: translateY(-7%) rotate(-3deg); } 83.14% { transform: none; } 84.29% { transform: translateY(1%) rotate(2deg); } 85.43% { transform: none; } 86.57% { transform: translateY(-7%) rotate(-3deg); } 87.71% { transform: none; } 88.86% { transform: translateY(1%) rotate(2deg); } 90.0% { transform: none; } 91.14% { transform: translateY(-7%) rotate(-3deg); } 92.29% { transform: none; } 93.43% { transform: translateY(1%) rotate(2deg); } 94.57% { transform: none; } 95.71% { transform: translateY(-7%) rotate(-3deg); } 96.86% { transform: none; } 100% { transform: none; } }
+  @media (prefers-reduced-motion: reduce){ .dnr-anim .pt, .dnr-hare .hop { animation: none; } }
   /* 붙여지듯 하나씩: 살짝 크고 더 기운 채로 내려앉음 */
   .dnr-collage:not(.go) .dnr-pc { opacity: 0; }
   .dnr-collage.go .dnr-pc { animation: dnrStick .75s cubic-bezier(.2,.85,.25,1.12) both; animation-delay: calc(var(--i) * 75ms + 120ms); }
@@ -155,7 +174,11 @@
         <img class="dnr-pc" src="{{ 'dnr-collage-mountain.webp' | asset_url }}" alt="Two runners on a mountain ridge" width="1272" height="721" style="--i:4;--d:.25;--mz:2;--z:2;--x:7.5%;--y:20.5%;--w:30%;--r:-4deg;--mx:-8%;--my:18%;--mw:48%;--mr:-4deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-sun.webp' | asset_url }}" alt="" width="500" height="507" style="--i:5;--d:.6;--mz:3;--z:3;--x:26.5%;--y:5%;--w:7.5%;--r:12deg;--mx:75%;--my:-1%;--mw:21%;--mr:10deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-flower.webp' | asset_url }}" alt="" width="320" height="316" style="--i:6;--d:.55;--z:4;--mz:4;--x:92%;--y:26%;--w:6.5%;--r:18deg;--mx:85%;--my:43%;--mw:14%;--mr:18deg">
-        <img class="dnr-pc" src="{{ 'dnr-collage-runners.webp' | asset_url }}" alt="" width="507" height="339" style="--i:7;--d:.5;--mz:3;--z:3;--x:4.5%;--y:52.5%;--w:10%;--r:6deg;--mx:1%;--my:62%;--mw:21%;--mr:6deg">
+        <div class="dnr-pc dnr-anim dnr-runners" role="img" aria-label="" style="--i:7;--d:.5;--mz:3;--z:3;--x:4.5%;--y:52.5%;--w:10%;--r:6deg;--mx:1%;--my:62%;--mw:21%;--mr:6deg;aspect-ratio:507/339">
+          <img class="pt p1" src="{{ 'dnr-collage-runners.webp' | asset_url }}" alt="" width="507" height="339">
+          <img class="pt p2" src="{{ 'dnr-collage-runners.webp' | asset_url }}" alt="" width="507" height="339">
+          <img class="pt p3" src="{{ 'dnr-collage-runners.webp' | asset_url }}" alt="" width="507" height="339">
+        </div>
         <img class="dnr-pc" src="{{ 'dnr-collage-newspaper.webp' | asset_url }}" alt="Sometimes having no reason is reason enough to run" width="640" height="546" style="--i:8;--d:.45;--z:3;--mz:4;--x:85%;--y:34%;--w:12.5%;--r:7deg;--mx:72%;--my:26%;--mw:26%;--mr:7deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-trackquote.webp' | asset_url }}" alt="A hill worth climbing, for everyone who starts to run" width="1300" height="694" style="--i:9;--d:.4;--z:2;--mz:3;--x:65.5%;--y:8.5%;--w:26%;--r:-5deg;--mx:57%;--my:10%;--mw:45%;--mr:-6deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-footprints.webp' | asset_url }}" alt="" width="600" height="1297" style="--i:10;--d:.5;--mz:2;--z:2;--x:28.5%;--y:74%;--w:7%;--r:-78deg;--mx:1%;--my:77%;--mw:13%;--mr:-60deg">
@@ -165,7 +188,13 @@
         <img class="dnr-pc dnr-pc--person" src="{{ 'dnr-collage-person.webp' | asset_url }}" alt="A runner stretching in a clear sky singlet" width="945" height="2000" fetchpriority="high" style="--i:13;--d:.15;--z:5;--x:30.55%;--y:6%;--h:147%;--r:0deg;--mx:11%;--my:17%;--mh:116%;--mr:0deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-tagline.webp' | asset_url }}" alt="Running wear for people who just run" width="1100" height="156" style="--i:14;--d:.35;--mz:4;--z:4;--x:5%;--y:78.5%;--w:24%;--r:-4deg;--mx:8%;--my:1.5%;--mw:60%;--mr:-3deg">
         <img class="dnr-pc" src="{{ 'dnr-collage-medal.webp' | asset_url }}" alt="" width="322" height="408" data-mobile="off" style="--i:15;--d:.7;--mz:3;--z:4;--x:87.5%;--y:1%;--w:5.5%;--r:-6deg;--mx:0;--my:0;--mw:0;--mr:0deg">
-        <img class="dnr-pc" src="{{ 'dnr-collage-hare.webp' | asset_url }}" alt="" width="1100" height="613" style="--i:16;--d:.65;--mz:4;--z:4;--x:82.5%;--y:75%;--w:13%;--r:-9deg;--mx:5%;--my:86%;--mw:26%;--mr:-8deg">
+        <div class="dnr-pc dnr-anim dnr-hare" role="img" aria-label="" style="--i:16;--d:.65;--mz:4;--z:4;--x:82.5%;--y:75%;--w:13%;--r:-9deg;--mx:5%;--my:86%;--mw:26%;--mr:-8deg;aspect-ratio:1100/613">
+          <div class="hop">
+            <img class="pt body" src="{{ 'dnr-collage-hare.webp' | asset_url }}" alt="" width="1100" height="613">
+            <img class="pt fr" src="{{ 'dnr-collage-hare.webp' | asset_url }}" alt="" width="1100" height="613">
+            <img class="pt hd" src="{{ 'dnr-collage-hare.webp' | asset_url }}" alt="" width="1100" height="613">
+          </div>
+        </div>
         <img class="dnr-pc" src="{{ 'dnr-collage-slogan-stack.webp' | asset_url }}" alt="i do nut run for something" width="1100" height="1082" style="--i:17;--d:.3;--z:4;--mz:4;--x:67%;--y:38%;--w:18.5%;--r:-4deg;--mx:70.5%;--my:72%;--mw:29.5%;--mr:5deg">
       </div>
     </div>
