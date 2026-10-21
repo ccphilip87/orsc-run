@@ -53,6 +53,11 @@
   .mag-cover > a { position: absolute; inset: 0; display: block; color: inherit; text-decoration: none; }
   .mag-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   .mag-cover--back { position: absolute; z-index: 1; filter: brightness(.94); display: none; }
+  /* 휴대폰: 표지를 화면 가득 */
+  @media (max-width: 899px) {
+    .mag-desk { min-height: 0; padding: 10px 10px 40px; }
+    .mag-cover { width: 100%; aspect-ratio: auto; height: min(calc(100svh - 120px), 150vw); }
+  }
   @media (min-width: 900px) {
     .mag-cover { transform: rotate(-2.2deg); }
     .mag-cover--back { display: block; transform: translate(42%, 3%) rotate(6deg); }
