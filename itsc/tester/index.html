@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바람막이 테스터 응모 — do nut run at ITSC 2026</title>
+  <meta name="description" content="입어 보고, 골라 주세요. 출시 전 바람막이 테스터 4명을 뽑아요. 당첨 소식은 카톡·이메일로. Try one on. Pick your favourite." />
+  <meta name="theme-color" content="#5DA6D8" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orsc.run/itsc/tester" />
+  <meta property="og:title" content="do nut run — ITSC 2026 tester draw" />
+  <meta property="og:description" content="입어 보고, 골라 주세요. Try one on. Pick your favourite." />
+  <meta property="og:image" content="https://orsc.run/web-app-manifest-512x512.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- Google Analytics 4 — 이 페이지는 배너 ② QR로만 들어온다 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5G4RER6G9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W5G4RER6G9', {
+      page_location: window.location.href,
+      campaign_source: 'qr', campaign_medium: 'offline', campaign_name: 'itsc2026'
+    });
+
+    // ── 언어 결정: ?lang= → 저장값 → 브라우저 언어 (ko 아니면 en) ──
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      let lang = params.get('lang');
+      if (lang !== 'ko' && lang !== 'en') {
+        try { lang = localStorage.getItem('dnr-lang'); } catch (e) {}
+      }
+      if (lang !== 'ko' && lang !== 'en') {
+        lang = (navigator.language || '').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+      }
+      document.documentElement.lang = lang;
+      document.documentElement.dataset.lang = lang;
+    })();
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* 배너 ②와 같은 색 — clear sky 바탕 + 밝은 글씨 #EDEFF2, 카드 안은 잉크 #2B2F3A (brand_arc §8) */
+    :root {
+      --sky: #5DA6D8;
+      --off: #EDEFF2;
+      --off-soft: #E0EDF7;
+      --paper: #FAFAF7;
+      --ink: #2B2F3A;
+      --ink-mid: rgba(43,47,58,0.64);
+      --ink-faint: rgba(43,47,58,0.14);
+      --sky-ink: #3F8BC0;
+      --card: rgba(250,250,247,0.92);
+      --sans: 'Pretendard Variable', -apple-system, sans-serif;
+      --gutter: 22px;
+    }
+
+    html { background: var(--sky); }
+    body {
+      min-height: 100vh;
+      background: var(--sky) url("/itsc/tester/sky.jpg") center top / cover no-repeat;
+      color: var(--off);
+      font-family: var(--sans);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+    html[lang="ko"] body { word-break: keep-all; }
+    a { color: inherit; }
+
+    html[data-lang="ko"] [lang="en"]:not(html),
+    html[data-lang="en"] [lang="ko"]:not(html) { display: none !important; }
+
+    .wrap { max-width: 520px; margin: 0 auto; padding: 0 var(--gutter); }
+
+    header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; }
+    .logo { width: 58px; height: auto; display: block; }
+    .lang { display: flex; gap: 4px; font-size: 0.82rem; letter-spacing: 0.04em; }
+    .lang button {
+      background: none; border: none; font: inherit; color: var(--off-soft); opacity: 0.8;
+      padding: 8px 6px; cursor: pointer;
+    }
+    html[data-lang="ko"] .lang [data-set="ko"],
+    html[data-lang="en"] .lang [data-set="en"] { opacity: 1; color: var(--off); text-decoration: underline; text-underline-offset: 4px; }
+
+    .hero { padding: 40px 0 8px; text-align: center; }
+    h1 {
+      font-weight: 400;
+      font-size: clamp(2.1rem, 10vw, 2.8rem);
+      line-height: 1.24;
+      letter-spacing: -0.01em;
+    }
+    h1 .light { font-weight: 300; }
+    .sub { margin-top: 14px; font-size: 0.95rem; color: var(--off-soft); }
+    .lead { margin-top: 22px; font-size: 1.02rem; line-height: 1.75; text-align: left; }
+
+    .steps { list-style: none; margin: 30px 0 8px; text-align: left; }
+    .steps li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; font-size: 1.02rem; line-height: 1.55; }
+    .steps .n {
+      flex: none; width: 30px; height: 30px; border: 1.5px solid var(--off); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-top: -2px;
+    }
+    .steps small { display: block; font-size: 0.85rem; color: var(--off-soft); }
+
+    .cards { padding: 30px 0 8px; }
+    h2.notify { font-weight: 400; font-size: 1.5rem; line-height: 1.35; text-align: center; }
+    .notify-sub { margin: 8px 0 20px; text-align: center; font-size: 0.95rem; color: var(--off-soft); }
+    .card {
+      background: var(--card); color: var(--ink);
+      border-radius: 18px; padding: 24px 22px 22px; margin-bottom: 16px;
+    }
+    .card h2 { font-weight: 400; font-size: 1.18rem; }
+    .card p { margin-top: 8px; font-size: 0.95rem; line-height: 1.6; color: var(--ink-mid); }
+
+    .btn {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      width: 100%; margin-top: 18px; padding: 16px 20px;
+      background: var(--ink); color: var(--paper);
+      border: none; border-radius: 12px;
+      font: 400 1rem var(--sans); text-decoration: none; cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+
+    .field {
+      width: 100%; margin-top: 12px; padding: 15px 16px;
+      border: 1px solid var(--ink-faint); border-radius: 12px;
+      background: var(--paper); color: var(--ink);
+      font: 300 1rem var(--sans);
+    }
+    .field:first-of-type { margin-top: 18px; }
+    .field:focus { outline: 2px solid var(--sky-ink); outline-offset: 1px; }
+    .consent {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-top: 14px; font-size: 0.78rem; line-height: 1.6; color: var(--ink-mid); cursor: pointer;
+    }
+    .consent input { margin-top: 3px; accent-color: var(--ink); flex: none; }
+    .status { min-height: 1.4em; margin-top: 12px; font-size: 0.9rem; color: #B5523F; }
+
+    .done { display: none; text-align: center; padding: 12px 0 4px; }
+    .card.is-done form { display: none; }
+    .card.is-done .done { display: block; }
+    .done .mark {
+      width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%;
+      background: var(--sky-ink); color: var(--paper);
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .done strong { display: block; font-weight: 400; font-size: 1.5rem; }
+    .done .ticket { margin-top: 10px; font-size: 1.1rem; color: var(--ink); }
+    .done p { color: var(--ink); }
+
+    .draw {
+      margin: 10px 0 0; padding: 20px 20px; border: 1.5px solid var(--off); border-radius: 14px;
+      text-align: center;
+    }
+    .draw strong { display: block; font-weight: 400; font-size: 1.12rem; }
+    .draw p { margin-top: 8px; font-size: 0.9rem; line-height: 1.6; color: var(--off-soft); }
+
+    .more { margin: 28px 0 0; font-size: 0.95rem; }
+    .more a { text-underline-offset: 4px; }
+
+    footer { padding: 36px 0 40px; font-size: 0.8rem; color: var(--off-soft); }
+    footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a href="/" aria-label="do nut run"><svg class="logo" viewBox="20 18 110 114" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="do nut run"><path fill="#EDEFF2" d="M118.9,44.5c-5-9.4-13.1-16.5-23.1-19.9-10.3-3.5-20-3.4-30.4-.6-11.4,3-21.2,10.7-27.9,20.3-10.4,14.8-15,33.1-11.9,51,.9,4.9,2.3,9.5,4.6,13.8,2,3.8,4.6,7.1,8.1,9.7,4,3.1,8.5,5.3,13.4,6.8,11.8,3.5,25.5,3,37.1-1.1h0c9.4-3.3,17.4-9.4,23.1-17.6,4.5-6.5,8-13.6,10.6-21.1,1.1-3.2,2-6.2,2.5-9.6,1.7-11.1-.8-22-6-31.8ZM87.7,40.5c6.6,0,11.9,5.3,11.9,11.9s-5.3,11.8-11.9,11.8-11.8-5.3-11.8-11.9,5.3-11.8,11.8-11.8ZM59.9,41c2.4,0,4.5.9,6,2.6l.6.3c.1,0,.3-.5.3-.6,0-2.2-.7-4.3-1.6-6.3-.4-1.1-.2-2.1.8-2.7.8-.5,1.8-.9,2.8-1l3.7-.3c1.4-.1,2.5.9,2.6,2.3,0,1-.1,2-.3,3.1-.8,3.9-1.3,7.7-1.6,11.7-.2,3.4.2,6.5,1.7,9.6.5,1,.1,2.3-1,2.8-1.6.7-3.4,1.1-5.1,1-1.2,0-1.9-.8-1.8-2v-2c0,0-.1-.3-.1-.3h0c-.3-.4-1.4,1.8-3.1,3-1.6,1.2-3.6,1.4-5.6,1.2-5.3-.6-7.5-5.6-7.5-10.6,0-6.1,2.6-11.9,9.1-11.7ZM42.2,83.8c.8-1.7,1.5-3.3,1.9-5.1.7-3.1.3-6.1-1.1-8.9-.5-1-.3-2.3.6-3,2.6-1.9,7.1-2.5,7,.1l-.2,2.4c0,.2.2.8.4.7.2,0,.4-.2.7-.4,1.8-3.6,5.7-5.2,9.5-3.9,3.2,1.2,4.2,4.3,3.7,7.7l-.6,4.7c-.2,1.7.3,3.3,1,4.8.6,1.2.1,2.5-1,3.1-3.1,1.5-7.7,1.4-8.1-1.4-.2-1.6,0-3.1.2-4.7l.7-4.8c.1-1-.1-2.2-.8-2.9-.7-.8-2-.7-2.7,0-.9.7-1.3,1.8-1.5,2.9-.5,2.9,0,5.7.8,8.4.5,1.6-.5,3.2-2,3.6-2.5.6-6.5,1.1-8.2-.4-.8-.7-.8-2.1-.4-3ZM55.5,99c-2.1.9-2.7-2.3-4.4-1.7-.7.3-1.3,1.1-1.5,1.9-.7,2.8,0,5.6,1.5,8.1.5.9.8,1.9.5,2.9-.9,2.4-5.6,2.6-8.5,2h0c-1.5-.3-2.3-1.7-1.8-3.1l.9-2.7c1.1-3.5,1-7.1-.6-10.4-.6-1.4-.4-2.9,1-3.7,1.5-.9,3.9-1.9,4.9-1,.4.3.7,1,.6,1.6v2.3c-.1.1,0,.5.1.5,0,.1.4-.1.5-.3l1.4-2.6c.7-1.4,2.2-2.3,3.6-2.5,1.4-.2,2.9.3,3.6,1.6,1.2,2.2.6,6.2-1.8,7.3ZM78.3,110.3c-1.5.8-4.1,1.9-5.1,1-.4-.3-.7-.9-.7-1.6v-2.2c0-.1,0-.4,0-.5,0-.1-.5,0-.5.1l-1.2,1.7c-1.6,2.3-4.3,3.4-7.1,2.8-2.2-.5-3.7-2.6-3.8-5h0c0-1.9.1-3.6.5-5.4.5-2.5.1-4.9-1-7.2-.7-1.4,0-2.9,1.4-3.5,1.6-.6,3.4-.9,5.1-.4,2.3.6,2,4.3,1.5,6.9-.5,2.6-1.1,6.9,1,8,2.4,1.2,4.5-3.6,2.7-9.2l-.6-1.9c-.4-1.2.2-2.5,1.3-3.1,1.5-.8,3.2-1.1,4.9-1,2.7.2,2.4,4,1.9,6.8-.7,3.8-.9,6.9.8,10.5.6,1.2,0,2.4-1.1,3.1ZM81,82.8c-2.2,3.4-6.1,4.9-10,3.7-2.3-.7-3.6-3-3.3-5.3l.9-4.8c.4-2.1.4-4.2-.5-6.1-.4-.8-.6-1.7-.2-2.5.9-2,4.9-2,7.3-1.6,2.8.5,2.2,3.7,1.6,6.2l-.9,4.3c-.2.8,0,1.8.2,2.5.3,1.1,1.4,1.7,2.5,1.4,2.9-.8,3.5-6.1,2-9.8-.6-1.5,0-3.2,1.6-3.7,1.8-.6,3.8-.8,5.8-.6,1,0,1.8.9,1.9,2,0,1.1-.2,2.2-.5,3.3l-1.2,5.2h0c-.8,3.4,1.9,6,.9,7.6-.5.8-1.4,1.2-2.3,1.5-1.4.5-2.8.9-4.3.6-1.4-.3-.5-2.2-.8-4,0-.2-.7,0-.9.2ZM101.3,110.5c-1.7,1.3-4,1.6-5.9.8h0c-4.1-1.6-.7-8.8-1.5-13.8-.1-.6-.5-1.3-.9-1.5-.6-.3-1.5-.3-2,.2-.8.6-1.1,1.7-1.2,2.7-.5,3,0,5.9.9,8.7.5,1.8-.4,3.5-2.3,3.9-2.3.4-5.8.4-6.9-1.6-.4-.9-.3-1.9.2-2.7l1-3.5c.9-3.2.5-6.4-.9-9.4-.5-1.2-.3-2.5.7-3.3,1.2-.9,2.7-1.5,4.2-1.6.5,0,1.5.5,1.5,1.1v3.2c0,.1.2.4.3.5,0,0,.4-.1.5-.2l1.7-2.4c1.2-1.7,3-2.4,5.1-2.3,4,.2,5.4,3.7,5.2,7.5l-.3,5.6c0,1.8.4,3.4,1.2,5,.5,1,.4,2.4-.5,3.1ZM106.8,70.6c-.9.9-2.9.1-4.5.8-.5.2-.6,1.1-.7,1.6-.6,2.2-1.7,6.5,0,7.3h0c1.6.7,3.1-.4,3.9.2,1.4,1.1-.7,5.1-4.7,6-1.5.4-3.2.4-4.8,0-2.1-.4-3.5-2.2-3.5-4.4,0-1.8.4-3.4.9-5.1l1.4-4.8c0-.2,0-.8-.2-.9-.5-.6-2.1,0-2.5-.8-.8-1.5,0-3.5,1.6-4.1,2.5-1,4.5-2.6,5.9-4.9.5-.8,1.3-1.3,2.3-1.4.6,0,1.1.3,1.5.7.4.5.5,1.1.3,1.7l-.7,3.1c0,.1,0,.5.2.6.1.1.5.2.7.2h2.4c.8,0,1.3.7,1.3,1.5,0,1-.2,2-.9,2.8Z"/><path fill="#EDEFF2" d="M63.3,57.1h0c2.5-.9,2.9-5.9,1.7-9-.4-1-1.3-1.6-2.2-1.6-3.2-.1-4.1,5.3-2.6,9.1.5,1.2,1.9,2,3.2,1.5Z"/><path fill="#EDEFF2" d="M88.2,55.9c3-.8,3.4-6,1.7-8.9-.7-1.1-2-1.7-3.1-1.1-2.3,1.2-2.8,5.5-1.5,8.3.5,1.2,1.6,2.1,3,1.7Z"/></svg></a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="ko">KO</button>
+        <button type="button" data-set="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1 lang="ko"><span class="light">입어 보고,</span><br />골라 주세요</h1>
+        <h1 lang="en"><span class="light">Try one on.</span><br />Pick your favourite.</h1>
+        <p class="sub" lang="ko">출시 전 바람막이 샘플 · 남 2 · 여 2</p>
+        <p class="sub" lang="en">Pre-release wind jackets, 2 men's and 2 women's</p>
+        <p class="lead" lang="ko">부스에서 입어 보거나 살펴보고 마음에 드는 쪽을 골라 주세요. 추첨으로 테스터 4명을 뽑아 2월 말에 바람막이를 보내 드려요.</p>
+        <p class="lead" lang="en">Try one on at the booth, or just have a look, and pick the one you like. We'll draw 4 testers and send them a jacket in late February.</p>
+
+        <ol class="steps" lang="ko">
+          <li><span class="n">1</span><span>입어 보거나 살펴보고</span></li>
+          <li><span class="n">2</span><span>보드에 스티커로 골라 주세요<small>스티커를 붙이면 추첨권을 드려요</small></span></li>
+          <li><span class="n">3</span><span>추첨권을 응모함에 넣으면 응모<small>나머지 한쪽은 발표 때까지 갖고 계세요</small></span></li>
+        </ol>
+        <ol class="steps" lang="en">
+          <li><span class="n">1</span><span>Try one on, or just have a look</span></li>
+          <li><span class="n">2</span><span>Pick one on the board with a sticker<small>You'll get a numbered ticket</small></span></li>
+          <li><span class="n">3</span><span>Drop your ticket in the box to enter<small>Keep the other half until the draw</small></span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="wrap">
+        <h2 class="notify" lang="ko">당첨되면 카톡이나<br />이메일로 알려 드려요</h2>
+        <h2 class="notify" lang="en">Winners hear from us<br />by KakaoTalk or email</h2>
+        <p class="notify-sub" lang="ko">받을 곳을 하나만 남겨 주세요.</p>
+        <p class="notify-sub" lang="en">Just leave us one way to reach you.</p>
+
+        <div class="card">
+          <h2 lang="ko">카카오톡 채널</h2>
+          <h2 lang="en">KakaoTalk</h2>
+          <p lang="ko">채널을 추가해 두면 당첨 번호를 보내 드려요. 양말 받을 때 이미 추가하셨다면 그대로 기다리시면 돼요.</p>
+          <p lang="en">Add our channel and we'll send you the winning numbers. Already added it for the socks? You're all set.</p>
+          <a class="btn" id="kakao" href="https://pf.kakao.com/_yWqsX/friend" target="_blank" rel="noopener">
+            <span lang="ko">채널 추가하기</span><span lang="en">Add our channel</span> <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="card" id="entry-card">
+          <h2 lang="ko">이메일</h2>
+          <h2 lang="en">Email</h2>
+          <form id="entry-form" novalidate>
+            <p lang="ko">해외에 계시거나 카톡을 안 쓰시면 이메일로 알려 드려요.</p>
+            <p lang="en">Outside Korea, or no KakaoTalk? We'll email you.</p>
+            <input class="field" type="text" name="ticket" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" required placeholder="추첨권 번호" data-ph-ko="추첨권 번호" data-ph-en="Ticket no." aria-label="Ticket number" />
+            <input class="field" type="email" name="email" autocomplete="email" required placeholder="your@email.com" aria-label="Email" />
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span lang="ko">(필수) 추첨 결과 안내를 위해 이메일·추첨권 번호를 수집·이용하는 데 동의합니다. 보유 기간: 바람막이 발송 완료 시까지.</span>
+              <span lang="en">I agree that do nut run may use my email and ticket number to tell me the draw result. We keep them until the jackets have been sent.</span>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="news" />
+              <span lang="ko">(선택) 신제품·행사 소식도 이메일로 받을게요. 언제든 해지할 수 있어요.</span>
+              <span lang="en">(Optional) Also send me do nut run news now and then. You can unsubscribe at any time.</span>
+            </label>
+            <button class="btn" type="submit"><span lang="ko">알림 받기</span><span lang="en">Notify me</span></button>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </form>
+          <div class="done" aria-live="polite">
+            <div class="mark" aria-hidden="true">✓</div>
+            <strong lang="ko">등록됐어요</strong>
+            <strong lang="en">You're all set</strong>
+            <p class="ticket" id="ticket-done"></p>
+            <p lang="ko">당첨되면 이 이메일로 알려 드려요.</p>
+            <p lang="en">If you win, we'll email you.</p>
+          </div>
+        </div>
+
+        <div class="draw">
+          <strong lang="ko">11월 7일(토) 14:10 부스에서 발표</strong>
+          <strong lang="en">Draw: Sat 7 Nov, 14:10, at our booth</strong>
+          <p lang="ko">자리에 없어도 괜찮아요. 같은 날 카톡과 이메일로 알려 드려요.<br />추첨권은 발표 때까지 갖고 계세요.</p>
+          <p lang="en">You don't need to be there. We'll let you know the same day.<br />Keep your ticket until the draw.</p>
+        </div>
+
+        <p class="more" lang="ko">러닝 양말은 따로 받으세요 — <a href="/itsc">카톡 채널·이메일 등록 →</a></p>
+        <p class="more" lang="en">Running socks are separate — <a href="/itsc">sign up for a pair →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span lang="ko">do nut run · 강원 춘천 · ITSC 2026 원주 오크밸리</span><span lang="en">do nut run · Chuncheon, Korea · ITSC 2026, Wonju</span>
+      <a href="/">orsc.run</a>
+    </div>
+  </footer>
+
+  <script>
+    // 입력칸 안내 글씨는 lang 속성으로 못 나누니 언어 바뀔 때 직접 바꾼다
+    const setPlaceholders = lang => document.querySelectorAll('[data-ph-ko]').forEach(el => {
+      el.placeholder = el.dataset['ph' + lang[0].toUpperCase() + lang.slice(1)];
+    });
+    setPlaceholders(document.documentElement.dataset.lang);
+
+    document.querySelectorAll('.lang button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.set;
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        setPlaceholders(lang);
+        try { localStorage.setItem('dnr-lang', lang); } catch (e) {}
+        gtag('event', 'language_switch', { language: lang });
+      });
+    });
+
+    document.getElementById('kakao').addEventListener('click', () => {
+      gtag('event', 'tester_notify', { method: 'kakao_channel', campaign: 'itsc2026' });
+    });
+
+    // 당첨 알림용 이메일 → Klaviyo 이벤트 "ITSC Tester Entry"(구독 아님, 추첨권 번호로 당첨자를 찾는다).
+    // 소식 받기에 체크하면 그때만 "Email List" 구독
+    const KLAVIYO_COMPANY_ID = 'SsrFvq';
+    const KLAVIYO_LIST_ID = 'SVnHvX';
+    const KLAVIYO = path => `https://a.klaviyo.com/client/${path}/?company_id=${KLAVIYO_COMPANY_ID}`;
+    const HEADERS = { 'content-type': 'application/vnd.api+json', revision: '2024-10-15' };
+    const card = document.getElementById('entry-card');
+    const form = document.getElementById('entry-form');
+    const status = document.getElementById('status');
+    const msg = {
+      ko: { ticket: '추첨권 번호를 확인해 주세요.', email: '이메일 주소를 확인해 주세요.', consent: '필수 동의에 체크해 주세요.', fail: '잠시 후 다시 시도해 주세요. 안 되면 부스에서 말씀해 주세요.', done: n => `추첨권 ${n}번` },
+      en: { ticket: 'Please check your ticket number.', email: 'Please check your email address.', consent: 'Please tick the required box.', fail: 'Something went wrong. Please try again, or just tell us at the booth.', done: n => `Ticket no. ${n}` }
+    };
+    const say = key => { status.textContent = msg[document.documentElement.dataset.lang][key]; };
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const ticket = form.ticket.value.trim().replace(/^0+(?=\d)/, '');
+      const email = form.email.value.trim();
+      if (!/^\d{1,3}$/.test(ticket)) return say('ticket');
+      if (!form.email.checkValidity() || !email) return say('email');
+      if (!form.consent.checked) return say('consent');
+
+      const btn = form.querySelector('button');
+      btn.disabled = true;
+      status.textContent = '';
+      const lang = document.documentElement.dataset.lang;
+      const profile = { data: { type: 'profile', attributes: {
+        email, properties: { itsc_ticket: ticket, signup_language: lang }
+      } } };
+      try {
+        const res = await fetch(KLAVIYO('events'), {
+          method: 'POST', headers: HEADERS,
+          body: JSON.stringify({ data: { type: 'event', attributes: {
+            properties: { ticket, campaign: 'itsc2026' },
+            metric: { data: { type: 'metric', attributes: { name: 'ITSC Tester Entry' } } },
+            profile
+          } } })
+        });
+        if (res.status === 400) { say('email'); btn.disabled = false; return; }
+        if (!res.ok) throw new Error(res.status);
+        if (form.news.checked) {
+          fetch(KLAVIYO('subscriptions'), {
+            method: 'POST', headers: HEADERS,
+            body: JSON.stringify({ data: { type: 'subscription', attributes: {
+              custom_source: 'itsc2026_tester',
+              profile: { data: { type: 'profile', attributes: {
+                email, properties: { signup_language: lang, signup_source: 'itsc2026_tester' }
+              } } }
+            }, relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } } } })
+          }).catch(() => {});
+        }
+        document.getElementById('ticket-done').textContent = msg[lang].done(ticket);
+        card.classList.add('is-done');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        gtag('event', 'tester_notify', { method: 'email', campaign: 'itsc2026', language: lang });
+      } catch (err) {
+        say('fail');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

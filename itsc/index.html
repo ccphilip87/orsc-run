@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>러닝 양말 받기 — do nut run at ITSC 2026</title>
+  <meta name="description" content="카톡 채널 추가하면 러닝 양말을 드려요. Sign up and take home a pair of running socks." />
+  <meta name="theme-color" content="#FAFAF7" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orsc.run/itsc" />
+  <meta property="og:title" content="do nut run — ITSC 2026" />
+  <meta property="og:description" content="카톡 채널 추가하면 러닝 양말을 드려요. Sign up and take home a pair of running socks." />
+  <meta property="og:image" content="https://orsc.run/web-app-manifest-512x512.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- Google Analytics 4 — 이 페이지는 배너·안내판 QR로만 들어온다 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5G4RER6G9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W5G4RER6G9', {
+      page_location: window.location.href,
+      campaign_source: 'qr', campaign_medium: 'offline', campaign_name: 'itsc2026'
+    });
+
+    // ── 언어 결정: ?lang= → 저장값 → 브라우저 언어 (ko 아니면 en) ──
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      let lang = params.get('lang');
+      if (lang !== 'ko' && lang !== 'en') {
+        try { lang = localStorage.getItem('dnr-lang'); } catch (e) {}
+      }
+      if (lang !== 'ko' && lang !== 'en') {
+        lang = (navigator.language || '').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+      }
+      document.documentElement.lang = lang;
+      document.documentElement.dataset.lang = lang;
+    })();
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* 배너 ①과 같은 색 — 잉크 #2B2F3A, 순백·순검정 없이 (brand_arc §8) */
+    :root {
+      --paper: #FAFAF7;
+      --ink: #2B2F3A;
+      --ink-mid: rgba(43,47,58,0.64);
+      --ink-faint: rgba(43,47,58,0.14);
+      --sky-ink: #3F8BC0;
+      --card: rgba(250,250,247,0.88);
+      --sans: 'Pretendard Variable', -apple-system, sans-serif;
+      --gutter: 22px;
+    }
+
+    html, body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+    html[lang="ko"] body { word-break: keep-all; }
+    a { color: inherit; }
+
+    html[data-lang="ko"] [lang="en"]:not(html),
+    html[data-lang="en"] [lang="ko"]:not(html) { display: none !important; }
+
+    .wrap { max-width: 520px; margin: 0 auto; padding: 0 var(--gutter); }
+
+    header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; }
+    .logo { width: 58px; height: auto; display: block; }
+    .lang { display: flex; gap: 4px; font-size: 0.82rem; letter-spacing: 0.04em; }
+    .lang button {
+      background: none; border: none; font: inherit; color: var(--ink-mid);
+      padding: 8px 6px; cursor: pointer;
+    }
+    html[data-lang="ko"] .lang [data-set="ko"],
+    html[data-lang="en"] .lang [data-set="en"] { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+    .hero { padding: 44px 0 40px; }
+    h1 {
+      font-weight: 400;
+      font-size: clamp(1.9rem, 8.4vw, 2.5rem);
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      color: var(--sky-ink);
+    }
+    .lead { margin-top: 18px; font-size: 1.02rem; line-height: 1.7; color: var(--ink); }
+    .lead b { font-weight: 400; }
+
+    /* ── 아래 절반: 배너 ①의 하늘 그라데이션 + 그레인 ── */
+    .sky {
+      position: relative;
+      padding: 32px 0 56px;
+      background:
+        radial-gradient(90% 34% at 100% 0%, #4A95D0 0%, rgba(74,149,208,0) 100%),
+        radial-gradient(130% 46% at 40% 0%, #A9D1EE 0%, rgba(169,209,238,0) 100%),
+        radial-gradient(110% 30% at 80% 100%, #F4E6AE 0%, rgba(244,230,174,0) 100%),
+        #F6F5F1;
+      min-height: 62vh;
+    }
+    .sky::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.09;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    .sky .wrap { position: relative; }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 24px 22px 22px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .card h2 { font-weight: 400; font-size: 1.18rem; }
+    .card p { margin-top: 8px; font-size: 0.95rem; line-height: 1.6; color: var(--ink-mid); }
+
+    .btn {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      width: 100%; margin-top: 18px; padding: 16px 20px;
+      background: var(--ink); color: var(--paper);
+      border: none; border-radius: 12px;
+      font: 400 1rem var(--sans); text-decoration: none; cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+
+    .field {
+      width: 100%; margin-top: 18px; padding: 15px 16px;
+      border: 1px solid var(--ink-faint); border-radius: 12px;
+      background: var(--paper); color: var(--ink);
+      font: 300 1rem var(--sans);
+    }
+    .field:focus { outline: 2px solid var(--sky-ink); outline-offset: 1px; }
+    .consent {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-top: 14px; font-size: 0.78rem; line-height: 1.6; color: var(--ink-mid); cursor: pointer;
+    }
+    .consent input { margin-top: 3px; accent-color: var(--ink); flex: none; }
+    .status { min-height: 1.4em; margin-top: 12px; font-size: 0.9rem; color: #B5523F; }
+
+    /* 등록 완료 — 부스에서 이 화면을 보여 준다 */
+    .done { display: none; text-align: center; padding: 12px 0 4px; }
+    .card.is-done form { display: none; }
+    .card.is-done .done { display: block; }
+    .done .mark {
+      width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%;
+      background: var(--sky-ink); color: var(--paper);
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .done strong { display: block; font-weight: 400; font-size: 1.5rem; }
+    .done .who { margin-top: 10px; font-size: 0.9rem; color: var(--ink-mid); overflow-wrap: anywhere; }
+    .done p { color: var(--ink); }
+
+    .note { margin-top: 26px; font-size: 0.9rem; line-height: 1.7; color: var(--ink); }
+
+    footer { padding: 28px 0 40px; font-size: 0.8rem; color: var(--ink-mid); background: #F4E9BC; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a href="/" aria-label="do nut run"><svg class="logo" viewBox="20 18 110 114" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="do nut run"><path fill="#FAFAF7" d="M118.9,44.5c-5-9.4-13.1-16.5-23.1-19.9-10.3-3.5-20-3.4-30.4-.6-11.4,3-21.2,10.7-27.9,20.3-10.4,14.8-15,33.1-11.9,51,.9,4.9,2.3,9.5,4.6,13.8,2,3.8,4.6,7.1,8.1,9.7,4,3.1,8.5,5.3,13.4,6.8,11.8,3.5,25.5,3,37.1-1.1h0c9.4-3.3,17.4-9.4,23.1-17.6,4.5-6.5,8-13.6,10.6-21.1,1.1-3.2,2-6.2,2.5-9.6,1.7-11.1-.8-22-6-31.8Z"/><path fill="#2B2F3A" d="M118.9,44.5c-5-9.4-13.1-16.5-23.1-19.9-10.3-3.5-20-3.4-30.4-.6-11.4,3-21.2,10.7-27.9,20.3-10.4,14.8-15,33.1-11.9,51,.9,4.9,2.3,9.5,4.6,13.8,2,3.8,4.6,7.1,8.1,9.7,4,3.1,8.5,5.3,13.4,6.8,11.8,3.5,25.5,3,37.1-1.1h0c9.4-3.3,17.4-9.4,23.1-17.6,4.5-6.5,8-13.6,10.6-21.1,1.1-3.2,2-6.2,2.5-9.6,1.7-11.1-.8-22-6-31.8ZM87.7,40.5c6.6,0,11.9,5.3,11.9,11.9s-5.3,11.8-11.9,11.8-11.8-5.3-11.8-11.9,5.3-11.8,11.8-11.8ZM59.9,41c2.4,0,4.5.9,6,2.6l.6.3c.1,0,.3-.5.3-.6,0-2.2-.7-4.3-1.6-6.3-.4-1.1-.2-2.1.8-2.7.8-.5,1.8-.9,2.8-1l3.7-.3c1.4-.1,2.5.9,2.6,2.3,0,1-.1,2-.3,3.1-.8,3.9-1.3,7.7-1.6,11.7-.2,3.4.2,6.5,1.7,9.6.5,1,.1,2.3-1,2.8-1.6.7-3.4,1.1-5.1,1-1.2,0-1.9-.8-1.8-2v-2c0,0-.1-.3-.1-.3h0c-.3-.4-1.4,1.8-3.1,3-1.6,1.2-3.6,1.4-5.6,1.2-5.3-.6-7.5-5.6-7.5-10.6,0-6.1,2.6-11.9,9.1-11.7ZM42.2,83.8c.8-1.7,1.5-3.3,1.9-5.1.7-3.1.3-6.1-1.1-8.9-.5-1-.3-2.3.6-3,2.6-1.9,7.1-2.5,7,.1l-.2,2.4c0,.2.2.8.4.7.2,0,.4-.2.7-.4,1.8-3.6,5.7-5.2,9.5-3.9,3.2,1.2,4.2,4.3,3.7,7.7l-.6,4.7c-.2,1.7.3,3.3,1,4.8.6,1.2.1,2.5-1,3.1-3.1,1.5-7.7,1.4-8.1-1.4-.2-1.6,0-3.1.2-4.7l.7-4.8c.1-1-.1-2.2-.8-2.9-.7-.8-2-.7-2.7,0-.9.7-1.3,1.8-1.5,2.9-.5,2.9,0,5.7.8,8.4.5,1.6-.5,3.2-2,3.6-2.5.6-6.5,1.1-8.2-.4-.8-.7-.8-2.1-.4-3ZM55.5,99c-2.1.9-2.7-2.3-4.4-1.7-.7.3-1.3,1.1-1.5,1.9-.7,2.8,0,5.6,1.5,8.1.5.9.8,1.9.5,2.9-.9,2.4-5.6,2.6-8.5,2h0c-1.5-.3-2.3-1.7-1.8-3.1l.9-2.7c1.1-3.5,1-7.1-.6-10.4-.6-1.4-.4-2.9,1-3.7,1.5-.9,3.9-1.9,4.9-1,.4.3.7,1,.6,1.6v2.3c-.1.1,0,.5.1.5,0,.1.4-.1.5-.3l1.4-2.6c.7-1.4,2.2-2.3,3.6-2.5,1.4-.2,2.9.3,3.6,1.6,1.2,2.2.6,6.2-1.8,7.3ZM78.3,110.3c-1.5.8-4.1,1.9-5.1,1-.4-.3-.7-.9-.7-1.6v-2.2c0-.1,0-.4,0-.5,0-.1-.5,0-.5.1l-1.2,1.7c-1.6,2.3-4.3,3.4-7.1,2.8-2.2-.5-3.7-2.6-3.8-5h0c0-1.9.1-3.6.5-5.4.5-2.5.1-4.9-1-7.2-.7-1.4,0-2.9,1.4-3.5,1.6-.6,3.4-.9,5.1-.4,2.3.6,2,4.3,1.5,6.9-.5,2.6-1.1,6.9,1,8,2.4,1.2,4.5-3.6,2.7-9.2l-.6-1.9c-.4-1.2.2-2.5,1.3-3.1,1.5-.8,3.2-1.1,4.9-1,2.7.2,2.4,4,1.9,6.8-.7,3.8-.9,6.9.8,10.5.6,1.2,0,2.4-1.1,3.1ZM81,82.8c-2.2,3.4-6.1,4.9-10,3.7-2.3-.7-3.6-3-3.3-5.3l.9-4.8c.4-2.1.4-4.2-.5-6.1-.4-.8-.6-1.7-.2-2.5.9-2,4.9-2,7.3-1.6,2.8.5,2.2,3.7,1.6,6.2l-.9,4.3c-.2.8,0,1.8.2,2.5.3,1.1,1.4,1.7,2.5,1.4,2.9-.8,3.5-6.1,2-9.8-.6-1.5,0-3.2,1.6-3.7,1.8-.6,3.8-.8,5.8-.6,1,0,1.8.9,1.9,2,0,1.1-.2,2.2-.5,3.3l-1.2,5.2h0c-.8,3.4,1.9,6,.9,7.6-.5.8-1.4,1.2-2.3,1.5-1.4.5-2.8.9-4.3.6-1.4-.3-.5-2.2-.8-4,0-.2-.7,0-.9.2ZM101.3,110.5c-1.7,1.3-4,1.6-5.9.8h0c-4.1-1.6-.7-8.8-1.5-13.8-.1-.6-.5-1.3-.9-1.5-.6-.3-1.5-.3-2,.2-.8.6-1.1,1.7-1.2,2.7-.5,3,0,5.9.9,8.7.5,1.8-.4,3.5-2.3,3.9-2.3.4-5.8.4-6.9-1.6-.4-.9-.3-1.9.2-2.7l1-3.5c.9-3.2.5-6.4-.9-9.4-.5-1.2-.3-2.5.7-3.3,1.2-.9,2.7-1.5,4.2-1.6.5,0,1.5.5,1.5,1.1v3.2c0,.1.2.4.3.5,0,0,.4-.1.5-.2l1.7-2.4c1.2-1.7,3-2.4,5.1-2.3,4,.2,5.4,3.7,5.2,7.5l-.3,5.6c0,1.8.4,3.4,1.2,5,.5,1,.4,2.4-.5,3.1ZM106.8,70.6c-.9.9-2.9.1-4.5.8-.5.2-.6,1.1-.7,1.6-.6,2.2-1.7,6.5,0,7.3h0c1.6.7,3.1-.4,3.9.2,1.4,1.1-.7,5.1-4.7,6-1.5.4-3.2.4-4.8,0-2.1-.4-3.5-2.2-3.5-4.4,0-1.8.4-3.4.9-5.1l1.4-4.8c0-.2,0-.8-.2-.9-.5-.6-2.1,0-2.5-.8-.8-1.5,0-3.5,1.6-4.1,2.5-1,4.5-2.6,5.9-4.9.5-.8,1.3-1.3,2.3-1.4.6,0,1.1.3,1.5.7.4.5.5,1.1.3,1.7l-.7,3.1c0,.1,0,.5.2.6.1.1.5.2.7.2h2.4c.8,0,1.3.7,1.3,1.5,0,1-.2,2-.9,2.8Z"/><path fill="#2B2F3A" d="M63.3,57.1h0c2.5-.9,2.9-5.9,1.7-9-.4-1-1.3-1.6-2.2-1.6-3.2-.1-4.1,5.3-2.6,9.1.5,1.2,1.9,2,3.2,1.5Z"/><path fill="#2B2F3A" d="M88.2,55.9c3-.8,3.4-6,1.7-8.9-.7-1.1-2-1.7-3.1-1.1-2.3,1.2-2.8,5.5-1.5,8.3.5,1.2,1.6,2.1,3,1.7Z"/></svg></a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="ko">KO</button>
+        <button type="button" data-set="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1 lang="ko">카톡 채널 추가하면<br />러닝 양말을 드려요</h1>
+        <h1 lang="en">Sign up and take home<br />a pair of running socks.</h1>
+        <p class="lead" lang="ko">카카오톡 채널이나 이메일, 편한 쪽으로 등록하고<br />부스에서 화면을 보여 주세요. 바로 드려요.</p>
+        <p class="lead" lang="en">KakaoTalk or email, whichever suits you.<br />Show us your screen at the booth and they're yours.</p>
+      </div>
+    </section>
+
+    <section class="sky">
+      <div class="wrap">
+        <div class="card">
+          <h2 lang="ko">카카오톡 채널</h2>
+          <h2 lang="en">KakaoTalk</h2>
+          <p lang="ko">do nut run 채널을 추가하면 끝이에요.</p>
+          <p lang="en">If you use KakaoTalk, just add our channel.</p>
+          <a class="btn" id="kakao" href="https://pf.kakao.com/_yWqsX/friend" target="_blank" rel="noopener">
+            <span lang="ko">채널 추가하기</span><span lang="en">Add our channel</span> <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="card" id="email-card">
+          <h2 lang="ko">이메일</h2>
+          <h2 lang="en">Email</h2>
+          <form id="email-form" novalidate>
+            <p lang="ko">카톡을 안 쓰시면 이메일로 등록해 주세요.</p>
+            <p lang="en">No KakaoTalk? Sign up with your email.</p>
+            <input class="field" type="email" name="email" autocomplete="email" required placeholder="your@email.com" aria-label="Email" />
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span lang="ko">(필수) 이메일 수집·이용 및 광고성 정보 수신에 동의합니다. 수집 항목: 이메일 / 목적: 신제품·행사 소식 안내 / 보유 기간: 구독 해지 시까지. 언제든 메일 하단에서 해지할 수 있습니다.</span>
+              <span lang="en">I agree to receive marketing emails from do nut run. We only use your email to send news about our products and events, and you can unsubscribe at any time.</span>
+            </label>
+            <button class="btn" type="submit"><span lang="ko">등록하기</span><span lang="en">Sign up</span></button>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </form>
+          <div class="done" aria-live="polite">
+            <div class="mark" aria-hidden="true">✓</div>
+            <strong lang="ko">등록됐어요</strong>
+            <strong lang="en">You're signed up</strong>
+            <p lang="ko">이 화면을 부스에서 보여 주세요.</p>
+            <p lang="en">Show this screen at our booth.</p>
+            <p class="who" id="who"></p>
+          </div>
+        </div>
+
+        <p class="note" lang="ko">러닝 양말 40켤레 준비했어요.<br />ITSC 2026 · 원주 오크밸리 · 11월 6–7일, do nut run 부스</p>
+        <p class="note" lang="en">40 pairs of running socks, while they last.<br />ITSC 2026 · Oak Valley, Wonju · 6–7 Nov, do nut run booth</p>
+        <p class="note" lang="ko">바람막이 테스터 응모는 따로 — <a href="/itsc/tester">입어 보고 골라 주세요 →</a></p>
+        <p class="note" lang="en">The wind jacket tester draw is separate — <a href="/itsc/tester">try one on, pick your favourite →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span lang="ko">do nut run · 강원 춘천</span><span lang="en">do nut run · Chuncheon, Korea</span>
+      <a href="/">orsc.run</a>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.lang button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.set;
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        try { localStorage.setItem('dnr-lang', lang); } catch (e) {}
+        gtag('event', 'language_switch', { language: lang });
+      });
+    });
+
+    document.getElementById('kakao').addEventListener('click', () => {
+      gtag('event', 'sign_up', { method: 'kakao_channel', campaign: 'itsc2026' });
+    });
+
+    // 이메일 → Klaviyo "Email List" (client API, 공개 키만 사용). 행사 출처는 signup_source로 구분
+    const KLAVIYO_COMPANY_ID = 'SsrFvq';
+    const KLAVIYO_LIST_ID = 'SVnHvX';
+    const card = document.getElementById('email-card');
+    const form = document.getElementById('email-form');
+    const status = document.getElementById('status');
+    const msg = {
+      ko: { email: '이메일 주소를 확인해 주세요.', consent: '수신 동의에 체크해 주세요.', fail: '잠시 후 다시 시도해 주세요. 안 되면 부스에서 말씀해 주세요.' },
+      en: { email: 'Please check your email address.', consent: 'Please tick the consent box.', fail: 'Something went wrong. Please try again, or just tell us at the booth.' }
+    };
+    const say = key => { status.textContent = msg[document.documentElement.dataset.lang][key]; };
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      if (!form.email.checkValidity() || !email) return say('email');
+      if (!form.consent.checked) return say('consent');
+
+      const btn = form.querySelector('button');
+      btn.disabled = true;
+      status.textContent = '';
+      const lang = document.documentElement.dataset.lang;
+      try {
+        const res = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/vnd.api+json', revision: '2024-10-15' },
+          body: JSON.stringify({ data: {
+            type: 'subscription',
+            attributes: {
+              custom_source: 'itsc2026',
+              profile: { data: { type: 'profile', attributes: {
+                email,
+                properties: { signup_language: lang, signup_source: 'itsc2026' }
+              } } }
+            },
+            relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+          } })
+        });
+        if (res.status === 400) { say('email'); btn.disabled = false; return; }
+        if (!res.ok) throw new Error(res.status);
+        document.getElementById('who').textContent = email;
+        card.classList.add('is-done');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        gtag('event', 'sign_up', { method: 'email', campaign: 'itsc2026', language: lang });
+      } catch (err) {
+        say('fail');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
