@@ -97,6 +97,13 @@
     h1 .light { font-weight: 300; }
     .sub { margin-top: 14px; font-size: 0.95rem; color: var(--off-soft); }
     .lead { margin-top: 22px; font-size: 1.02rem; line-height: 1.75; text-align: left; }
+    .from-ticket {
+      display: none; margin-top: 20px; padding: 14px 16px; border-radius: 14px;
+      background: rgba(250,250,247,0.92); color: var(--ink); font-size: 0.95rem; line-height: 1.6;
+    }
+    .from-ticket b { font-weight: 400; color: var(--sky-ink); }
+    html.has-ticket[data-lang="ko"] .from-ticket[lang="ko"],
+    html.has-ticket[data-lang="en"] .from-ticket[lang="en"] { display: block; }
 
     .steps { list-style: none; margin: 30px 0 8px; text-align: left; }
     .steps li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; font-size: 1.02rem; line-height: 1.55; }
@@ -158,6 +165,8 @@
     }
     .draw strong { display: block; font-weight: 400; font-size: 1.12rem; }
     .draw p { margin-top: 8px; font-size: 0.9rem; line-height: 1.6; color: var(--off-soft); }
+    .draw .ship { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(237,239,242,0.45); color: var(--off); }
+    .draw .ship b { font-weight: 400; text-decoration: underline; text-underline-offset: 4px; }
 
     .more { margin: 28px 0 0; font-size: 0.95rem; }
     .more a { text-underline-offset: 4px; }
@@ -184,6 +193,8 @@
         <h1 lang="en"><span class="light">Try one on.</span><br />Pick your favourite.</h1>
         <p class="sub" lang="ko">출시 전 바람막이 샘플 · 남 2 · 여 2</p>
         <p class="sub" lang="en">Pre-release wind jackets, 2 men's and 2 women's</p>
+        <p class="from-ticket" lang="ko"><b class="t-no"></b> 추첨권으로 들어오셨어요.<br />아래에서 알림 받을 곳만 남겨 주세요.</p>
+        <p class="from-ticket" lang="en">You came in with <b class="t-no"></b>.<br />Just leave us a way to reach you below.</p>
         <p class="lead" lang="ko">부스에서 입어 보거나 살펴보고 마음에 드는 쪽을 골라 주세요. 추첨으로 테스터 4명을 뽑아 2월 말에 바람막이를 보내 드려요.</p>
         <p class="lead" lang="en">Try one on at the booth, or just have a look, and pick the one you like. We'll draw 4 testers and send them a jacket in late February.</p>
 
@@ -253,6 +264,8 @@
           <strong lang="en">Draw: Sat 7 Nov, 14:10, at our booth</strong>
           <p lang="ko">자리에 없어도 괜찮아요. 같은 날 카톡과 이메일로 알려 드려요.<br />추첨권은 발표 때까지 갖고 계세요.</p>
           <p lang="en">You don't need to be there. We'll let you know the same day.<br />Keep your ticket until the draw.</p>
+          <p class="ship" lang="ko">당첨되면 바람막이를 받으실 <b>이름·주소·연락처</b>를 꼭 알려 주세요. 보내 드리는 데만 쓰고, 발송이 끝나면 지워요.</p>
+          <p class="ship" lang="en">If you win, we'll need your <b>name, address and phone number</b> to send the jacket. We only use them for shipping and delete them once it's sent.</p>
         </div>
 
         <p class="more" lang="ko">러닝 양말은 따로 받으세요 — <a href="/itsc">카톡 채널·이메일 등록 →</a></p>
@@ -304,6 +317,17 @@
       en: { ticket: 'Please check your ticket number.', email: 'Please check your email address.', consent: 'Please tick the required box.', fail: 'Something went wrong. Please try again, or just tell us at the booth.', done: n => `Ticket no. ${n}` }
     };
     const say = key => { status.textContent = msg[document.documentElement.dataset.lang][key]; };
+
+    // 추첨권마다 QR에 번호가 들어 있다 (orsc.run/itsc/tester/?t=23) → 번호 칸을 채워 둔다
+    const fromTicket = (new URLSearchParams(location.search).get('t') || '').replace(/^0+(?=\d)/, '');
+    if (/^\d{1,3}$/.test(fromTicket)) {
+      form.ticket.value = fromTicket;
+      document.querySelectorAll('.t-no').forEach(el => {
+        el.textContent = el.closest('p').lang === 'en' ? `ticket no. ${fromTicket}` : `${fromTicket}번`;
+      });
+      document.documentElement.classList.add('has-ticket');
+      gtag('event', 'ticket_qr', { ticket: fromTicket, campaign: 'itsc2026' });
+    }
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
