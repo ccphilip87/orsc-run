@@ -139,6 +139,17 @@
       font: 300 1rem var(--sans);
     }
     .field:first-of-type { margin-top: 18px; }
+    html.has-ticket .field[name="ticket"] { display: none; }
+    html.has-ticket .field[name="email"] { margin-top: 18px; }
+    .t-line { display: none; }
+    html.has-ticket[data-lang="ko"] .t-line[lang="ko"],
+    html.has-ticket[data-lang="en"] .t-line[lang="en"] { display: block; }
+    .card .t-line { margin-top: 14px; color: var(--ink); }
+    .t-line b { font-weight: 400; color: var(--sky-ink); }
+    .t-edit {
+      background: none; border: none; padding: 0 0 0 8px; font: inherit; font-size: 0.85rem;
+      color: var(--ink-mid); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+    }
     .field:focus { outline: 2px solid var(--sky-ink); outline-offset: 1px; }
     .consent {
       display: flex; gap: 10px; align-items: flex-start;
@@ -195,17 +206,17 @@
         <p class="sub" lang="en">Pre-release wind jackets, 2 men's and 2 women's</p>
         <p class="from-ticket" lang="ko"><b class="t-no"></b> 추첨권으로 들어오셨어요.<br />아래에서 알림 받을 곳만 남겨 주세요.</p>
         <p class="from-ticket" lang="en">You came in with <b class="t-no"></b>.<br />Just leave us a way to reach you below.</p>
-        <p class="lead" lang="ko">부스에서 입어 보거나 살펴보고 마음에 드는 쪽을 골라 주세요. 추첨으로 테스터 4명을 뽑아 2월 말에 바람막이를 보내 드려요.</p>
-        <p class="lead" lang="en">Try one on at the booth, or just have a look, and pick the one you like. We'll draw 4 testers and send them a jacket in late February.</p>
+        <p class="lead" lang="ko">부스에서 입어 보거나 살펴보고, 모자와 주머니가 꼭 있어야 하는지 보드에 스티커로 알려 주세요. 추첨으로 테스터 4명을 뽑아 2월 말에 바람막이를 보내 드려요.</p>
+        <p class="lead" lang="en">Try one on at the booth, or just have a look, then tell us on the board whether a hood and a pocket are must-haves. We'll draw 4 testers and send them a jacket in late February.</p>
 
         <ol class="steps" lang="ko">
           <li><span class="n">1</span><span>입어 보거나 살펴보고</span></li>
-          <li><span class="n">2</span><span>보드에 스티커로 골라 주세요<small>스티커를 붙이면 추첨권을 드려요</small></span></li>
+          <li><span class="n">2</span><span>보드에 스티커로 골라 주세요<small>모자·주머니 줄마다 하나씩, 붙이면 추첨권을 드려요</small></span></li>
           <li><span class="n">3</span><span>추첨권을 응모함에 넣으면 응모<small>나머지 한쪽은 발표 때까지 갖고 계세요</small></span></li>
         </ol>
         <ol class="steps" lang="en">
           <li><span class="n">1</span><span>Try one on, or just have a look</span></li>
-          <li><span class="n">2</span><span>Pick one on the board with a sticker<small>You'll get a numbered ticket</small></span></li>
+          <li><span class="n">2</span><span>Pick on the board with stickers<small>One per row, hood and pocket. Then grab a numbered ticket</small></span></li>
           <li><span class="n">3</span><span>Drop your ticket in the box to enter<small>Keep the other half until the draw</small></span></li>
         </ol>
       </div>
@@ -234,12 +245,14 @@
           <form id="entry-form" novalidate>
             <p lang="ko">해외에 계시거나 카톡을 안 쓰시면 이메일로 알려 드려요.</p>
             <p lang="en">Outside Korea, or no KakaoTalk? We'll email you.</p>
+            <p class="t-line" lang="ko">추첨권 <b class="t-no"></b><button type="button" class="t-edit">번호 바꾸기</button></p>
+            <p class="t-line" lang="en">Your <b class="t-no"></b><button type="button" class="t-edit">Change</button></p>
             <input class="field" type="text" name="ticket" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" required placeholder="추첨권 번호" data-ph-ko="추첨권 번호" data-ph-en="Ticket no." aria-label="Ticket number" />
             <input class="field" type="email" name="email" autocomplete="email" required placeholder="your@email.com" aria-label="Email" />
             <label class="consent">
               <input type="checkbox" name="consent" required />
-              <span lang="ko">(필수) 추첨 결과 안내를 위해 이메일·추첨권 번호를 수집·이용하는 데 동의합니다. 보유 기간: 바람막이 발송 완료 시까지.</span>
-              <span lang="en">I agree that do nut run may use my email and ticket number to tell me the draw result. We keep them until the jackets have been sent.</span>
+              <span lang="ko">(필수) 이메일·추첨권 번호는 당첨 안내에만 쓰고, 바람막이 발송이 끝나면 지워요.</span>
+              <span lang="en">(Required) We only use your email and ticket number to tell you the result, and delete them once the jackets are sent.</span>
             </label>
             <label class="consent">
               <input type="checkbox" name="news" />
@@ -326,6 +339,10 @@
         el.textContent = el.closest('p').lang === 'en' ? `ticket no. ${fromTicket}` : `${fromTicket}번`;
       });
       document.documentElement.classList.add('has-ticket');
+      document.querySelectorAll('.t-edit').forEach(b => b.addEventListener('click', () => {
+        document.documentElement.classList.remove('has-ticket');
+        form.ticket.focus();
+      }));
       gtag('event', 'ticket_qr', { ticket: fromTicket, campaign: 'itsc2026' });
     }
 
