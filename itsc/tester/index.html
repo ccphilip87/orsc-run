@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>바람막이 테스터 응모 — do nut run at ITSC 2026</title>
-  <meta name="description" content="입어 보고, 골라 주세요. 출시 전 바람막이 테스터 4명을 뽑아요. 당첨 소식은 카톡·이메일로. Try one on. Pick your favourite." />
+  <meta name="description" content="입어 보고, 골라 주세요. 출시 전 바람막이 테스터 4명을 뽑아요. 당첨되신 분께만 연락드려요. Try one on. Pick your favourite." />
   <meta name="theme-color" content="#5DA6D8" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://orsc.run/itsc/tester" />
@@ -140,7 +140,7 @@
     }
     .field:first-of-type { margin-top: 18px; }
     html.has-ticket .field[name="ticket"] { display: none; }
-    html.has-ticket .field[name="email"] { margin-top: 18px; }
+    html.has-ticket .field[name="contact"] { margin-top: 18px; }
     .t-line { display: none; }
     html.has-ticket[data-lang="ko"] .t-line[lang="ko"],
     html.has-ticket[data-lang="en"] .t-line[lang="en"] { display: block; }
@@ -204,8 +204,8 @@
         <h1 lang="en"><span class="light">Try one on.</span><br />Pick your favourite.</h1>
         <p class="sub" lang="ko">출시 전 바람막이 샘플 · 남 2 · 여 2</p>
         <p class="sub" lang="en">Pre-release wind jackets, 2 men's and 2 women's</p>
-        <p class="from-ticket" lang="ko"><b class="t-no"></b> 추첨권으로 들어오셨어요.<br />아래에서 알림 받을 곳만 남겨 주세요.</p>
-        <p class="from-ticket" lang="en">You came in with <b class="t-no"></b>.<br />Just leave us a way to reach you below.</p>
+        <p class="from-ticket" lang="ko"><b class="t-no"></b> 추첨권으로 들어오셨어요.<br />아래에 연락처만 남겨 주세요.</p>
+        <p class="from-ticket" lang="en">You came in with <b class="t-no"></b>.<br />Just leave your contact below.</p>
         <p class="lead" lang="ko">부스에서 입어 보거나 살펴보고, 모자와 주머니가 꼭 있어야 하는지 보드에 스티커로 알려 주세요. 추첨으로 테스터 4명을 뽑아 2월 말에 바람막이를 보내 드려요.</p>
         <p class="lead" lang="en">Try one on at the booth, or just have a look, then tell us on the board whether a hood and a pocket are must-haves. We'll draw 4 testers and send them a jacket in late February.</p>
 
@@ -224,42 +224,27 @@
 
     <section class="cards">
       <div class="wrap">
-        <h2 class="notify" lang="ko">당첨되면 카톡이나<br />이메일로 알려 드려요</h2>
-        <h2 class="notify" lang="en">Winners hear from us<br />by KakaoTalk or email</h2>
-        <p class="notify-sub" lang="ko">받을 곳을 하나만 남겨 주세요.</p>
-        <p class="notify-sub" lang="en">Just leave us one way to reach you.</p>
-
-        <div class="card">
-          <h2 lang="ko">카카오톡 채널</h2>
-          <h2 lang="en">KakaoTalk</h2>
-          <p lang="ko">채널을 추가해 두면 당첨 번호를 보내 드려요. 양말 받을 때 이미 추가하셨다면 그대로 기다리시면 돼요.</p>
-          <p lang="en">Add our channel and we'll send you the winning numbers. Already added it for the socks? You're all set.</p>
-          <a class="btn" id="kakao" href="https://pf.kakao.com/_yWqsX/friend" target="_blank" rel="noopener">
-            <span lang="ko">채널 추가하기</span><span lang="en">Add our channel</span> <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+        <h2 class="notify" lang="ko">당첨되신 분께만<br />연락드려요</h2>
+        <h2 class="notify" lang="en">We'll only contact<br />the winners</h2>
+        <p class="notify-sub" lang="ko">이메일이나 전화번호 하나만 남겨 주세요.</p>
+        <p class="notify-sub" lang="en">Leave an email or a phone number.</p>
 
         <div class="card" id="entry-card">
-          <h2 lang="ko">이메일</h2>
-          <h2 lang="en">Email</h2>
+          <h2 lang="ko">연락처</h2>
+          <h2 lang="en">Contact</h2>
           <form id="entry-form" novalidate>
-            <p lang="ko">해외에 계시거나 카톡을 안 쓰시면 이메일로 알려 드려요.</p>
-            <p lang="en">Outside Korea, or no KakaoTalk? We'll email you.</p>
+            <p lang="ko">당첨되면 여기로 연락드려요. 둘 중 편한 걸로 하나만요.</p>
+            <p lang="en">If you win, this is how we'll reach you. Either one is fine.</p>
             <p class="t-line" lang="ko">추첨권 <b class="t-no"></b><button type="button" class="t-edit">번호 바꾸기</button></p>
             <p class="t-line" lang="en">Your <b class="t-no"></b><button type="button" class="t-edit">Change</button></p>
             <input class="field" type="text" name="ticket" inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" required placeholder="추첨권 번호" data-ph-ko="추첨권 번호" data-ph-en="Ticket no." aria-label="Ticket number" />
-            <input class="field" type="email" name="email" autocomplete="email" required placeholder="your@email.com" aria-label="Email" />
+            <input class="field" type="text" name="contact" autocomplete="email" autocapitalize="off" spellcheck="false" required placeholder="이메일 또는 전화번호" data-ph-ko="이메일 또는 전화번호" data-ph-en="Email or phone number" aria-label="Email or phone number" />
             <label class="consent">
               <input type="checkbox" name="consent" required />
-              <span lang="ko">(필수) 이메일·추첨권 번호는 당첨 안내에만 쓰고, 바람막이 발송이 끝나면 지워요.</span>
-              <span lang="en">(Required) We only use your email and ticket number to tell you the result, and delete them once the jackets are sent.</span>
+              <span lang="ko">(필수) 연락처·추첨권 번호는 당첨 연락에만 쓰고, 바람막이 발송이 끝나면 지워요.</span>
+              <span lang="en">(Required) We only use your contact and ticket number to reach you if you win, and delete them once the jackets are sent.</span>
             </label>
-            <label class="consent">
-              <input type="checkbox" name="news" />
-              <span lang="ko">(선택) 신제품·행사 소식도 이메일로 받을게요. 언제든 해지할 수 있어요.</span>
-              <span lang="en">(Optional) Also send me do nut run news now and then. You can unsubscribe at any time.</span>
-            </label>
-            <button class="btn" type="submit"><span lang="ko">알림 받기</span><span lang="en">Notify me</span></button>
+            <button class="btn" type="submit"><span lang="ko">응모 완료</span><span lang="en">Done</span></button>
             <p class="status" id="status" role="status" aria-live="polite"></p>
           </form>
           <div class="done" aria-live="polite">
@@ -267,20 +252,22 @@
             <strong lang="ko">등록됐어요</strong>
             <strong lang="en">You're all set</strong>
             <p class="ticket" id="ticket-done"></p>
-            <p lang="ko">당첨되면 이 이메일로 알려 드려요.</p>
-            <p lang="en">If you win, we'll email you.</p>
+            <p lang="ko">당첨되면 남겨 주신 연락처로 알려 드려요.</p>
+            <p lang="en">If you win, we'll get in touch.</p>
           </div>
         </div>
 
         <div class="draw">
           <strong lang="ko">11월 7일(토) 14:10 부스에서 발표</strong>
           <strong lang="en">Draw: Sat 7 Nov, 14:10, at our booth</strong>
-          <p lang="ko">자리에 없어도 괜찮아요. 같은 날 카톡과 이메일로 알려 드려요.<br />추첨권은 발표 때까지 갖고 계세요.</p>
-          <p lang="en">You don't need to be there. We'll let you know the same day.<br />Keep your ticket until the draw.</p>
+          <p lang="ko">자리에 없어도 괜찮아요. 당첨되신 분께 같은 날 연락드려요.<br />추첨권은 발표 때까지 갖고 계세요.</p>
+          <p lang="en">You don't need to be there. We'll contact the winners the same day.<br />Keep your ticket until the draw.</p>
           <p class="ship" lang="ko">당첨되면 바람막이를 받으실 <b>이름·주소·연락처</b>를 꼭 알려 주세요. 보내 드리는 데만 쓰고, 발송이 끝나면 지워요.</p>
           <p class="ship" lang="en">If you win, we'll need your <b>name, address and phone number</b> to send the jacket. We only use them for shipping and delete them once it's sent.</p>
         </div>
 
+        <p class="more" lang="ko">당첨 번호는 카카오톡 채널에도 올려요 — <a id="kakao" href="https://pf.kakao.com/_yWqsX/friend" target="_blank" rel="noopener">채널 추가 ↗</a></p>
+        <p class="more" lang="en">Winning numbers also go up on our KakaoTalk channel — <a href="https://pf.kakao.com/_yWqsX/friend" target="_blank" rel="noopener">add it ↗</a></p>
         <p class="more" lang="ko">러닝 양말은 따로 받으세요 — <a href="/itsc">카톡 채널·이메일 등록 →</a></p>
         <p class="more" lang="en">Running socks are separate — <a href="/itsc">sign up for a pair →</a></p>
       </div>
@@ -316,18 +303,17 @@
       gtag('event', 'tester_notify', { method: 'kakao_channel', campaign: 'itsc2026' });
     });
 
-    // 당첨 알림용 이메일 → Klaviyo 이벤트 "ITSC Tester Entry"(구독 아님, 추첨권 번호로 당첨자를 찾는다).
-    // 소식 받기에 체크하면 그때만 "Email List" 구독
+    // 당첨 연락처(이메일 또는 전화번호) → Klaviyo 이벤트 "ITSC Tester Entry". 구독 아님.
+    // 이벤트 속성 ticket·contact로 당첨자를 찾는다. 전화번호는 익명 프로필(anonymous_id)에 속성으로만 둔다(문자 구독 아님)
     const KLAVIYO_COMPANY_ID = 'SsrFvq';
-    const KLAVIYO_LIST_ID = 'SVnHvX';
     const KLAVIYO = path => `https://a.klaviyo.com/client/${path}/?company_id=${KLAVIYO_COMPANY_ID}`;
     const HEADERS = { 'content-type': 'application/vnd.api+json', revision: '2024-10-15' };
     const card = document.getElementById('entry-card');
     const form = document.getElementById('entry-form');
     const status = document.getElementById('status');
     const msg = {
-      ko: { ticket: '추첨권 번호를 확인해 주세요.', email: '이메일 주소를 확인해 주세요.', consent: '필수 동의에 체크해 주세요.', fail: '잠시 후 다시 시도해 주세요. 안 되면 부스에서 말씀해 주세요.', done: n => `추첨권 ${n}번` },
-      en: { ticket: 'Please check your ticket number.', email: 'Please check your email address.', consent: 'Please tick the required box.', fail: 'Something went wrong. Please try again, or just tell us at the booth.', done: n => `Ticket no. ${n}` }
+      ko: { ticket: '추첨권 번호를 확인해 주세요.', contact: '이메일이나 전화번호를 확인해 주세요.', consent: '필수 동의에 체크해 주세요.', fail: '저장이 안 됐어요. 다시 눌러 보시고, 안 되면 부스에서 번호와 연락처를 말씀해 주세요.', done: n => `추첨권 ${n}번` },
+      en: { ticket: 'Please check your ticket number.', contact: 'Please check your email or phone number.', consent: 'Please tick the required box.', fail: 'That didn\'t save. Please try again, or tell us your ticket number and contact at the booth.', done: n => `Ticket no. ${n}` }
     };
     const say = key => { status.textContent = msg[document.documentElement.dataset.lang][key]; };
 
@@ -349,44 +335,37 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const ticket = form.ticket.value.trim().replace(/^0+(?=\d)/, '');
-      const email = form.email.value.trim();
+      const raw = form.contact.value.trim();
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw) ? raw : null;
+      const digits = raw.replace(/[\s\-().]/g, '');
+      const phone = !email && /^\+?\d{8,15}$/.test(digits) ? digits : null;
       if (!/^\d{1,3}$/.test(ticket)) return say('ticket');
-      if (!form.email.checkValidity() || !email) return say('email');
+      if (!email && !phone) return say('contact');
       if (!form.consent.checked) return say('consent');
 
       const btn = form.querySelector('button');
       btn.disabled = true;
       status.textContent = '';
       const lang = document.documentElement.dataset.lang;
-      const profile = { data: { type: 'profile', attributes: {
-        email, properties: { itsc_ticket: ticket, signup_language: lang }
-      } } };
+      const profile = { data: { type: 'profile', attributes: email
+        ? { email, properties: { itsc_ticket: ticket, signup_language: lang } }
+        : { anonymous_id: `itsc2026-${ticket}-${Date.now()}`, properties: { itsc_ticket: ticket, itsc_contact: phone, signup_language: lang } }
+      } };
       try {
         const res = await fetch(KLAVIYO('events'), {
           method: 'POST', headers: HEADERS,
           body: JSON.stringify({ data: { type: 'event', attributes: {
-            properties: { ticket, campaign: 'itsc2026' },
+            properties: { ticket, campaign: 'itsc2026', contact: email || phone, contact_type: email ? 'email' : 'phone' },
             metric: { data: { type: 'metric', attributes: { name: 'ITSC Tester Entry' } } },
             profile
           } } })
         });
-        if (res.status === 400) { say('email'); btn.disabled = false; return; }
+        if (res.status === 400) { say('contact'); btn.disabled = false; return; }
         if (!res.ok) throw new Error(res.status);
-        if (form.news.checked) {
-          fetch(KLAVIYO('subscriptions'), {
-            method: 'POST', headers: HEADERS,
-            body: JSON.stringify({ data: { type: 'subscription', attributes: {
-              custom_source: 'itsc2026_tester',
-              profile: { data: { type: 'profile', attributes: {
-                email, properties: { signup_language: lang, signup_source: 'itsc2026_tester' }
-              } } }
-            }, relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } } } })
-          }).catch(() => {});
-        }
         document.getElementById('ticket-done').textContent = msg[lang].done(ticket);
         card.classList.add('is-done');
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        gtag('event', 'tester_notify', { method: 'email', campaign: 'itsc2026', language: lang });
+        gtag('event', 'tester_notify', { method: email ? 'email' : 'phone', campaign: 'itsc2026', language: lang });
       } catch (err) {
         say('fail');
         btn.disabled = false;
